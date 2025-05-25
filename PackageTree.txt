@@ -1,0 +1,20 @@
+ProjectName 
+    |--------FrontEnd
+            |--------css
+            |--------font
+            |--------images
+            |--------js
+            |--------scss
+    |--------BackEnd              
+            |--------Src
+                  |---------models
+                  |---------controllers
+                                |-----------Func1 Controller
+                                |-----------Func2 Controller
+                                |-----------Func3 Controller
+                                |-----------Func4 Controller
+                                |----------- ...
+                  |---------dal
+                                |-----------DBContext
+                  
+             |--------Lib

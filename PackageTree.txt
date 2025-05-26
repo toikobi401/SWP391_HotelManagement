@@ -1,20 +1,40 @@
-ProjectName 
+SWP391_HotelManagement
     |--------FrontEnd
             |--------css
-            |--------font
+                    |-----------animate.css
+                    |-----------aos.css
+                    |-----------bootstrap-datepicker.css
+                    |-----------bootstrap.min.css
+                    |-----------jquery-ui.css
+                    |-----------magnific-popup.css
+                    |-----------mediaelementplayer.css
+                    |-----------style.css
+            |--------fonts
+                    |-----------flaticon
+                    |-----------icomoon
             |--------images
             |--------js
             |--------scss
+            |--------about.html
+            |--------contact.html
+            |--------events.html
+            |--------index.html
+            |--------login.html
+            |--------rooms.html
+
     |--------BackEnd              
             |--------Src
-                  |---------models
-                  |---------controllers
-                                |-----------Func1 Controller
-                                |-----------Func2 Controller
-                                |-----------Func3 Controller
-                                |-----------Func4 Controller
-                                |----------- ...
+                  |---------app.js
+                  |---------package.json
+                  |---------controller
+                            |-----------AuthenticationController
+                                        |------------BaseAuthenticationController.js
+                                        |------------LoginController.js
                   |---------dal
-                                |-----------DBContext
-                  
-             |--------Lib
+                            |-----------DBContext.js
+                            |-----------RoleDBContext.js
+                            |-----------UserDBContext.js
+                            |-----------sql
+                  |---------model
+                            |-----------Role.js
+                            |-----------User.js

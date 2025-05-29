@@ -1,0 +1,244 @@
+@startuml
+' Enable Chen's ER diagram notation
+skinparam monochrome true
+skinparam {
+  shadowing false
+  defaultFontName Arial
+  nodeSep 60
+  rankSep 60
+  dpi 150
+}
+
+' Entities
+entity "Amenity" {
+  * AmenityID : INT <<PK>>
+  --
+  AmenityName : NVARCHAR(50)
+  Description : NVARCHAR(150)
+}
+
+entity "BlogCategories" {
+  * CategoryID : INT <<PK>>
+  --
+  CategoryName : NVARCHAR(50)
+  Description : NVARCHAR(255)
+}
+
+entity "BlogPost" {
+  * PostID : INT <<PK>>
+  --
+  Title : NVARCHAR(255)
+  Content : NVARCHAR(MAX)
+  AuthorID : INT <<FK>>
+  CategoryID : INT <<FK>>
+  Image : VARBINARY(MAX)
+  CreateAt : DATETIME
+  UpdateAt : DATETIME
+  Status : BIT
+}
+
+entity "Booking" {
+  * BookingID : INT <<PK>>
+  --
+  CustomerID : INT <<FK, NULLABLE>>
+  ReceptionistID : INT <<FK, NULLABLE>>
+  NumberOfGuest : INT
+  SpecialRequest : NVARCHAR(250) <<NULLABLE>>
+  BookingType : BIT
+  BookingAt : DATETIME
+  GuestID : BIGINT <<FK, NULLABLE>>
+}
+
+entity "BookingPromotion" {
+  * BookingPromotionID : INT <<PK>>
+  --
+  PromotionID : INT <<FK>>
+  BookingID : INT <<FK>>
+}
+
+entity "BookingRoom" {
+  * BookingRoomID : INT <<PK>>
+  --
+  BookingID : INT <<FK>>
+  RoomID : INT <<FK>>
+  CheckInAt : DATETIME
+  CheckOutAt : DATETIME
+}
+
+entity "BookingService" {
+  * BookingID : INT <<FK>>
+  * ServiceID : INT <<FK>>
+}
+
+entity "Feature" {
+  * FeatureID : INT <<PK>>
+  --
+  FeatureURL : NVARCHAR(50)
+}
+
+entity "FeatureRole" {
+  * RoleID : INT <<FK>>
+  * FeatureID : INT <<FK>>
+}
+
+entity "GuestFeedback" {
+  * FeedbackID : INT <<PK>>
+  --
+  OverallRating : FLOAT
+  ServiceRating : FLOAT
+  CleanlinessRating : FLOAT
+  LocationRating : FLOAT <<NULLABLE>>
+  BreakfastRating : FLOAT <<NULLABLE>>
+  CreateAt : DATETIME
+  CustomerID : INT <<FK, NULLABLE>>
+  FirstName : NVARCHAR(50) <<NULLABLE>>
+  LastName : NVARCHAR(50) <<NULLABLE>>
+  PhoneNumber : NVARCHAR(50) <<NULLABLE>>
+  BookingID : INT <<FK>>
+}
+
+entity "Invoice" {
+  * InvoiceID : INT <<PK>>
+  --
+  BookingID : INT <<FK>>
+  CreateAt : DATETIME
+  TotalAmount : FLOAT
+  PaymentStatus : BIT
+}
+
+entity "Promotion" {
+  * PromotionID : INT <<PK>>
+  --
+  PromotionName : NVARCHAR(50)
+  DiscountPercent : FLOAT
+  StartDate : DATE
+  EndDate : DATE
+  Description : NVARCHAR(255)
+}
+
+entity "Role" {
+  * RoleID : INT <<PK>>
+  --
+  RoleName : NVARCHAR(50)
+  Description : NVARCHAR(255) <<NULLABLE>>
+}
+
+entity "Room" {
+  * RoomID : INT <<PK>>
+  --
+  RoomNumber : NVARCHAR(50)
+  Floor : INT
+  CurrentPrice : FLOAT
+  Description : NVARCHAR(MAX)
+  Capacity : INT
+  CreateAt : DATETIME
+  UpdateAt : DATETIME
+  Status : BIT
+  TypeID : INT <<FK>>
+}
+
+entity "RoomAmenity" {
+  * RoomAmenityID : INT <<PK>>
+  --
+  Quantity : INT
+  AmenityID : INT <<FK, NULLABLE>>
+  RoomID : INT <<FK, NULLABLE>>
+}
+
+entity "RoomImage" {
+  * ImageID : INT <<PK>>
+  --
+  RoomID : INT <<FK>>
+  Image : VARBINARY(MAX)
+  UploadAt : DATETIME
+}
+
+entity "RoomType" {
+  * TypeID : INT <<PK>>
+  --
+  TypeName : NVARCHAR(50)
+  Description : NVARCHAR(255)
+  BasePrice : FLOAT
+}
+
+entity "Service" {
+  * ServiceID : INT <<PK>>
+  --
+  ServiceName : NVARCHAR(50)
+  Description : NVARCHAR(255)
+}
+
+entity "User" {
+  * UserID : INT <<PK>>
+  --
+  Username : NVARCHAR(150)
+  Password : NVARCHAR(150)
+  Email : NVARCHAR(150)
+  Status : BIT
+  Image : VARBINARY(MAX) <<NULLABLE>>
+  PhoneNumber : NCHAR(50)
+}
+
+entity "Customer" {
+  * UserID : INT <<PK, FK>>
+  --
+  LoyaltyPoints : INT <<NULLABLE>>
+}
+
+entity "Receptionist" {
+  * UserID : INT <<PK, FK>>
+
+}
+
+entity "UserRole" {
+  * RoleID : INT <<FK>>
+  * UserID : INT <<FK>>
+}
+
+entity "WalkInGuest" {
+  * GuestID : BIGINT <<PK>>
+  --
+  Fullname : NVARCHAR(50)
+  ReceptionistID : INT <<FK>>
+  DoB : DATE
+}
+
+' Relationships
+' Inheritance relationships
+User ||--|| Customer : is a
+User ||--|| Receptionist : is a
+
+' Blog-related relationships
+BlogCategories ||--o{ BlogPost : categorizes
+BlogPost }o--|| User : authored by
+
+' Booking-related relationships
+Customer ||--o{ Booking : booked by
+Receptionist ||--o{ Booking : handled by
+Booking ||--o{ Invoice : generates
+WalkInGuest ||--o{ Booking : made by
+Booking ||--o{ BookingPromotion : uses
+Promotion ||--o{ BookingPromotion : applied to
+Booking ||--o{ BookingRoom : includes
+Room ||--o{ BookingRoom : assigned to
+Booking ||--o{ GuestFeedback : receives
+Customer ||--o{ GuestFeedback : provided by
+Booking ||--o{ BookingService : includes
+Service ||--o{ BookingService : provided by
+
+' Room-related relationships
+RoomType ||--o{ Room : is of
+Amenity ||--o{ RoomAmenity : provided by
+Room ||--o{ RoomAmenity : has
+Room ||--o{ RoomImage : depicted by
+
+' Role-related relationships
+Feature ||--o{ FeatureRole : has
+Role ||--o{ FeatureRole : has
+Role ||--o{ UserRole : has
+User ||--o{ UserRole : has
+
+' Walk-in guest relationship
+Receptionist ||--o{ WalkInGuest : assists
+
+@enduml

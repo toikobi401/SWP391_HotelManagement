@@ -1,36 +1,72 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import UserDBContext from '../../dal/UserDBContext.js';
-import path from 'path';
 
 const router = express.Router();
 
-// POST /login - handle login form submission
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    const userDB = new UserDBContext();
+    console.log('Login attempt:', { username });
+
     try {
+        const userDB = new UserDBContext();
         const user = await userDB.getUserByUsernameAndPassword(username, password);
+
         if (user) {
-            req.session.user = user;
-            // Redirect to home page (index.html) in Frontend
-            res.redirect('/index.html');
+            const token = jwt.sign(
+                { userId: user.UserID, username: user.Username },
+                process.env.JWT_SECRET || 'your-secret-key',
+                { expiresIn: '24h' }
+            );
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                maxAge: 24 * 60 * 60 * 1000
+            });
+
+            return res.json({
+                success: true,
+                user: {
+                    id: user.UserID,
+                    username: user.Username
+                }
+            });
         } else {
-            // Redirect back to login.html with error message
-            res.redirect('/login.html?error=' + encodeURIComponent('Tên đăng nhập hoặc mật khẩu không đúng.'));
+            return res.status(401).json({
+                success: false,
+                message: 'Tên đăng nhập hoặc mật khẩu không đúng'
+            });
         }
     } catch (err) {
-        res.redirect('/login.html?error=' + encodeURIComponent('Đã xảy ra lỗi khi đăng nhập.'));
+        console.error('Login error:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Đã xảy ra lỗi khi đăng nhập'
+        });
     }
 });
 
-// GET /login.html - serve the static login page
-router.get('/login.html', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'Frontend', 'login.html'));
-});
+router.get('/check-auth', (req, res) => {
+    const token = req.cookies.token;
+    
+    if (!token) {
+        return res.json({ authenticated: false });
+    }
 
-// GET /index.html - serve the static index page
-router.get('/index.html', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'Frontend', 'index.html'));
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        res.json({
+            authenticated: true,
+            user: {
+                id: decoded.userId,
+                username: decoded.username
+            }
+        });
+    } catch (err) {
+        res.json({ authenticated: false });
+    }
 });
 
 export default router;

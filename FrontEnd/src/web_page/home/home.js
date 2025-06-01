@@ -21,20 +21,31 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check authentication
         const checkAuth = async () => {
+            // Xóa localStorage khi khởi động
+            if (!localStorage.getItem('isLoggedIn')) {
+                return;
+            }
+
             try {
                 const response = await fetch('http://localhost:3000/api/check-auth', {
                     credentials: 'include'
                 });
-                if (!response.ok) {
-                    navigate('/login');
+                const data = await response.json();
+                
+                if (!data.authenticated) {
+                    // Xóa thông tin đăng nhập nếu không hợp lệ
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('user');
                 }
             } catch (err) {
-                navigate('/login');
+                console.error('Auth check failed:', err);
+                // Xóa thông tin đăng nhập nếu có lỗi
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('user');
             }
         };
-        
+
         checkAuth();
     }, [navigate]);
 
@@ -357,7 +368,7 @@ function Home() {
             </div>
           
             <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4"></div>
+              <div class="img-border-sm mb-4">
                 <a href="#" class="popup-vimeo image-play">
                   <img src={`${P2}`} alt="" class="img-fluid"/>
                 </a>
@@ -481,7 +492,7 @@ function Home() {
       </div>
     </div>
 </div>
-        
+</div>
      );
 }
 

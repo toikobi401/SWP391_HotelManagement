@@ -26,7 +26,7 @@ class User {
     }
 
     static fromDatabase(data) {
-        const user = new user();
+        const user = new User();
         Object.assign(user, {
             UserID: data.UserID,
             Username: data.Username,
@@ -34,7 +34,7 @@ class User {
             Email: data.Email,
             Status: data.Status,
             Image: data.Image,
-            PhoneNumber: data.PhoneNumber.trim(), // SQL Server nchar needs trimming
+            PhoneNumber: data.PhoneNumber ? data.PhoneNumber.trim() : '', // Thêm kiểm tra null
             RoleID: data.RoleID
         });
         return user;

@@ -2,13 +2,19 @@ import styles from './navbar.module.css'
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useRoleNavigation } from '../../../hooks/useRoleNavigation';
 import { toast } from 'react-toastify';
+import defaultAvatar from '../../../images/default-avatar.png';
+import axios from 'axios';
 
-function Navbar() {
+const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [avatarUrl, setAvatarUrl] = useState(defaultAvatar);
+    const [isAvatarLoading, setIsAvatarLoading] = useState(true);
     const navigate = useNavigate();
-    const { isLoggedIn, user, logout } = useAuth();
+    const { isLoggedIn, user, logout, hasRole } = useAuth();
+    const { navigateToSpecificRole, getAvailableRoutes } = useRoleNavigation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -17,6 +23,45 @@ function Navbar() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // Add fetchUserData function
+    const fetchUserData = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/api/profile/${userId}`, {
+                withCredentials: true
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+    };
+
+    // Update useEffect for avatar
+    useEffect(() => {
+        const loadUserAvatar = async () => {
+            if (user?.id) {
+                try {
+                    const userData = await fetchUserData(user.id);
+                    if (userData?.Image) {
+                        setAvatarUrl(`data:image/jpeg;base64,${userData.Image}`);
+                        console.log('Avatar loaded from user data');
+                    } else {
+                        console.log('No image in user data, using default avatar');
+                        setAvatarUrl(defaultAvatar);
+                    }
+                } catch (error) {
+                    console.error('Error loading avatar:', error);
+                    setAvatarUrl(defaultAvatar);
+                }
+            } else {
+                console.log('No user ID available');
+                setAvatarUrl(defaultAvatar);
+            }
+        };
+
+        loadUserAvatar();
+    }, [user?.id]);
 
     const handleLogout = async () => {
         try {
@@ -36,6 +81,46 @@ function Navbar() {
         }
     };
 
+    const handleRoleNavigation = (roleId) => {
+        const success = navigateToSpecificRole(roleId);
+        if (success) {
+            const roleNames = {
+                1: 'Quản lý',
+                2: 'Lễ tân',
+                3: 'Khách hàng'
+            };
+            toast.success(`Chuyển đến trang ${roleNames[roleId]}`);
+        }
+    };
+
+    const scrollToSection = (sectionId) => {
+        const section = document.querySelector(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    // ✅ THÊM DEBUG EFFECT CHO ROLES
+    useEffect(() => {
+        console.log('🔍 Navbar Debug:', {
+            isLoggedIn,
+            user: user ? {
+                UserID: user.UserID,
+                Username: user.Username,
+                roles: user.roles,
+                rolesLength: user.roles?.length || 0
+            } : 'No user',
+            hasRoleFunction: typeof hasRole,
+            hasRole1: hasRole ? hasRole(1) : 'hasRole not available',
+            hasRole2: hasRole ? hasRole(2) : 'hasRole not available',
+            hasRole3: hasRole ? hasRole(3) : 'hasRole not available'
+        });
+    }, [user, isLoggedIn, hasRole]);
+
+    console.log('Current user:', user);
+    console.log('User roles:', user?.roles);
+    console.log('Available routes:', getAvailableRoutes());
+
     return ( 
       <div className = {`${styles.navba}`} >
         <div className={`${styles.site_navbar_wrap} ${styles.js_site_navbar}`}>
@@ -45,7 +130,7 @@ function Navbar() {
             <div className="py-1">
               <div className="row align-items-center">
                 <div className={`col-2 ${styles.logo_page}`}>
-                  <h2 className={`mb-0 ${styles.site_logo}`}><Link to="/"> <a href="/">Holtel HUB</a> </Link></h2>
+                  <h2 className={`mb-0 ${styles.site_logo}`}><Link to="/"> <a href="/">Hotel HUB</a> </Link></h2>
                 </div>
                 <div className="col-10 d-flex justify-content-between align-items-center">
                   <nav className={`${styles.site_navigation} text-right`} role="navigation">
@@ -54,37 +139,85 @@ function Navbar() {
                       <div className="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" className="site-menu-toggle js-menu-toggle"><span className="icon-menu h3"></span></a></div>
                       <ul className={`${styles.site_menu} js-clone-nav d-none d-lg-block`}>
                       <Link to="/">
-
-                      
-                        <li className={`${styles.active}`}>
+                        {/* <li className={`${styles.active}`}>
                           <a href="#">Trang chủ</a>
-                        </li>
+                        </li> */}
                         </Link>
 
-                        <li className={`${styles.has_children}`}>
-                          <a href="#">Phòng </a>
-                          <i className={`fas fa-caret-down ${styles.icon_color_white}`}></i>
-                          <ul className={`${styles.dropdown} ${styles.arrow_top}`}>
-                            <li><a href="#">Hiện có</a></li>
-                            <li><a href="#">Phòng đơn</a></li>
-                            <li><a href="#">Phòng đôi</a></li>
-                            <li><a href="#">Phòng gia đình</a></li> 
-                            <li className={`${styles.has_children}`}>
-                            
-                              <a href="#"> <i className={`fas fa-caret-down ${styles.icon_color_white}`}></i>Dịch vụ</a>
-                              <ul className={`${styles.dropdown}`}>
-                                <li><a href="#">Phòng cao cấp</a></li>
-                                <li><a href="#">Tắm hơi</a></li>
-                                <li><a href="#">Ăn uống</a></li> 
-                                
-                              </ul>
+                        {/* Role-based Navigation - Enhanced */}
+                        {isLoggedIn && hasRole(1) && (
+                            <li>
+                                <button
+                                    className="nav-link btn btn-link"
+                                    onClick={() => handleRoleNavigation(1)}
+                                    style={{ 
+                                        color: '#ff6b6b', 
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none',
+                                        border: 'none',
+                                        background: 'none',
+                                        padding: '10px',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '.05em',
+                                        fontSize: '14px'
+                                    }}
+                                >
+                                    <i className="fas fa-shield-alt"></i> Nghiệp vụ quản lí
+                                </button>
                             </li>
-  
-                          </ul>
+                        )}
+
+                        {isLoggedIn && hasRole(2) && (
+                            <li>
+                                <button
+                                    className="nav-link btn btn-link"
+                                    onClick={() => handleRoleNavigation(2)}
+                                    style={{ 
+                                        color: '#ffd700', 
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none',
+                                        border: 'none',
+                                        background: 'none',
+                                        padding: '10px',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '.05em',
+                                        fontSize: '14px'
+                                    }}
+                                >
+                                    <i className="fas fa-concierge-bell"></i> Nghiệp vụ lễ tân
+                                </button>
+                            </li>
+                        )}
+
+                        {isLoggedIn && hasRole(3) && (
+                            <li>
+                                <button
+                                    className="nav-link btn btn-link"
+                                    onClick={() => handleRoleNavigation(3)}
+                                    style={{ 
+                                        color: '#4ecdc4', 
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none',
+                                        border: 'none',
+                                        background: 'none',
+                                        padding: '10px',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '.05em',
+                                        fontSize: '14px'
+                                    }}
+                                >
+                                    <i className="fas fa-user-circle"></i> Khách hàng
+                                </button>
+                            </li>
+                        )}
+                        
+                        <li>
+                            <Link to="/about">Thông tin</Link>
                         </li>
-                        <li><a href="#">Sự kiện</a></li>
-                        <li><a href="#">Thông tin</a></li>
-                        <li><a href="#">Liên hệ</a></li>
+                        <li>
+                            <Link to="/contact">Liên hệ</Link>
+                        </li>
+
                       </ul>
                     </div>
                   </nav>
@@ -100,17 +233,65 @@ function Navbar() {
                       </div>
                     ) : (
                       <div className={styles.user_section}>
-                        <span className={styles.username}>
-                            Xin chào, {user?.Username || user?.username}
-                        </span>
-                        <button 
-                            onClick={handleLogout}
-                            disabled={isLoading}
-                            className={styles.logout_button}
-                        >
-                            {isLoading ? 'Đang đăng xuất...' : 'Đăng xuất'}
-                        </button>
-                      </div>
+            <span className={styles.username}>
+                <span className={styles.username_text}>Xin chào,</span>{' '}
+                <span className={styles.fullname}>
+                    {user?.Fullname || user?.fullname || 'Khách'}
+                </span>
+                {/* Hiển thị tất cả role badges với navigation */}
+                {user?.roles?.map(role => (
+                    <button
+                        key={role.RoleID}
+                        className={`${styles.role_badge} btn btn-sm`}
+                        onClick={() => handleRoleNavigation(role.RoleID)}
+                        style={{
+                            cursor: 'pointer',
+                            border: 'none',
+                            margin: '0 2px',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.transform = 'scale(1.05)';
+                            e.target.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.transform = 'scale(1)';
+                            e.target.style.boxShadow = '0 2px 4px rgba(255, 215, 0, 0.3)';
+                        }}
+                        title={`Chuyển đến trang ${role.RoleName}`}
+                    >
+                        {role.RoleName}
+                    </button>
+                ))}
+            </span>
+            <Link to="/profile" className={styles.profile_link}>
+                <div className={styles.avatar_container}>
+                    <img 
+                        src={avatarUrl}
+                        alt={user?.Fullname || user?.fullname || 'Profile'} 
+                        className={`${styles.profile_avatar} ${isAvatarLoading ? styles.loading : ''}`}
+                        onLoad={() => setIsAvatarLoading(false)}
+                        onError={(e) => {
+                            console.log('Error loading profile image, falling back to default avatar');
+                            e.target.src = defaultAvatar;
+                            setIsAvatarLoading(false);
+                        }}
+                    />
+                    {isAvatarLoading && (
+                        <div className={styles.avatar_loader}>
+                            <i className="fas fa-spinner fa-spin"></i>
+                        </div>
+                    )}
+                </div>
+            </Link>
+    <button 
+        onClick={handleLogout}
+        disabled={isLoading}
+        className={styles.logout_button}
+    >
+        {isLoading ? 'Đang đăng xuất...' : 'Đăng xuất'}
+    </button>
+</div>
                     )}
                   </div>
                 </div>

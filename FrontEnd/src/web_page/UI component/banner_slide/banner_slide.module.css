@@ -10,7 +10,9 @@
 .banner_title{
   margin-top: 250px;
   z-index: 99;
-  color: #fff;  /* Add this line */
+  color: rgb(255, 255, 255) !important;
+  font-size: 3rem;
+  font-weight: 600;
 }
 
 
@@ -64,11 +66,20 @@
   font-family: 'Playfair Display', serif;
 }
 
+/* Add these more specific selectors to override the global styles */
+.site_blocks_cover h1,
+.site_blocks_cover h2,
+.site_blocks_cover .caption {
+    color: #fff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .caption {
-  color: #fff;  /* Add this line */
+  color: #fff !important;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .carousel_control_prev,

@@ -83,30 +83,7 @@ class BaseAuthenticationController {
         }
     }
 
-    // Example of how to use this base controller in child classes:
-    /*
-    class UserController extends BaseAuthenticationController {
-        initializeRoutes() {
-            // Apply authentication middleware to all routes in this controller
-            this.router.use(this.authenticate.bind(this));
-            
-            // Define routes
-            this.router.get('/profile', (req, res) => 
-                this.handleProtectedGet(req, res, this.getProfile));
-            
-            this.router.post('/update', (req, res) => 
-                this.handleProtectedPost(req, res, this.updateProfile));
-        }
-
-        async getProfile(req, res, user) {
-            // Handle get profile logic
-        }
-
-        async updateProfile(req, res, user) {
-            // Handle update profile logic
-        }
-    }
-    */
+ 
 
     // Get the router instance
     getRouter() {

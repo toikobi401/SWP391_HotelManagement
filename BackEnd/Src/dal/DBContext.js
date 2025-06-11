@@ -1,28 +1,47 @@
 import mssql from 'mssql';
 const { ConnectionPool } = mssql;
 
+let pool = null; 
+
 class DBContext {
     constructor() {
-        const config = {
-            user: 'dat',
-            password: '123',
-            server: 'localhost',
-            database: 'SWP391',
-            options: {
-                encrypt: true,
-                trustServerCertificate: true
-            }
-        };
+        if (!pool) {
+            const config = {
+                user: process.env.DB_USER || 'dat',
+                password: process.env.DB_PASSWORD || '123',
+                server: process.env.DB_HOST || 'localhost',
+                database: process.env.DB_NAME || 'SWP391',
+                options: {
+                    encrypt: false, // Thay đổi từ true thành false cho local SQL Server
+                    trustServerCertificate: true,
+                    enableArithAbort: true
+                },
+                pool: {
+                    max: 10,
+                    min: 0,
+                    idleTimeoutMillis: 30000
+                }
+            };
 
-        this.pool = new ConnectionPool(config)
-            .connect()
-            .then(pool => {
-                console.log('Database connected successfully!');
-                return pool;
-            })
-            .catch(err => {
-                throw new Error(' Database connection failed: ' + err.message);
+            console.log('Database config:', {
+                server: config.server,
+                database: config.database,
+                user: config.user
             });
+
+            pool = new ConnectionPool(config)
+                .connect()
+                .then(p => {
+                    console.log('✅ Database connected successfully!');
+                    return p;
+                })
+                .catch(err => {
+                    console.error('❌ Database connection failed:', err);
+                    throw new Error('Database connection failed: ' + err.message);
+                });
+        }
+
+        this.pool = pool;
     }
 
     async list() {

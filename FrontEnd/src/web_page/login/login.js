@@ -31,11 +31,63 @@ function Login() {
             });
 
             const data = await response.json();
+            
+            // ✅ THÊM DEBUG LOG CHO RESPONSE
+            console.log('🔍 Login Response Debug:', {
+                responseOk: response.ok,
+                dataSuccess: data.success,
+                userExists: !!data.user,
+                userRoles: data.user?.roles,
+                rolesLength: data.user?.roles?.length || 0,
+                fullResponse: data
+            });
 
             if (response.ok && data.success) {
-                login(data.user);
-                toast.success('Đăng nhập thành công!');
-                navigate('/', { replace: true });
+                // ✅ VALIDATE USER DATA TRƯỚC KHI LOGIN
+                if (!data.user) {
+                    throw new Error('No user data in response');
+                }
+
+                if (!data.user.roles || !Array.isArray(data.user.roles)) {
+                    console.warn('⚠️ Invalid roles in response, setting empty array');
+                    data.user.roles = [];
+                }
+
+                console.log('✅ About to call login with:', {
+                    UserID: data.user.UserID,
+                    roles: data.user.roles,
+                    rolesCount: data.user.roles.length
+                });
+
+                const loginSuccess = login(data.user);
+                
+                if (loginSuccess) {
+                    toast.success('Đăng nhập thành công!');
+                    
+                    // ✅ NAVIGATE DỰA TRÊN ROLE
+                    setTimeout(() => {
+                        if (data.user.roles && data.user.roles.length > 0) {
+                            const primaryRole = data.user.roles[0];
+                            console.log('🎯 Navigating based on role:', primaryRole);
+                            
+                            switch (primaryRole.RoleID) {
+                                case 1:
+                                    navigate('/manager', { replace: true });
+                                    break;
+                                case 2:
+                                    navigate('/receptionist', { replace: true });
+                                    break;
+                                case 3:
+                                    navigate('/customer', { replace: true });
+                                    break;
+                                default:
+                                    navigate('/', { replace: true });
+                            }
+                        } else {
+                            navigate('/', { replace: true });
+                        }
+                    }, 100);
+                }
             } else {
                 setError(data.message || 'Đăng nhập thất bại');
                 toast.error(data.message || 'Đăng nhập thất bại');
@@ -97,6 +149,15 @@ function Login() {
                                 onChange={handleChange}
                                 required 
                             />
+                            <div style={{ textAlign: 'right', marginTop: '8px' }}>
+                                <Link to="/forgot-password" style={{ 
+                                    color: '#667eea', 
+                                    fontSize: '14px', 
+                                    textDecoration: 'none' 
+                                }}>
+                                    Quên mật khẩu?
+                                </Link>
+                            </div>
                         </div>
                         <button 
                             type="submit" 
@@ -109,8 +170,11 @@ function Login() {
                         <div className={styles.social_login}>
                          
 
-                          <a href="#" className={`btn btn-block py-2 btn-google ${styles.gg} ${styles.mauchu}`}>
-                            <span> <img src={`${Google}`} /></span> Đăng nhập với Google
+                          <a 
+                            href="http://localhost:3000/api/auth/google" 
+                            className={`btn btn-block py-2 btn-google ${styles.gg} ${styles.mauchu}`}
+                          >
+                            <span><img src={Google} alt="Google" /></span> Đăng nhập với Google
                           </a>
 
                           

@@ -7,22 +7,27 @@ class User {
         this.Status = true;
         this.Image = null;
         this.PhoneNumber = '';
-        this.RoleID = 0;
-        this.roles = [];
+        this.Fullname = '';
+        this.roles = []; // Thêm array roles
     }
 
+    // Thêm methods để quản lý roles
     addRole(role) {
-        this.roles.push(role);
+        if (!this.roles.find(r => r.RoleID === role.RoleID)) {
+            this.roles.push(role);
+        }
     }
 
-    hasRole(roleName) {
-        return this.roles.some(role => role.RoleName === roleName);
+    removeRole(roleId) {
+        this.roles = this.roles.filter(r => r.RoleID !== roleId);
     }
 
-    hasFeature(featureURL) {
-        return this.roles.some(role => 
-            role.features.some(feature => feature.FeatureURL === featureURL)
-        );
+    hasRole(roleId) {
+        return this.roles.some(r => r.RoleID === roleId);
+    }
+
+    getRoleCount() {
+        return this.roles.length;
     }
 
     static fromDatabase(data) {
@@ -30,12 +35,13 @@ class User {
         Object.assign(user, {
             UserID: data.UserID,
             Username: data.Username,
-            Password: data.Password,
             Email: data.Email,
             Status: data.Status,
             Image: data.Image,
-            PhoneNumber: data.PhoneNumber ? data.PhoneNumber.trim() : '', // Thêm kiểm tra null
-            RoleID: data.RoleID
+            PhoneNumber: data.PhoneNumber ? data.PhoneNumber.trim() : '',
+            Fullname: data.Fullname || '',
+            Password: data.Password || '',
+            roles: [] // Khởi tạo roles array rỗng
         });
         return user;
     }
@@ -47,17 +53,15 @@ class User {
             Email: this.Email,
             Status: this.Status,
             PhoneNumber: this.PhoneNumber,
-            RoleID: this.RoleID,
-            roles: this.roles
+            Fullname: this.Fullname,
+            Image: this.Image,
+            roles: this.roles, // Thêm roles vào JSON
+            roleCount: this.getRoleCount()
         };
     }
 
     isActive() {
         return this.Status;
-    }
-
-    hasAnyRole(roleNames) {
-        return roleNames.some(roleName => this.hasRole(roleName));
     }
 }
 

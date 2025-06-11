@@ -4,15 +4,15 @@ function Footer() {
     return (
         <footer className="footer">
             <div className="container footer__content">
-                <div className="row footer-help">
-                    <div className="col-3 m-4 c-6">
+                <div className="row footer-sections">
+                    <div className="col-md-3 col-sm-6 footer-column">
                         <h3 className="footer__heading">Thông tin liên hệ</h3>
                         <ul className="footer-list">
-                            <li className="footer-item">
+                            {/* <li className="footer-item">
                                 <a href="" className="footer-item__link">
                                     Trung tâm hỗ trợ
                                 </a>
-                            </li>
+                            </li> */}
                             <li className="footer-item">
                                 <a href="" className="footer-item__link">
                                     Đặt phòng trực tuyến
@@ -25,7 +25,7 @@ function Footer() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col-3 m-4 c-6">
+                    <div className="col-md-3 col-sm-6 footer-column">
                         <h3 className="footer__heading">Về chúng tôi</h3>
                         <ul className="footer-list">
                             <li className="footer-item">
@@ -45,7 +45,7 @@ function Footer() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col-3 m-4 c-6">
+                    <div className="col-md-3 col-sm-6 footer-column">
                         <h3 className="footer__heading">Dịch vụ</h3>
                         <ul className="footer-list">
                             <li className="footer-item">
@@ -65,7 +65,7 @@ function Footer() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col-3 m-4 c-6">
+                    {/* <div className="col-md-3 col-sm-6 footer-column">
                         <h3 className="footer__heading">Kết nối với chúng tôi</h3>
                         <ul className="footer-list">
                             <li className="footer-item">
@@ -87,7 +87,7 @@ function Footer() {
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
@@ -96,10 +96,10 @@ function Footer() {
                     <div className="row">
                         <div className="footer-bottom col c-12">
                             <ul className="footer-bottom-list">
-                                <li className="footer-bototm-item col c-3">
+                                <li className="footer-bototm-item">
                                     <a className="footer-bottom-link" href="">ĐIỀU KHOẢN DỊCH VỤ</a>
                                 </li>
-                                <li className="footer-bototm-item col c-3">
+                                <li className="footer-bototm-item">
                                     <a className="footer-bottom-link" href="">CHÍNH SÁCH BẢO MẬT</a>
                                 </li>
                             </ul>

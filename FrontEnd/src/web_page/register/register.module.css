@@ -1,5 +1,3 @@
-
-
 .register_bg {
     min-height: 100vh;
     max-width: 100vw;
@@ -71,4 +69,72 @@
     width: 30px;
     height: 30px;
     margin-right: 10px;
+}
+
+.required {
+    color: red;
+    margin-left: 4px;
+}
+
+.error {
+    border-color: #dc3545 !important;
+}
+
+.error_message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.form_group {
+    margin-bottom: 1rem;
+}
+
+.social_register {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.google_btn {
+    width: 100%;
+    height: 42px;
+    background-color: #4285f4;
+    border-radius: 2px;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: none;
+    transition: box-shadow .3s ease;
+}
+
+.google_btn:hover {
+    box-shadow: 0 0 6px #4285f4;
+}
+
+.google_btn:active {
+    background: #1669F2;
+}
+
+.google_icon_wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+}
+
+.google_icon {
+    width: 18px;
+    height: 18px;
+}
+
+.btn_text {
+    color: white;
+    font-size: 14px;
+    margin: 0 auto;
+    padding: 0;
 }

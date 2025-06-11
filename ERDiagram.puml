@@ -1,244 +1,247 @@
-@startuml
-' Enable Chen's ER diagram notation
-skinparam monochrome true
-skinparam {
-  shadowing false
-  defaultFontName Arial
-  nodeSep 60
-  rankSep 60
-  dpi 150
+@startuml Hotel Management ERD
+!define ENTITY class
+!define RELATIONSHIP -->
+
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor Black
+    FontSize 10
 }
 
-' Entities
-entity "Amenity" {
-  * AmenityID : INT <<PK>>
-  --
-  AmenityName : NVARCHAR(50)
-  Description : NVARCHAR(150)
+skinparam arrow {
+    Color Black
+    FontSize 8
 }
 
-entity "BlogCategories" {
-  * CategoryID : INT <<PK>>
-  --
-  CategoryName : NVARCHAR(50)
-  Description : NVARCHAR(255)
+entity User {
+    + UserID : int <<PK>>
+    --
+    Username : varchar
+    Password : varchar
+    Email : varchar
+    FullName : varchar
+    Phone : varchar
+    Address : varchar
+    DateOfBirth : date
+    Gender : varchar
+    Avatar : varchar
+    IsActive : bit
+    CreatedAt : datetime
+    UpdatedAt : datetime
+    RoleID : int <<FK>>
 }
 
-entity "BlogPost" {
-  * PostID : INT <<PK>>
-  --
-  Title : NVARCHAR(255)
-  Content : NVARCHAR(MAX)
-  AuthorID : INT <<FK>>
-  CategoryID : INT <<FK>>
-  Image : VARBINARY(MAX)
-  CreateAt : DATETIME
-  UpdateAt : DATETIME
-  Status : BIT
+entity Role {
+    + RoleID : int <<PK>>
+    --
+    RoleName : varchar
+    Description : varchar
 }
 
-entity "Booking" {
-  * BookingID : INT <<PK>>
-  --
-  CustomerID : INT <<FK, NULLABLE>>
-  ReceptionistID : INT <<FK, NULLABLE>>
-  NumberOfGuest : INT
-  SpecialRequest : NVARCHAR(250) <<NULLABLE>>
-  BookingType : BIT
-  BookingAt : DATETIME
-  GuestID : BIGINT <<FK, NULLABLE>>
+entity Customer {
+    + CustomerID : int <<PK,FK>>
+    --
+    LoyaltyPoints : int
+    MembershipLevel : varchar
 }
 
-entity "BookingPromotion" {
-  * BookingPromotionID : INT <<PK>>
-  --
-  PromotionID : INT <<FK>>
-  BookingID : INT <<FK>>
+entity RoomType {
+    + TypeId : int <<PK>>
+    --
+    TypeName : varchar
+    Description : text
+    BasePrice : decimal
+    MaxOccupancy : int
+    BedType : varchar
+    RoomSize : float
+    IsActive : bit
 }
 
-entity "BookingRoom" {
-  * BookingRoomID : INT <<PK>>
-  --
-  BookingID : INT <<FK>>
-  RoomID : INT <<FK>>
-  CheckInAt : DATETIME
-  CheckOutAt : DATETIME
+entity Room {
+    + RoomID : int <<PK>>
+    --
+    RoomNumber : varchar
+    Floor : int
+    Status : varchar
+    Description : text
+    TypeId : int <<FK>>
+    IsActive : bit
+    CreatedAt : datetime
+    UpdatedAt : datetime
 }
 
-entity "BookingService" {
-  * BookingID : INT <<FK>>
-  * ServiceID : INT <<FK>>
+entity Amenity {
+    + AmenityID : int <<PK>>
+    --
+    AmenityName : varchar
+    Description : varchar
+    Icon : varchar
+    IsActive : bit
 }
 
-entity "Feature" {
-  * FeatureID : INT <<PK>>
-  --
-  FeatureURL : NVARCHAR(50)
+entity RoomAmenity {
+    + RoomAmenityID : int <<PK>>
+    --
+    AmenityID : int <<FK>>
+    RoomID : int <<FK>>
 }
 
-entity "FeatureRole" {
-  * RoleID : INT <<FK>>
-  * FeatureID : INT <<FK>>
+entity RoomImage {
+    + ImageID : int <<PK>>
+    --
+    RoomID : int <<FK>>
+    ImageURL : varchar
+    Caption : varchar
+    IsPrimary : bit
+    UploadedAt : datetime
 }
 
-entity "GuestFeedback" {
-  * FeedbackID : INT <<PK>>
-  --
-  OverallRating : FLOAT
-  ServiceRating : FLOAT
-  CleanlinessRating : FLOAT
-  LocationRating : FLOAT <<NULLABLE>>
-  BreakfastRating : FLOAT <<NULLABLE>>
-  CreateAt : DATETIME
-  CustomerID : INT <<FK, NULLABLE>>
-  FirstName : NVARCHAR(50) <<NULLABLE>>
-  LastName : NVARCHAR(50) <<NULLABLE>>
-  PhoneNumber : NVARCHAR(50) <<NULLABLE>>
-  BookingID : INT <<FK>>
+entity Booking {
+    + BookingID : int <<PK>>
+    --
+    CustomerID : int <<FK>>
+    BookingDate : datetime
+    CheckInDate : date
+    CheckOutDate : date
+    TotalAmount : decimal
+    Status : varchar
+    SpecialRequests : text
+    CreatedAt : datetime
+    UpdatedAt : datetime
 }
 
-entity "Invoice" {
-  * InvoiceID : INT <<PK>>
-  --
-  BookingID : INT <<FK>>
-  CreateAt : DATETIME
-  TotalAmount : FLOAT
-  PaymentStatus : BIT
+entity BookingRoom {
+    + BookingRoomID : int <<PK>>
+    --
+    BookingID : int <<FK>>
+    RoomID : int <<FK>>
+    CheckInDate : date
+    CheckOutDate : date
+    RoomPrice : decimal
+    Status : varchar
 }
 
-entity "Promotion" {
-  * PromotionID : INT <<PK>>
-  --
-  PromotionName : NVARCHAR(50)
-  DiscountPercent : FLOAT
-  StartDate : DATE
-  EndDate : DATE
-  Description : NVARCHAR(255)
+entity Service {
+    + ServiceID : int <<PK>>
+    --
+    ServiceName : varchar
+    Description : text
+    Price : decimal
+    Category : varchar
+    IsActive : bit
+    CreatedAt : datetime
 }
 
-entity "Role" {
-  * RoleID : INT <<PK>>
-  --
-  RoleName : NVARCHAR(50)
-  Description : NVARCHAR(255) <<NULLABLE>>
+entity BookingService {
+    + BookingID : int <<PK,FK>>
+    + ServiceID : int <<PK,FK>>
+    --
+    Quantity : int
+    UnitPrice : decimal
+    TotalPrice : decimal
+    UpdateAt : datetime
 }
 
-entity "Room" {
-  * RoomID : INT <<PK>>
-  --
-  RoomNumber : NVARCHAR(50)
-  Floor : INT
-  CurrentPrice : FLOAT
-  Description : NVARCHAR(MAX)
-  Capacity : INT
-  CreateAt : DATETIME
-  UpdateAt : DATETIME
-  Status : BIT
-  TypeID : INT <<FK>>
+entity Promotion {
+    + PromotionID : int <<PK>>
+    --
+    PromotionCode : varchar
+    PromotionName : varchar
+    Description : text
+    DiscountType : varchar
+    DiscountValue : decimal
+    MinBookingAmount : decimal
+    MaxDiscount : decimal
+    StartDate : date
+    EndDate : date
+    IsActive : bit
+    UsageLimit : int
+    UsedCount : int
 }
 
-entity "RoomAmenity" {
-  * RoomAmenityID : INT <<PK>>
-  --
-  Quantity : INT
-  AmenityID : INT <<FK, NULLABLE>>
-  RoomID : INT <<FK, NULLABLE>>
+entity BookingPromotion {
+    + BookingPromotionID : int <<PK>>
+    --
+    BookingID : int <<FK>>
+    PromotionID : int <<FK>>
+    DiscountAmount : decimal
+    AppliedAt : datetime
 }
 
-entity "RoomImage" {
-  * ImageID : INT <<PK>>
-  --
-  RoomID : INT <<FK>>
-  Image : VARBINARY(MAX)
-  UploadAt : DATETIME
+entity Invoice {
+    + InvoiceID : int <<PK>>
+    --
+    BookingID : int <<FK>>
+    InvoiceNumber : varchar
+    IssueDate : datetime
+    DueDate : datetime
+    TotalAmount : decimal
+    TaxAmount : decimal
+    DiscountAmount : decimal
+    NetAmount : decimal
+    Status : varchar
+    PaymentMethod : varchar
+    PaidAt : datetime
 }
 
-entity "RoomType" {
-  * TypeID : INT <<PK>>
-  --
-  TypeName : NVARCHAR(50)
-  Description : NVARCHAR(255)
-  BasePrice : FLOAT
+entity GuestFeedback {
+    + FeedbackID : int <<PK>>
+    --
+    BookingID : int <<FK>>
+    CustomerID : int <<FK>>
+    Rating : int
+    Comment : text
+    CreatedAt : datetime
+    IsApproved : bit
 }
 
-entity "Service" {
-  * ServiceID : INT <<PK>>
-  --
-  ServiceName : NVARCHAR(50)
-  Description : NVARCHAR(255)
+entity BlogCategories {
+    + CategoryID : int <<PK>>
+    --
+    CategoryName : varchar
+    Description : text
+    IsActive : bit
 }
 
-entity "User" {
-  * UserID : INT <<PK>>
-  --
-  Username : NVARCHAR(150)
-  Password : NVARCHAR(150)
-  Email : NVARCHAR(150)
-  Status : BIT
-  Image : VARBINARY(MAX) <<NULLABLE>>
-  PhoneNumber : NCHAR(50)
-}
-
-entity "Customer" {
-  * UserID : INT <<PK, FK>>
-  --
-  LoyaltyPoints : INT <<NULLABLE>>
-}
-
-entity "Receptionist" {
-  * UserID : INT <<PK, FK>>
-
-}
-
-entity "UserRole" {
-  * RoleID : INT <<FK>>
-  * UserID : INT <<FK>>
-}
-
-entity "WalkInGuest" {
-  * GuestID : BIGINT <<PK>>
-  --
-  Fullname : NVARCHAR(50)
-  ReceptionistID : INT <<FK>>
-  DoB : DATE
+entity BlogPost {
+    + PostID : int <<PK>>
+    --
+    Title : varchar
+    Content : text
+    Summary : varchar
+    AuthorID : int <<FK>>
+    CategoryID : int <<FK>>
+    PublishDate : datetime
+    Status : varchar
+    ViewCount : int
+    FeaturedImage : varchar
+    Tags : varchar
 }
 
 ' Relationships
-' Inheritance relationships
-User ||--|| Customer : is a
-User ||--|| Receptionist : is a
+User ||--o{ Customer : "is a"
+User }o--|| Role : "has"
+User ||--o{ BlogPost : "writes"
 
-' Blog-related relationships
-BlogCategories ||--o{ BlogPost : categorizes
-BlogPost }o--|| User : authored by
+Customer ||--o{ Booking : "makes"
+Customer ||--o{ GuestFeedback : "gives"
 
-' Booking-related relationships
-Customer ||--o{ Booking : booked by
-Receptionist ||--o{ Booking : handled by
-Booking ||--o{ Invoice : generates
-WalkInGuest ||--o{ Booking : made by
-Booking ||--o{ BookingPromotion : uses
-Promotion ||--o{ BookingPromotion : applied to
-Booking ||--o{ BookingRoom : includes
-Room ||--o{ BookingRoom : assigned to
-Booking ||--o{ GuestFeedback : receives
-Customer ||--o{ GuestFeedback : provided by
-Booking ||--o{ BookingService : includes
-Service ||--o{ BookingService : provided by
+RoomType ||--o{ Room : "has"
+Room ||--o{ RoomAmenity : "has"
+Room ||--o{ RoomImage : "has"
+Room ||--o{ BookingRoom : "booked in"
 
-' Room-related relationships
-RoomType ||--o{ Room : is of
-Amenity ||--o{ RoomAmenity : provided by
-Room ||--o{ RoomAmenity : has
-Room ||--o{ RoomImage : depicted by
+Amenity ||--o{ RoomAmenity : "available in"
 
-' Role-related relationships
-Feature ||--o{ FeatureRole : has
-Role ||--o{ FeatureRole : has
-Role ||--o{ UserRole : has
-User ||--o{ UserRole : has
+Booking ||--o{ BookingRoom : "includes"
+Booking ||--o{ BookingService : "includes"
+Booking ||--o{ BookingPromotion : "uses"
+Booking ||--|| Invoice : "generates"
+Booking ||--o{ GuestFeedback : "receives"
 
-' Walk-in guest relationship
-Receptionist ||--o{ WalkInGuest : assists
+Service ||--o{ BookingService : "used in"
+Promotion ||--o{ BookingPromotion : "applied to"
+
+BlogCategories ||--o{ BlogPost : "contains"
 
 @enduml

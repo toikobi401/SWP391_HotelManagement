@@ -5,45 +5,74 @@ import UserDBContext from '../../dal/UserDBContext.js';
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    console.log('Login attempt:', { username });
-
     try {
+        const { username, password } = req.body;
+
+        // Validate input
+        if (!username || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Tên đăng nhập và mật khẩu không được để trống'
+            });
+        }
+
+        // Get user with roles
         const userDB = new UserDBContext();
         const user = await userDB.getUserByUsernameAndPassword(username, password);
-
-        if (user) {
-            const token = jwt.sign(
-                { userId: user.UserID, username: user.Username },
-                process.env.JWT_SECRET || 'your-secret-key',
-                { expiresIn: '24h' }
-            );
-
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                maxAge: 24 * 60 * 60 * 1000
-            });
-
-            return res.json({
-                success: true,
-                user: {
-                    id: user.UserID,
-                    username: user.Username
-                }
-            });
-        } else {
+        
+        if (!user) {
             return res.status(401).json({
                 success: false,
                 message: 'Tên đăng nhập hoặc mật khẩu không đúng'
             });
         }
-    } catch (err) {
-        console.error('Login error:', err);
-        return res.status(500).json({
+
+        if (!user.Status) {
+            return res.status(401).json({
+                success: false,
+                message: 'Tài khoản đã bị khóa'
+            });
+        }
+
+        // ✅ LẤY USER VỚI ROLES
+        const userWithRoles = await userDB.getUserWithRoles(user.UserID);
+        
+        if (!userWithRoles) {
+            return res.status(500).json({
+                success: false,
+                message: 'Lỗi lấy thông tin user'
+            });
+        }
+
+        // ✅ SAVE SESSION VỚI FULL USER DATA
+        req.session.user = {
+            UserID: userWithRoles.UserID,
+            Username: userWithRoles.Username,
+            Email: userWithRoles.Email,
+            Fullname: userWithRoles.Fullname,
+            PhoneNumber: userWithRoles.PhoneNumber,
+            Status: userWithRoles.Status,
+            roles: userWithRoles.roles // ✅ QUAN TRỌNG: Lưu roles vào session
+        };
+
+        console.log('✅ Login successful with roles:', {
+            UserID: userWithRoles.UserID,
+            Username: userWithRoles.Username,
+            rolesCount: userWithRoles.roles?.length || 0,
+            roles: userWithRoles.roles
+        });
+
+        res.json({
+            success: true,
+            message: 'Đăng nhập thành công',
+            user: userWithRoles.toJSON() // ✅ TRẢ VỀ FULL USER DATA VỚI ROLES
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({
             success: false,
-            message: 'Đã xảy ra lỗi khi đăng nhập'
+            message: 'Lỗi server khi đăng nhập'
         });
     }
 });
@@ -61,7 +90,10 @@ router.get('/check-auth', (req, res) => {
             authenticated: true,
             user: {
                 id: decoded.userId,
-                username: decoded.username
+                username: decoded.username,
+                email: decoded.email,        // Add email
+                fullname: decoded.fullname,  // Add fullname
+                phoneNumber: decoded.phoneNumber // Add phone number
             }
         });
     } catch (err) {

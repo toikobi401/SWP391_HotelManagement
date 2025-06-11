@@ -1,0 +1,512 @@
+/* Container chính - Cập nhật để hiển thị 5 cột ngang */
+.bookingFormContainer {
+    max-width: 1600px; /* Tăng từ 1200px lên 1600px */
+    width: 100%; /* Đảm bảo sử dụng full width */
+    margin: 2rem auto;
+    padding: 3rem 2rem; /* Giảm padding ngang */
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.08),
+        0 4px 20px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+.bookingFormContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px 20px 0 0;
+}
+
+/* Title */
+.formTitle {
+    text-align: center;
+    color: #2d3748;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+.formTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+}
+
+/* Form */
+.bookingForm {
+    margin-top: 3rem;
+}
+
+/* Grid layout - Tối ưu cho 5 cột ngang */
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(280px, 1fr)); /* Tăng min-width từ 250px lên 280px */
+    gap: 1.25rem; /* Giảm gap để tiết kiệm không gian */
+    margin-bottom: 3rem;
+    overflow-x: auto; /* Cho phép scroll ngang nếu cần */
+    padding: 0.25rem; /* Padding nhỏ để tránh cut shadow */
+}
+
+/* Form sections - Tối ưu kích thước */
+.formSection {
+    background: #ffffff;
+    padding: 1.75rem 1.5rem; /* Giảm padding */
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.05),
+        0 1px 4px rgba(0, 0, 0, 0.02);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-width: 280px; /* Tăng min-width */
+    max-width: 320px; /* Thêm max-width để kiểm soát kích thước */
+    height: fit-content; /* Đảm bảo height tự động */
+}
+
+.formSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.formSection:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.1),
+        0 4px 20px rgba(0, 0, 0, 0.05);
+    border-color: #cbd5e0;
+}
+
+.formSection:hover::before {
+    transform: scaleX(1);
+}
+
+.formSection h3 {
+    color: #2d3748;
+    margin-bottom: 1.25rem; /* Giảm margin */
+    font-size: 1.1rem; /* Giảm font size */
+    font-weight: 600;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f7fafc;
+    position: relative;
+    text-align: center;
+}
+
+.formSection h3::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 1px;
+}
+
+/* Fields - Tối ưu cho layout ngang */
+.field {
+    margin-bottom: 1.25rem; /* Giảm margin */
+    position: relative;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 0.85rem; /* Giảm font size */
+    letter-spacing: 0.025em;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 0.75rem 1rem; /* Giảm padding */
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.9rem; /* Giảm font size */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #f8fafc;
+    color: #2d3748;
+    position: relative;
+    z-index: 1;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 
+        0 0 0 3px rgba(102, 126, 234, 0.1),
+        0 4px 20px rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 80px; /* Giảm min-height */
+    line-height: 1.6;
+}
+
+/* Services section - Tối ưu cho layout ngang */
+.servicesContainer {
+    max-height: 350px; /* Giảm max-height */
+    overflow-y: auto;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0.75rem; /* Giảm padding */
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.serviceItem {
+    margin-bottom: 0.75rem; /* Giảm margin */
+    padding: 0.75rem; /* Giảm padding */
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.serviceItem::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.serviceItem:hover {
+    border-color: #cbd5e0;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.08),
+        0 2px 10px rgba(0, 0, 0, 0.04);
+    transform: translateY(-3px);
+}
+
+.serviceItem:hover::before {
+    opacity: 1;
+}
+
+.serviceItem:last-child {
+    margin-bottom: 0;
+}
+
+.serviceLabel {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0;
+    font-weight: normal;
+    position: relative;
+    z-index: 1;
+}
+
+.serviceCheckbox {
+    margin-right: 0.75rem;
+    margin-top: 0.25rem;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: #667eea;
+    border-radius: 4px;
+}
+
+.serviceDetails {
+    flex: 1;
+}
+
+.serviceName {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.4rem; /* Giảm margin */
+    gap: 0.2rem; /* Giảm gap */
+}
+
+.serviceName strong {
+    color: #2d3748;
+    font-size: 0.85rem; /* Giảm font size */
+    font-weight: 600;
+}
+
+.servicePrice {
+    color: #38a169;
+    font-weight: 700;
+    font-size: 0.8rem; /* Giảm font size */
+    background: linear-gradient(135deg, #68d391 0%, #38a169 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.serviceDescription {
+    color: #718096;
+    font-size: 0.75rem; /* Giảm font size */
+    line-height: 1.4;
+}
+
+/* Checked state styling */
+.serviceItem:has(.serviceCheckbox:checked) {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    box-shadow: 
+        0 8px 30px rgba(102, 126, 234, 0.2),
+        0 2px 10px rgba(102, 126, 234, 0.1);
+}
+
+.serviceItem:has(.serviceCheckbox:checked) .serviceName strong {
+    color: #667eea;
+}
+
+.serviceItem:has(.serviceCheckbox:checked) .servicePrice {
+    color: #2d3748;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Service total - Tối ưu cho layout ngang */
+.serviceTotal {
+    margin-top: 0.75rem; /* Giảm margin */
+    padding: 1.25rem; /* Giảm padding */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 
+        0 8px 30px rgba(102, 126, 234, 0.3),
+        0 2px 10px rgba(102, 126, 234, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.serviceTotal::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+    transform: rotate(45deg);
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.serviceTotal strong {
+    color: #ffffff;
+    font-size: 1rem; /* Giảm font size */
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.serviceCount {
+    display: block;
+    font-size: 0.75rem; /* Giảm font size */
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* Submit section */
+.submitSection {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #f7fafc;
+}
+
+.submitButton {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1.25rem 3rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 8px 30px rgba(102, 126, 234, 0.3),
+        0 2px 10px rgba(102, 126, 234, 0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.025em;
+    min-width: 200px;
+}
+
+.submitButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.submitButton:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 12px 40px rgba(102, 126, 234, 0.4),
+        0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submitButton:hover::before {
+    left: 100%;
+}
+
+.submitButton:active {
+    transform: translateY(-1px) scale(1.01);
+}
+
+/* Responsive design tối ưu */
+@media (max-width: 1700px) {
+    .bookingFormContainer {
+        max-width: 1500px;
+        padding: 2.5rem 1.5rem;
+    }
+    
+    .formGrid {
+        grid-template-columns: repeat(5, minmax(260px, 1fr));
+        gap: 1rem;
+    }
+    
+    .formSection {
+        min-width: 260px;
+        max-width: 300px;
+        padding: 1.5rem 1.25rem;
+    }
+}
+
+@media (max-width: 1500px) {
+    .bookingFormContainer {
+        max-width: 1400px;
+        padding: 2rem 1rem;
+    }
+    
+    .formGrid {
+        grid-template-columns: repeat(5, minmax(240px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .formSection {
+        min-width: 240px;
+        max-width: 280px;
+        padding: 1.25rem 1rem;
+    }
+}
+
+@media (max-width: 1300px) {
+    .formGrid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, auto);
+    }
+    
+    .formSection:nth-child(4) {
+        grid-column: 1 / span 2;
+    }
+    
+    .formSection:nth-child(5) {
+        grid-column: 3;
+    }
+    
+    .formSection {
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .bookingFormContainer {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-width: none;
+    }
+    
+    .formGrid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 1.5rem;
+    }
+    
+    .formSection {
+        min-width: auto;
+        max-width: none;
+        padding: 1.5rem;
+    }
+    
+    .formSection:nth-child(4),
+    .formSection:nth-child(5) {
+        grid-column: auto;
+    }
+    
+    .formTitle {
+        font-size: 2rem;
+    }
+    
+    .servicesContainer {
+        max-height: 300px;
+    }
+    
+    .serviceItem {
+        padding: 1rem;
+    }
+    
+    .serviceName {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .submitButton {
+        padding: 1rem 2.5rem;
+        font-size: 1rem;
+        min-width: 180px;
+    }
+}
+
+/* ...existing styles... */

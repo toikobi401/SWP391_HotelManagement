@@ -1,124 +1,186 @@
-
 .footer {
-    border-top: 4px solid var(--primary-color);
-    padding-top: 20px;
-    background-color: var(--white-color);
-    max-width: 100%;
-    margin-top: 30px;
+    background-color: #2d4052;
+    color: #fff;
+    padding: 60px 0 0;
+    margin-top: 50px;
+    position: relative;
+}
+
+.footer__content {
+    position: relative;
+    z-index: 1;
 }
 
 .footer__heading {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    font-weight: 600;
     text-transform: uppercase;
-    color: var(--text-color);
+    color: #fff;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 10px;
+        min-height: 45px; /* Ensure consistent height */
+    display: flex;
+    align-items: center;
+}
+
+.footer__heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background: #f23a2e;
 }
 
 .footer-list {
     padding-left: 0;
     list-style: none;
+    margin: 0;
+}
+
+.footer-item {
+    margin-bottom: 12px;
 }
 
 .footer-item__link {
-    display: flex;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-size: 1.2rem;
-    color: #737373;
-    padding: 3px 0;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: flex;
     align-items: center;
 }
 
 .footer-item__link:hover {
-    color: var(--primary-color);
+    color: #f23a2e;
+    transform: translateX(5px);
 }
 
 .footer-item-icon {
-    font-size: 1.6rem;
-    margin: -1px 5px 0 0;
-}
-
-.footer__download {
-    display: flex;
-}
-
-.footer__dowanload-qr {
-    width: 80px;
-    object-fit: contain;
-    border: 1px solid var(--border-color);
-}
-
-.footer__download-app {
-    margin-left: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.footer__download-app-img {
-    height: 16px;
-}
-
-.footer__download-app-link {
-    text-decoration: none;
-    color: transparent;
+    font-size: 1.2rem;
+    margin-right: 10px;
+    width: 20px;
 }
 
 .footer-infor {
-    background-color: #f5f5f5;
-    padding: 20px 0;
+    background-color: #243444;
+    padding: 30px 0;
     margin-top: 50px;
 }
 
-
-
-.footer-bottom {
-    position: relative;
-}
-
 .footer-bottom-list {
-    list-style: none;
     display: flex;
     justify-content: center;
-    padding-left: 0;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+    gap: 30px;
 }
 
 .footer-bototm-item {
-    padding: 0 20px;
-    border-right: 1px solid #e0e0e0;
-    text-align: center;
+    position: relative;
+    padding: 0 15px;
+}
+
+.footer-bototm-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 15px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .footer-bottom-link {
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-size: 1.2rem;
-    color: #737373;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
-
-.footer-info-img {
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 128px;
-    height: 45px;
-    cursor: pointer;
+.footer-bottom-link:hover {
+    color: #f23a2e;
 }
-
-
 
 .footer-bottom-description {
-    margin-top: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.2rem;
-    color: #737373;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
 }
 
 .footer-name {
-    margin: -16px 0 20px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #fff;
 }
 
 .footer-description {
-    margin: 5px 0;
+    display: block;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+/* New footer sections styles */
+.footer-sections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 0;
+}
+
+.footer-column {
+    padding: 0 15px;
+    margin-bottom: 30px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .footer {
+        padding-top: 40px;
+    }
+
+    .footer-help > div {
+        margin-bottom: 30px;
+    }
+
+    .footer-bottom-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-bototm-item {
+        margin-bottom: 15px;
+    }
+
+    .footer-bototm-item:not(:last-child)::after {
+        display: none;
+    }
+
+    .footer-column {
+        width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-column {
+        width: 100%;
+    }
+    
+    .footer__heading {
+        min-height: auto;
+    }
+
+    .footer-bottom-list {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
 }

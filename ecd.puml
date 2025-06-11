@@ -1,0 +1,321 @@
+@startuml Entity_Class_Diagram
+
+!define ENTITY class
+!define ENUM enum
+
+' === CORE ENTITIES ===
+
+ENTITY User {
+    + UserID: int
+    + Username: string
+    + Password: string
+    + Email: string
+    + Status: boolean
+    + Image: binary
+    + PhoneNumber: string
+    + Fullname: string
+    + roles: Role[]
+    --
+    + addRole(role: Role): void
+    + removeRole(roleId: int): void
+    + hasRole(roleId: int): boolean
+    + getRoleCount(): int
+    + isActive(): boolean
+    + toJSON(): object
+    + {static} fromDatabase(data: object): User
+}
+
+ENTITY Role {
+    + RoleID: int
+    + RoleName: string
+    + Description: string
+    + users: User[]
+    + features: Feature[]
+    --
+    + addUser(user: User): void
+    + removeUser(userId: int): void
+    + hasUser(userId: int): boolean
+    + getUserCount(): int
+    + addFeature(feature: Feature): void
+    + removeFeature(featureId: int): void
+    + hasFeature(featureId: int): boolean
+    + getFeatureCount(): int
+    + toJSON(): object
+    + {static} fromDatabase(data: object): Role
+}
+
+ENTITY Feature {
+    + FeatureID: int
+    + FeatureName: string
+    + Description: string
+    + URL: string
+    + roles: Role[]
+    --
+    + addRole(role: Role): void
+    + removeRole(roleId: int): void
+    + hasRole(roleId: int): boolean
+    + getRoleCount(): int
+}
+
+ENTITY Room {
+    + RoomID: int
+    + RoomNumber: string
+    + Floor: int
+    + CurrentPrice: float
+    + Description: string
+    + Capacity: int
+    + CreateAt: Date
+    + UpdateAt: Date
+    + Status: string
+    + TypeID: int
+    + amenities: Amenity[]
+    --
+    + addAmenity(amenity: Amenity): void
+    + removeAmenity(amenityId: int): void
+    + getAmenities(): Amenity[]
+    + hasAmenity(amenityId: int): boolean
+    + getAmenityCount(): int
+    + calculateAmenityPrice(pricePerAmenity: float): float
+    + validate(): void
+    + toJSON(): object
+    + {static} fromDatabase(data: object): Room
+}
+
+ENTITY RoomType {
+    + TypeId: int
+    + TypeName: string
+    + BasePrice: float
+    + Description: string
+    + MaxCapacity: int
+    + rooms: Room[]
+    --
+    + addRoom(room: Room): void
+    + removeRoom(roomId: int): void
+    + getRooms(): Room[]
+    + getAvailableRooms(): Room[]
+}
+
+ENTITY Amenity {
+    + AmenityID: int
+    + AmenityName: string
+    + Description: string
+    + rooms: Room[]
+    --
+    + addRoom(room: Room): void
+    + removeRoom(roomId: int): void
+    + getRooms(): Room[]
+    + hasRoom(roomId: int): boolean
+    + getRoomCount(): int
+    + getRoomsByStatus(status: string): Room[]
+    + getRoomsByFloor(floor: int): Room[]
+    + validate(): void
+    + toJSON(): object
+    + {static} fromDatabase(data: object): Amenity
+}
+
+ENTITY Promotion {
+    + promotionID: int
+    + promotionName: string
+    + discountPercent: float
+    + startDate: Date
+    + endDate: Date
+    + description: string
+    --
+    + getPromotionID(): int
+    + getPromotionName(): string
+    + getDiscountPercent(): float
+    + getStartDate(): Date
+    + getEndDate(): Date
+    + getDescription(): string
+    + setPromotionID(id: int): void
+    + setPromotionName(name: string): void
+    + setDiscountPercent(percent: float): void
+    + setStartDate(date: Date): void
+    + setEndDate(date: Date): void
+    + setDescription(desc: string): void
+    + isActive(): boolean
+    + isValid(): boolean
+    + toJSON(): object
+}
+
+ENTITY Booking {
+    + BookingID: int
+    + UserID: int
+    + RoomID: int
+    + CheckInDate: Date
+    + CheckOutDate: Date
+    + NumberOfGuests: int
+    + TotalAmount: float
+    + Status: string
+    + BookingDate: Date
+    + SpecialRequests: string
+    + promotions: Promotion[]
+    + services: Service[]
+    --
+    + addPromotion(promotion: Promotion): void
+    + removePromotion(promotionId: int): void
+    + addService(service: Service): void
+    + removeService(serviceId: int): void
+    + calculateTotal(): float
+    + validateDates(): boolean
+    + isActive(): boolean
+}
+
+ENTITY Service {
+    + ServiceID: int
+    + ServiceName: string
+    + Price: float
+    + Description: string
+    + Category: string
+    + IsActive: boolean
+    + bookings: Booking[]
+    --
+    + addToBooking(booking: Booking): void
+    + removeFromBooking(bookingId: int): void
+    + getBookings(): Booking[]
+    + isAvailable(): boolean
+}
+
+ENTITY BlogPost {
+    + PostID: int
+    + Title: string
+    + Content: string
+    + AuthorID: int
+    + CategoryID: int
+    + PublishDate: Date
+    + Status: string
+    + FeaturedImage: string
+    + ViewCount: int
+    --
+    + publish(): void
+    + unpublish(): void
+    + incrementViewCount(): void
+    + isPublished(): boolean
+}
+
+ENTITY BlogCategories {
+    + CategoryID: int
+    + CategoryName: string
+    + Description: string
+    + posts: BlogPost[]
+    --
+    + addPost(post: BlogPost): void
+    + removePost(postId: int): void
+    + getPosts(): BlogPost[]
+    + getPublishedPosts(): BlogPost[]
+}
+
+' === JUNCTION ENTITIES ===
+
+ENTITY UserRole {
+    + UserID: int
+    + RoleID: int
+    + AssignedDate: Date
+    --
+}
+
+ENTITY RoleFeature {
+    + RoleID: int
+    + FeatureID: int
+    --
+}
+
+ENTITY RoomAmenity {
+    + RoomID: int
+    + AmenityID: int
+    + AddedDate: Date
+    --
+}
+
+ENTITY BookingPromotion {
+    + BookingID: int
+    + PromotionID: int
+    + DiscountAmount: float
+    --
+}
+
+ENTITY BookingService {
+    + BookingID: int
+    + ServiceID: int
+    + Quantity: int
+    + UnitPrice: float
+    --
+}
+
+' === RELATIONSHIPS ===
+
+' User - Role (Many to Many)
+User ||--o{ UserRole
+Role ||--o{ UserRole
+
+' Role - Feature (Many to Many)
+Role ||--o{ RoleFeature
+Feature ||--o{ RoleFeature
+
+' Room - RoomType (Many to One)
+RoomType ||--o{ Room
+
+' Room - Amenity (Many to Many)
+Room ||--o{ RoomAmenity
+Amenity ||--o{ RoomAmenity
+
+' User - Booking (One to Many)
+User ||--o{ Booking
+
+' Room - Booking (One to Many)
+Room ||--o{ Booking
+
+' Booking - Promotion (Many to Many)
+Booking ||--o{ BookingPromotion
+Promotion ||--o{ BookingPromotion
+
+' Booking - Service (Many to Many)
+Booking ||--o{ BookingService
+Service ||--o{ BookingService
+
+' User - BlogPost (One to Many)
+User ||--o{ BlogPost
+
+' BlogCategories - BlogPost (One to Many)
+BlogCategories ||--o{ BlogPost
+
+' === ENUMS ===
+
+ENUM RoomStatus {
+    AVAILABLE
+    OCCUPIED
+    RESERVED
+    MAINTENANCE
+    CLEANING
+}
+
+ENUM BookingStatus {
+    PENDING
+    CONFIRMED
+    CHECKED_IN
+    CHECKED_OUT
+    CANCELLED
+}
+
+ENUM UserStatus {
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+}
+
+ENUM PostStatus {
+    DRAFT
+    PUBLISHED
+    ARCHIVED
+}
+
+' === STYLING ===
+
+skinparam class {
+    BackgroundColor<<Entity>> LightBlue
+    BackgroundColor<<Enum>> LightGreen
+    BorderColor Black
+    ArrowColor Black
+}
+
+@enduml

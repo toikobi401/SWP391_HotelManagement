@@ -1,0 +1,211 @@
+.promotion-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-bottom: 2rem;
+}
+
+.promotion-page h2 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.promotion-page .card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border-radius: 0.5rem;
+}
+
+.promotion-page .card-header {
+  background-color: #fff;
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+}
+
+.promotion-page .table th {
+  background-color: #343a40;
+  color: white;
+  border-color: #454d55;
+  font-weight: 500;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.promotion-page .table th:hover {
+  background-color: #495057;
+}
+
+.promotion-page .table td {
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+.promotion-page .badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.promotion-page .btn-group .btn {
+  border-radius: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.promotion-page .btn-group .btn:last-child {
+  margin-right: 0;
+}
+
+.promotion-page .table-responsive {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.promotion-page .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Hover effects */
+.promotion-page .table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.promotion-page .btn:hover {
+  transform: translateY(-1px);
+  transition: all 0.2s ease-in-out;
+}
+
+.promotion-page .card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+/* Status colors */
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.bg-primary {
+  background-color: #007bff !important;
+}
+
+/* Animation for loading */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.promotion-page .card {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ✅ THÊM: Dropdown delete styles */
+.promotion-page .dropdown-menu {
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+  border-radius: 0.375rem;
+  min-width: 160px;
+}
+
+.promotion-page .dropdown-item {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.promotion-page .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.promotion-page .dropdown-item i {
+  width: 16px;
+  text-align: center;
+}
+
+.promotion-page .btn-group .dropdown-toggle::after {
+  margin-left: 0.5rem;
+}
+
+/* ✅ THÊM: Delete modal specific styles */
+.promotion-page .modal-body .alert {
+  border-radius: 0.5rem;
+}
+
+.promotion-page .modal-body .card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+}
+
+.promotion-page .modal-body .form-check {
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.promotion-page .modal-body .form-check:hover {
+  background-color: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.promotion-page .modal-body .form-check-input:checked + .form-check-label {
+  color: #495057;
+}
+
+.promotion-page .modal-body .form-check-label strong {
+  color: #212529;
+}
+
+/* ✅ THÊM: Action button improvements */
+.promotion-page .btn-group[role="group"] .btn {
+  border-radius: 0.25rem !important;
+  margin-right: 0.125rem;
+}
+
+.promotion-page .btn-group[role="group"] .btn:last-child {
+  margin-right: 0;
+}
+
+/* ✅ THÊM: Responsive improvements for action buttons */
+@media (max-width: 768px) {
+  .promotion-page .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .promotion-page .btn-group .btn {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem !important;
+  }
+  
+  .promotion-page .dropdown-menu {
+    width: 100%;
+  }
+}

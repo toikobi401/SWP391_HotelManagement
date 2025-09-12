@@ -1,0 +1,474 @@
+/* ✅ THÊM: Submit section styles */
+.submit-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.booking-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.booking-summary h3 {
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item.total {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 2px solid #667eea;
+}
+
+.summary-item .amount {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.submit-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* ✅ THÊM: Loading button styles */
+.btn.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ✅ THÊM: Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-content {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-width: 400px;
+}
+
+.spinner-large {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-content h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.loading-content p {
+    color: #666;
+    margin: 0;
+}
+
+/* ✅ THÊM: Disabled button styles */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ✅ THÊM: Room Assignment Step Styles */
+.room-assignment-step {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+
+.step-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #667eea;
+}
+
+.step-header h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.step-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.booking-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.booking-info .info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.booking-info .info-item span {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.booking-info .info-item strong {
+    color: #333;
+    font-size: 1.1rem;
+}
+
+/* Available Rooms Section */
+.available-rooms {
+    margin-bottom: 30px;
+}
+
+.available-rooms h3 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.room-card {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: white;
+}
+
+.room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-color: #667eea;
+}
+
+.room-card.selected {
+    border-color: #28a745;
+    background: #f8fff9;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
+}
+
+/* ✅ THÊM: Disabled room card styles */
+.room-card.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.room-card.disabled .room-actions .btn {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.room-header h4 {
+    color: #333;
+    margin: 0;
+}
+
+.room-type {
+    background: #667eea;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.room-details {
+    margin-bottom: 15px;
+}
+
+.room-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 8px;
+}
+
+.room-capacity {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.room-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.room-status.available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.room-status.occupied {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.room-actions {
+    text-align: center;
+}
+
+.room-actions .btn {
+    width: 100%;
+}
+
+/* Status indicator styles */
+.info-item strong[style*="#28a745"] {
+    color: #28a745 !important;
+}
+
+.info-item strong[style*="#ffc107"] {
+    color: #ffc107 !important;
+}
+
+/* Assignment Actions */
+.assignment-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.selected-summary {
+    flex: 1;
+}
+
+.selected-summary > span {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.selected-rooms-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.selected-room-tag {
+    background: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Enhanced button states */
+.btn.btn-success {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    border: none;
+}
+
+.btn.btn-success:hover:not(:disabled) {
+    background: linear-gradient(45deg, #218838, #1e7e34);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+/* No Rooms */
+.no-rooms {
+    text-align: center;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    color: #666;
+}
+
+/* Workflow Info */
+.workflow-info {
+    background: #e7f3ff;
+    border: 1px solid #b8daff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.workflow-info h4 {
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+.workflow-info ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.workflow-info li {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Button Enhanced Styles */
+.btn-outline {
+    background: transparent;
+    border: 2px solid #667eea;
+    color: #667eea;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background: #667eea;
+    color: white;
+}
+
+.btn-outline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Action buttons responsive */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .assignment-actions {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .action-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .action-buttons .btn {
+        flex: 1;
+        min-width: 150px;
+    }
+}
+
+/* Assignment completion indicator */
+.assignment-actions .selected-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.assignment-actions .selected-summary > span {
+    font-size: 1.1rem;
+}
+
+/* Loading spinner enhancement */
+.btn .spinner {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+}
+
+.btn.loading {
+    position: relative;
+    pointer-events: none;
+}

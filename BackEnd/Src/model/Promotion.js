@@ -1,11 +1,12 @@
 class Promotion {
-    constructor(promotionID, promotionName, discountPercent, startDate, endDate, description) {
+    constructor(promotionID, promotionName, discountPercent, startDate, endDate, description, status = 'Active') {
         this.promotionID = promotionID;
         this.promotionName = promotionName;
         this.discountPercent = discountPercent;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+        this.status = status;
     }
 
     // Getter methods
@@ -33,6 +34,10 @@ class Promotion {
         return this.description;
     }
 
+    getStatus() {
+        return this.status;
+    }
+
     // Setter methods
     setPromotionID(promotionID) {
         this.promotionID = promotionID;
@@ -58,25 +63,39 @@ class Promotion {
         this.description = description;
     }
 
+    setStatus(status) {
+        this.status = status;
+    }
+
     // Method to check if promotion is currently active
     isActive() {
         const currentDate = new Date();
         const start = new Date(this.startDate);
         const end = new Date(this.endDate);
-        return currentDate >= start && currentDate <= end;
+        return this.status === 'Active' && currentDate >= start && currentDate <= end;
+    }
+
+    // Method kiểm tra status có hợp lệ không
+    isValidStatus() {
+        const validStatuses = ['Active', 'Inactive', 'Expired', 'Draft', 'Suspended'];
+        return validStatuses.includes(this.status);
     }
 
     // Method to validate promotion data
     isValid() {
-        return this.promotionName && 
-               this.promotionName.length <= 50 &&
-               this.discountPercent >= 0 && 
-               this.discountPercent <= 100 &&
-               this.startDate &&
-               this.endDate &&
-               new Date(this.startDate) <= new Date(this.endDate) &&
-               this.description &&
-               this.description.length <= 255;
+        try {
+            return this.promotionName && 
+                   this.promotionName.length <= 50 &&
+                   this.discountPercent >= 0 && 
+                   this.discountPercent <= 100 &&
+                   this.startDate &&
+                   this.endDate &&
+                   new Date(this.startDate) <= new Date(this.endDate) &&
+                   (!this.description || this.description.length <= 255) &&
+                   this.isValidStatus();
+        } catch (error) {
+            return false;
+        }
     }
 
     // Convert to JSON
@@ -87,8 +106,34 @@ class Promotion {
             discountPercent: this.discountPercent,
             startDate: this.startDate,
             endDate: this.endDate,
-            description: this.description
+            description: this.description,
+            status: this.status
         };
+    }
+
+    // Method to convert to database object
+    toDbObject() {
+        return {
+            PromotionName: this.promotionName,
+            DiscountPercent: this.discountPercent,
+            StartDate: this.startDate,
+            EndDate: this.endDate,
+            Description: this.description,
+            Status: this.status
+        };
+    }
+
+    // Static method to create from database row
+    static fromDbRow(row) {
+        return new Promotion(
+            row.PromotionID,
+            row.PromotionName,
+            row.DiscountPercent,
+            row.StartDate,
+            row.EndDate,
+            row.Description,
+            row.Status || 'Active'
+        );
     }
 }
 

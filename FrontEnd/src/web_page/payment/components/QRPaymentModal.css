@@ -1,0 +1,489 @@
+/* ✅ SỬA: QR PAYMENT MODAL STYLES - Tăng kích thước */
+.qr-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8); /* ✅ Tăng độ đậm background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.qr-modal-content {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 700px; /* ✅ Tăng từ 500px lên 700px */
+  width: 100%;
+  max-height: 95vh; /* ✅ Tăng từ 90vh lên 95vh */
+  overflow-y: auto;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ✅ SỬA: MODAL HEADER - Tăng kích thước */
+.qr-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2.5rem; /* ✅ Tăng padding */
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 1rem 1rem 0 0;
+}
+
+.qr-modal-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.5rem; /* ✅ Tăng font size */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* ✅ Tăng gap */
+}
+
+.qr-modal-header h3 i {
+  color: #2563eb;
+  font-size: 1.75rem; /* ✅ Tăng icon size */
+}
+
+.qr-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.75rem; /* ✅ Tăng từ 1.5rem */
+  color: #64748b;
+  cursor: pointer;
+  width: 50px; /* ✅ Tăng từ 40px */
+  height: 50px; /* ✅ Tăng từ 40px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.qr-modal-close:hover {
+  background: #f1f5f9;
+  color: #ef4444;
+  transform: scale(1.1); /* ✅ Thêm hover effect */
+}
+
+/* ✅ SỬA: MODAL BODY - Tăng kích thước */
+.qr-modal-body {
+  padding: 2.5rem; /* ✅ Tăng từ 2rem */
+}
+
+/* ✅ SỬA: QR CODE DISPLAY - Tăng kích thước đáng kể */
+.qr-code-container {
+  text-align: center;
+  margin-bottom: 2.5rem; /* ✅ Tăng margin */
+}
+
+.qr-code-wrapper {
+  display: inline-block;
+  padding: 2rem; /* ✅ Tăng từ 1rem */
+  background: white;
+  border: 3px solid #e2e8f0; /* ✅ Tăng border width */
+  border-radius: 1.5rem; /* ✅ Tăng border radius */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); /* ✅ Tăng shadow */
+  margin-bottom: 1.5rem; /* ✅ Tăng margin */
+  transition: transform 0.3s ease;
+}
+
+.qr-code-wrapper:hover {
+  transform: scale(1.02); /* ✅ Thêm hover effect */
+}
+
+.qr-code-image {
+  width: 350px; /* ✅ TĂNG ĐÁNG KỂ từ 200px lên 350px */
+  height: 350px; /* ✅ TĂNG ĐÁNG KỂ từ 200px lên 350px */
+  border-radius: 1rem; /* ✅ Tăng border radius */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* ✅ Thêm shadow cho QR */
+}
+
+.qr-instruction {
+  color: #64748b;
+  font-size: 1.125rem; /* ✅ Tăng từ 0.875rem */
+  margin: 0;
+  font-weight: 500; /* ✅ Thêm font weight */
+  padding: 1rem; /* ✅ Thêm padding */
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 0.75rem;
+  border-left: 4px solid #2563eb;
+}
+
+/* ✅ SỬA: LOADING STATE - Tăng kích thước */
+.qr-loading {
+  text-align: center;
+  padding: 4rem 2rem; /* ✅ Tăng padding */
+}
+
+.qr-loading i {
+  font-size: 4rem; /* ✅ Tăng từ 3rem */
+  color: #2563eb;
+  margin-bottom: 1.5rem; /* ✅ Tăng margin */
+}
+
+.qr-loading p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1.25rem; /* ✅ Tăng font size */
+  font-weight: 500;
+}
+
+/* ✅ SỬA: ERROR STATE - Tăng kích thước */
+.qr-error {
+  text-align: center;
+  padding: 3rem 2rem; /* ✅ Tăng padding */
+}
+
+.qr-error i {
+  font-size: 4rem; /* ✅ Tăng từ 3rem */
+  color: #ef4444;
+  margin-bottom: 1.5rem; /* ✅ Tăng margin */
+}
+
+.qr-error p {
+  color: #64748b;
+  margin-bottom: 2rem; /* ✅ Tăng margin */
+  font-size: 1.125rem; /* ✅ Tăng font size */
+}
+
+/* ✅ SỬA: BANK INFORMATION - Tăng kích thước */
+.bank-info {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); /* ✅ Cải thiện gradient */
+  border-radius: 1rem; /* ✅ Tăng border radius */
+  padding: 2rem; /* ✅ Tăng từ 1.5rem */
+  margin-bottom: 2.5rem; /* ✅ Tăng margin */
+  border: 2px solid #e2e8f0; /* ✅ Thêm border */
+}
+
+.bank-info h4 {
+  margin: 0 0 1.5rem 0; /* ✅ Tăng margin */
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.375rem; /* ✅ Tăng font size */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* ✅ Tăng gap */
+}
+
+.bank-info h4 i {
+  color: #2563eb;
+  font-size: 1.5rem; /* ✅ Tăng icon size */
+}
+
+.bank-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* ✅ Tăng từ 0.75rem */
+}
+
+.bank-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem; /* ✅ Tăng từ 0.75rem */
+  background: white;
+  border-radius: 0.75rem; /* ✅ Tăng border radius */
+  border: 2px solid #e2e8f0; /* ✅ Tăng border width */
+  transition: all 0.3s ease; /* ✅ Thêm transition */
+}
+
+.bank-detail-item:hover {
+  border-color: #2563eb; /* ✅ Thêm hover effect */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.bank-detail-item.highlight {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-color: #2563eb;
+  border-width: 3px; /* ✅ Tăng border cho highlight */
+}
+
+.bank-detail-item .label {
+  font-weight: 600; /* ✅ Tăng font weight */
+  color: #64748b;
+  min-width: 140px; /* ✅ Tăng min-width */
+  font-size: 1rem; /* ✅ Tăng font size */
+}
+
+.bank-detail-item .value {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* ✅ Tăng gap */
+  color: #1e293b;
+  font-weight: 600; /* ✅ Tăng font weight */
+  flex: 1;
+  justify-content: flex-end;
+  font-size: 1rem; /* ✅ Tăng font size */
+}
+
+.bank-detail-item .value.amount {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 1.375rem; /* ✅ TĂNG ĐÁNG KỂ cho amount */
+}
+
+.copy-btn {
+  background: #e2e8f0;
+  border: none;
+  border-radius: 0.375rem; /* ✅ Tăng border radius */
+  padding: 0.5rem 0.75rem; /* ✅ Tăng padding */
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem; /* ✅ Tăng font size */
+  font-weight: 500;
+}
+
+.copy-btn:hover {
+  background: #2563eb;
+  color: white;
+  transform: scale(1.05); /* ✅ Thêm scale effect */
+}
+
+.copy-btn:active {
+  transform: scale(0.95); /* ✅ Thêm active effect */
+}
+
+/* ✅ SỬA: PAYMENT STATUS - Tăng kích thước */
+.payment-status {
+  text-align: center;
+  padding: 1.5rem; /* ✅ Tăng từ 1rem */
+  border-radius: 1rem; /* ✅ Tăng border radius */
+  margin-bottom: 1.5rem; /* ✅ Tăng margin */
+  border: 2px solid transparent; /* ✅ Thêm border */
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  color: #92400e;
+  border-color: #f59e0b; /* ✅ Thêm border color */
+}
+
+.status-pending i {
+  font-size: 2.5rem; /* ✅ Tăng từ 2rem */
+  margin-bottom: 1rem; /* ✅ Tăng margin */
+  display: block;
+}
+
+.status-pending p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  font-size: 1.125rem; /* ✅ Tăng font size */
+}
+
+.status-pending small {
+  color: #a16207;
+  font-size: 1rem; /* ✅ Tăng từ 0.875rem */
+}
+
+.status-completed {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  color: #065f46;
+  border-color: #10b981; /* ✅ Thêm border color */
+}
+
+.status-completed i {
+  font-size: 2.5rem; /* ✅ Tăng từ 2rem */
+  margin-bottom: 1rem; /* ✅ Tăng margin */
+  display: block;
+}
+
+.status-completed p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.125rem; /* ✅ Tăng font size */
+}
+
+/* ✅ SỬA: MODAL FOOTER - Tăng kích thước */
+.qr-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem; /* ✅ Tăng gap */
+  padding: 2rem 2.5rem; /* ✅ Tăng padding */
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  border-radius: 0 0 1rem 1rem;
+}
+
+.qr-modal-footer .btn {
+  padding: 1rem 2rem; /* ✅ Tăng padding */
+  border: none;
+  border-radius: 0.75rem; /* ✅ Tăng border radius */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* ✅ Tăng gap */
+  font-size: 1.125rem; /* ✅ Tăng font size */
+}
+
+.qr-modal-footer .btn i {
+  font-size: 1.25rem; /* ✅ Tăng icon size */
+}
+
+.qr-modal-footer .btn-secondary {
+  background: #64748b;
+  color: white;
+}
+
+.qr-modal-footer .btn-secondary:hover {
+  background: #475569;
+  transform: translateY(-2px); /* ✅ Thêm hover effect */
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.4);
+}
+
+.qr-modal-footer .btn-success {
+  background: linear-gradient(135deg, #10b981, #059669); /* ✅ Thêm gradient */
+  color: white;
+}
+
+.qr-modal-footer .btn-success:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px); /* ✅ Thêm hover effect */
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* ✅ SỬA: RESPONSIVE - Cập nhật cho kích thước mới */
+@media (max-width: 768px) {
+  .qr-modal-content {
+    margin: 0.5rem;
+    max-width: none;
+    max-height: 98vh; /* ✅ Tăng cho mobile */
+  }
+  
+  .qr-modal-header,
+  .qr-modal-body,
+  .qr-modal-footer {
+    padding: 1.5rem; /* ✅ Giữ padding lớn hơn cho mobile */
+  }
+  
+  .qr-code-image {
+    width: 280px; /* ✅ Vẫn lớn trên mobile, tăng từ 150px */
+    height: 280px; /* ✅ Vẫn lớn trên mobile, tăng từ 150px */
+  }
+  
+  .qr-code-wrapper {
+    padding: 1.5rem; /* ✅ Giữ padding lớn */
+  }
+  
+  .bank-detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem; /* ✅ Giữ padding tốt */
+  }
+  
+  .bank-detail-item .value {
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .qr-modal-footer {
+    flex-direction: column;
+  }
+  
+  .qr-modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-code-image {
+    width: 250px; /* ✅ Vẫn giữ kích thước lớn */
+    height: 250px; /* ✅ Vẫn giữ kích thước lớn */
+  }
+  
+  .qr-modal-header h3 {
+    font-size: 1.25rem;
+  }
+  
+  .bank-info h4 {
+    font-size: 1.125rem;
+  }
+  
+  .bank-detail-item .value.amount {
+    font-size: 1.25rem; /* ✅ Vẫn lớn trên mobile nhỏ */
+  }
+}
+
+/* ✅ THÊM: Special styles for large screens */
+@media (min-width: 1200px) {
+  .qr-modal-content {
+    max-width: 800px; /* ✅ Tăng thêm cho màn hình lớn */
+  }
+  
+  .qr-code-image {
+    width: 400px; /* ✅ Cực lớn cho màn hình desktop */
+    height: 400px; /* ✅ Cực lớn cho màn hình desktop */
+  }
+  
+  .qr-modal-body {
+    padding: 3rem; /* ✅ Padding lớn hơn */
+  }
+  
+  .bank-detail-item .value.amount {
+    font-size: 1.5rem; /* ✅ Font size lớn hơn */
+  }
+}
+
+/* ✅ THÊM: QR Focus effect */
+.qr-code-wrapper {
+  position: relative;
+}
+
+.qr-code-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, #2563eb, #7c3aed, #2563eb);
+  border-radius: 1.5rem;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.qr-code-wrapper:hover::before {
+  opacity: 0.1;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ✅ THÊM: Better copy feedback */
+.copy-btn.copied {
+  background: #10b981 !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.copy-btn.copied::after {
+  content: '✓';
+  margin-left: 0.25rem;
+}

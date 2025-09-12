@@ -16,67 +16,70 @@ skinparam arrow {
 entity User {
     + UserID : int <<PK>>
     --
-    Username : varchar
-    Password : varchar
-    Email : varchar
-    FullName : varchar
-    Phone : varchar
-    Address : varchar
-    DateOfBirth : date
-    Gender : varchar
-    Avatar : varchar
-    IsActive : bit
-    CreatedAt : datetime
-    UpdatedAt : datetime
-    RoleID : int <<FK>>
+    Username : nvarchar(150)
+    Password : nvarchar(150)
+    Email : nvarchar(150)
+    Status : bit
+    Image : varbinary(max)
+    PhoneNumber : nchar(50)
+    Fullname : nvarchar(150)
 }
 
 entity Role {
     + RoleID : int <<PK>>
     --
-    RoleName : varchar
-    Description : varchar
+    RoleName : nvarchar(50)
+    Description : nvarchar(255)
+}
+
+entity UserRole {
+    RoleID : int <<PK,FK>>
+    UserID : int <<PK,FK>>
 }
 
 entity Customer {
     + CustomerID : int <<PK,FK>>
     --
-    LoyaltyPoints : int
-    MembershipLevel : varchar
+    LoyatyPoints : int
+    TierID : int <<FK>>
+}
+
+entity Tier {
+    + TierID : int <<PK>>
+    --
+    TierName : nvarchar(50)
+    Description : nvarchar(255)
 }
 
 entity RoomType {
     + TypeId : int <<PK>>
     --
-    TypeName : varchar
-    Description : text
-    BasePrice : decimal
-    MaxOccupancy : int
-    BedType : varchar
-    RoomSize : float
-    IsActive : bit
+    TypeName : nvarchar(50)
+    Description : nvarchar(255)
+    BasePrice : float
+    Image : varbinary(max)
+    Capacity : int
 }
 
 entity Room {
     + RoomID : int <<PK>>
     --
-    RoomNumber : varchar
+    RoomNumber : nvarchar(50)
     Floor : int
-    Status : varchar
-    Description : text
-    TypeId : int <<FK>>
-    IsActive : bit
-    CreatedAt : datetime
-    UpdatedAt : datetime
+    CurrentPrice : float
+    Description : nvarchar(max)
+    Capacity : int
+    CreateAt : datetime
+    UpdateAt : datetime
+    Status : nvarchar(50)
+    TypeID : int <<FK>>
 }
 
 entity Amenity {
     + AmenityID : int <<PK>>
     --
-    AmenityName : varchar
-    Description : varchar
-    Icon : varchar
-    IsActive : bit
+    AmenityName : nvarchar(50)
+    Description : nvarchar(150)
 }
 
 entity RoomAmenity {
@@ -89,25 +92,35 @@ entity RoomAmenity {
 entity RoomImage {
     + ImageID : int <<PK>>
     --
-    RoomID : int <<FK>>
-    ImageURL : varchar
-    Caption : varchar
-    IsPrimary : bit
-    UploadedAt : datetime
+    RoomId : int <<FK>>
+    Image : varbinary(max)
+    UploadAt : datetime
 }
 
 entity Booking {
     + BookingID : int <<PK>>
     --
     CustomerID : int <<FK>>
-    BookingDate : datetime
-    CheckInDate : date
-    CheckOutDate : date
-    TotalAmount : decimal
-    Status : varchar
-    SpecialRequests : text
-    CreatedAt : datetime
-    UpdatedAt : datetime
+    ReceptionistID : int <<FK>>
+    NumberOfGuest : int
+    SpecialRequest : nvarchar(250)
+    BookingType : bit
+    BookingAt : datetime
+    GuestID : nchar(10) <<FK>>
+    CreateAt : datetime
+    UpdateAt : datetime
+    WalkInGuestPhoneNumber : nchar(10)
+    BookingStatus : nvarchar(20)
+}
+
+entity WalkInGuest {
+    + GuestPhoneNumber : nchar(10) <<PK>>
+    --
+    GuestName : nvarchar(100)
+    GuestEmail : nvarchar(100)
+    CreateAt : datetime
+    UpdateAt : datetime
+    ReceptionistID : int <<FK>>
 }
 
 entity BookingRoom {
@@ -115,133 +128,238 @@ entity BookingRoom {
     --
     BookingID : int <<FK>>
     RoomID : int <<FK>>
-    CheckInDate : date
-    CheckOutDate : date
-    RoomPrice : decimal
-    Status : varchar
+    CheckInAt : datetime
+    CheckOutAt : datetime
+}
+
+entity BookingRoomType {
+    + BookingRoomTypeID : int <<PK>>
+    --
+    BookingID : int <<FK>>
+    RoomTypeID : int <<FK>>
+    Quantity : int
 }
 
 entity Service {
     + ServiceID : int <<PK>>
     --
-    ServiceName : varchar
-    Description : text
-    Price : decimal
-    Category : varchar
+    ServiceName : nvarchar(50)
+    Description : nvarchar(255)
+    Price : float
+    Category : nvarchar(100)
     IsActive : bit
-    CreatedAt : datetime
+    Image : varbinary(max)
+    Duration : int
+    MaxCapacity : int
+    CreateAt : datetime
+    UpdateAt : datetime
 }
 
 entity BookingService {
-    + BookingID : int <<PK,FK>>
-    + ServiceID : int <<PK,FK>>
+    BookingID : int <<PK,FK>>
+    ServiceID : int <<PK,FK>>
     --
-    Quantity : int
-    UnitPrice : decimal
-    TotalPrice : decimal
+    CreateAt : datetime
     UpdateAt : datetime
 }
 
 entity Promotion {
     + PromotionID : int <<PK>>
     --
-    PromotionCode : varchar
-    PromotionName : varchar
-    Description : text
-    DiscountType : varchar
-    DiscountValue : decimal
-    MinBookingAmount : decimal
-    MaxDiscount : decimal
+    PromotionName : nvarchar(50)
+    DiscountPercent : float
     StartDate : date
     EndDate : date
-    IsActive : bit
-    UsageLimit : int
-    UsedCount : int
+    Description : nvarchar(255)
+    Status : nvarchar(50)
 }
 
 entity BookingPromotion {
     + BookingPromotionID : int <<PK>>
     --
-    BookingID : int <<FK>>
     PromotionID : int <<FK>>
-    DiscountAmount : decimal
-    AppliedAt : datetime
+    BookingID : int <<FK>>
 }
 
 entity Invoice {
     + InvoiceID : int <<PK>>
     --
     BookingID : int <<FK>>
-    InvoiceNumber : varchar
-    IssueDate : datetime
-    DueDate : datetime
-    TotalAmount : decimal
-    TaxAmount : decimal
-    DiscountAmount : decimal
-    NetAmount : decimal
-    Status : varchar
-    PaymentMethod : varchar
-    PaidAt : datetime
+    CreateAt : datetime
+    TotalAmount : float
+    PaymentStatus : nvarchar(50)
+    PaidAmount : float
+    RemainingAmount : float
+}
+
+entity InvoiceItem {
+    + InvoiceItemID : int <<PK>>
+    --
+    InvoiceID : int <<FK>>
+    ItemType : nvarchar(50)
+    ItemID : int
+    ItemName : nvarchar(200)
+    Quantity : int
+    UnitPrice : float
+    SubTotal : float
+    Description : nvarchar(500)
+}
+
+entity Payment {
+    + PaymentID : int <<PK>>
+    --
+    InvoiceID : int <<FK>>
+    PaymentMethod : nvarchar(20)
+    PaymentStatus : nvarchar(20)
+    Amount : float
+    TransactionID : nvarchar(100)
+    BankCode : nvarchar(20)
+    PaymentGatewayResponse : nvarchar(max)
+    QRCodeUrl : nvarchar(500)
+    PaymentDate : datetime
+    ExpiryDate : datetime
+    RetryCount : int
+    Notes : nvarchar(500)
+    CreatedAt : datetime
+    UpdatedAt : datetime
+}
+
+entity PaymentLog {
+    + LogID : int <<PK>>
+    --
+    PaymentID : int <<FK>>
+    Action : nvarchar(50)
+    Status : nvarchar(20)
+    Message : nvarchar(500)
+    RequestData : nvarchar(max)
+    ResponseData : nvarchar(max)
+    IPAddress : nvarchar(50)
+    UserAgent : nvarchar(500)
+    CreatedAt : datetime
+}
+
+entity PaymentRefund {
+    + RefundID : int <<PK>>
+    --
+    PaymentID : int <<FK>>
+    RefundAmount : float
+    RefundReason : nvarchar(255)
+    RefundStatus : nvarchar(20)
+    RefundTransactionID : nvarchar(100)
+    RefundDate : datetime
+    ProcessedBy : int <<FK>>
+    CreatedAt : datetime
 }
 
 entity GuestFeedback {
     + FeedbackID : int <<PK>>
     --
-    BookingID : int <<FK>>
+    OverallRating : float
+    SeviceRating : float
+    CleanlinessRating : float
+    LocationRating : float
+    BreakfastRating : float
+    CreateAt : datetime
     CustomerID : int <<FK>>
-    Rating : int
-    Comment : text
-    CreatedAt : datetime
-    IsApproved : bit
+    BookingID : int <<FK>>
+}
+
+entity Benefit {
+    + BenefitID : int <<PK>>
+    --
+    BenefitName : nvarchar(50)
+    Description : nvarchar(255)
+    Status : nvarchar(50)
+    BenefitPoint : int
+    ServiceID : int <<FK>>
+    RoomTypeID : int <<FK>>
+}
+
+entity TierBenefit {
+    TierID : int <<PK,FK>>
+    BenefitID : int <<PK,FK>>
 }
 
 entity BlogCategories {
     + CategoryID : int <<PK>>
     --
-    CategoryName : varchar
-    Description : text
-    IsActive : bit
+    CategoryName : nvarchar(50)
+    Description : nvarchar(255)
 }
 
 entity BlogPost {
     + PostID : int <<PK>>
     --
-    Title : varchar
-    Content : text
-    Summary : varchar
+    Title : nvarchar(255)
+    Content : nvarchar(max)
     AuthorID : int <<FK>>
     CategoryID : int <<FK>>
-    PublishDate : datetime
-    Status : varchar
-    ViewCount : int
-    FeaturedImage : varchar
-    Tags : varchar
+    image : varbinary(max)
+    CreateAt : datetime
+    UpdateAt : datetime
+    Status : bit
 }
 
 ' Relationships
+User ||--o{ UserRole : "has"
+Role ||--o{ UserRole : "assigned to"
 User ||--o{ Customer : "is a"
-User }o--|| Role : "has"
+User ||--o{ WalkInGuest : "managed by"
+User ||--o{ Booking : "receptionist"
 User ||--o{ BlogPost : "writes"
+User ||--o{ PaymentRefund : "processes"
+User ||--o{ GuestFeedback : "gives"
 
+Customer ||--|| User : "extends"
 Customer ||--o{ Booking : "makes"
-Customer ||--o{ GuestFeedback : "gives"
+Customer }o--|| Tier : "belongs to"
 
-RoomType ||--o{ Room : "has"
+Tier ||--o{ TierBenefit : "has"
+Benefit ||--o{ TierBenefit : "belongs to"
+Benefit }o--|| Service : "related to"
+Benefit }o--|| RoomType : "applies to"
+
+WalkInGuest ||--o{ Booking : "walks in"
+WalkInGuest }o--|| User : "registered by"
+
+RoomType ||--o{ Room : "categorizes"
+RoomType ||--o{ BookingRoomType : "booked"
+RoomType ||--o{ Benefit : "has benefits"
+
 Room ||--o{ RoomAmenity : "has"
-Room ||--o{ RoomImage : "has"
-Room ||--o{ BookingRoom : "booked in"
+Room ||--o{ RoomImage : "displays"
+Room ||--o{ BookingRoom : "booked"
+Room }o--|| RoomType : "of type"
 
 Amenity ||--o{ RoomAmenity : "available in"
 
 Booking ||--o{ BookingRoom : "includes"
-Booking ||--o{ BookingService : "includes"
-Booking ||--o{ BookingPromotion : "uses"
+Booking ||--o{ BookingRoomType : "reserves"
+Booking ||--o{ BookingService : "uses"
+Booking ||--o{ BookingPromotion : "applies"
 Booking ||--|| Invoice : "generates"
 Booking ||--o{ GuestFeedback : "receives"
+Booking }o--|| Customer : "made by"
+Booking }o--|| User : "handled by"
+Booking }o--|| WalkInGuest : "for guest"
 
-Service ||--o{ BookingService : "used in"
+Service ||--o{ BookingService : "booked"
+Service ||--o{ Benefit : "provides"
+
 Promotion ||--o{ BookingPromotion : "applied to"
 
+Invoice ||--o{ InvoiceItem : "contains"
+Invoice ||--o{ Payment : "paid by"
+Invoice }o--|| Booking : "for"
+
+Payment ||--o{ PaymentLog : "logged"
+Payment ||--o{ PaymentRefund : "refunded"
+Payment }o--|| Invoice : "pays"
+
+PaymentRefund }o--|| User : "processed by"
+
 BlogCategories ||--o{ BlogPost : "contains"
+BlogPost }o--|| User : "authored by"
+BlogPost }o--|| BlogCategories : "categorized in"
 
 @enduml

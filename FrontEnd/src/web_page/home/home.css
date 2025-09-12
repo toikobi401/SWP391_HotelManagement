@@ -8,7 +8,7 @@ body {
 }
 
 ::-moz-selection {
-  background: #000;
+  background: white ;
   color: #fff;
 }
 
@@ -808,6 +808,57 @@ a {
   background: #fff;
   -webkit-box-shadow: 0 5px 20px -2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 5px 20px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ THÊM: Enhanced testimonials styling */
+.block-testimony .stars {
+    margin-bottom: 0.5rem;
+}
+
+.block-testimony .stars i {
+    font-size: 0.9rem;
+    margin-right: 2px;
+}
+
+.block-testimony .rating-score {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.block-testimony .person img {
+    transition: transform 0.3s ease;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.block-testimony:hover .person img {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments for testimonials */
+@media (max-width: 768px) {
+    .block-testimony {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .block-testimony .person {
+        flex: none;
+        margin-bottom: 1rem;
+    }
+    
+    .block-testimony h2 {
+        font-size: 1.1rem;
+    }
+    
+    .block-testimony blockquote {
+        font-size: 0.9rem;
+    }
 }
 
 .post-entry {
@@ -2237,7 +2288,163 @@ a {
         transform: translateY(0);
     }
 }
+/* ✅ THÊM: Blog Section Styles */
+.blog-section {
+    padding: 80px 0;
+}
 
+.blog-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.blog-image {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-image img {
+    transform: scale(1.05);
+}
+
+.blog-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 2;
+}
+
+.blog-content {
+    padding: 25px;
+}
+
+.blog-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.blog-meta span {
+    display: flex;
+    align-items: center;
+}
+
+.blog-meta i {
+    color: #007bff;
+    margin-right: 5px;
+}
+
+.blog-title {
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.blog-title a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.blog-title a:hover {
+    color: #007bff;
+}
+
+.blog-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.blog-actions {
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.blog-actions .btn {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* ✅ Responsive cho blog section */
+@media (max-width: 768px) {
+    .blog-section {
+        padding: 50px 0;
+    }
+    
+    .blog-image {
+        height: 180px;
+    }
+    
+    .blog-content {
+        padding: 20px;
+    }
+    
+    .blog-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .blog-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* ✅ Animation cho blog cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.blog-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.blog-card:nth-child(1) { animation-delay: 0.1s; }
+.blog-card:nth-child(2) { animation-delay: 0.2s; }
+.blog-card:nth-child(3) { animation-delay: 0.3s; }
+.blog-card:nth-child(4) { animation-delay: 0.4s; }
+.blog-card:nth-child(5) { animation-delay: 0.5s; }
+.blog-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* ... existing CSS remains the same ... */
 .room-info .media-with-text.room-card {
     animation: fadeInUp 0.6s ease forwards;
 }

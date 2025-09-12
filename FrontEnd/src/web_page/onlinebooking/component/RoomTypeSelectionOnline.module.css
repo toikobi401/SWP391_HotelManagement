@@ -1,0 +1,487 @@
+.roomTypeSection {
+  background: 
+    linear-gradient(120deg, #f0f7fa99 60%, #e0e7ffcc 100%),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(60, 72, 100, 0.18);
+  max-width: 1400px; /* Tăng width để hiển thị horizontal */
+  width: 100%;
+  margin: 56px auto 32px auto;
+  padding: 38px 32px 28px 32px;
+  animation: fadeIn 0.7s;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(1px);
+}
+
+.title {
+  color: #2563eb;
+  font-weight: 800;
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-size: 2rem;
+  text-shadow: 0 2px 8px #0001;
+}
+
+.loadingState {
+  text-align: center;
+  padding: 40px;
+}
+
+.loadingState .spinner {
+  margin-bottom: 16px;
+}
+
+.errorState {
+  text-align: center;
+  padding: 40px;
+}
+
+.errorAlert {
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  color: #dc2626;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.retryBtn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.retryBtn i {
+  margin-right: 6px;
+}
+
+.bookingInfo {
+  background: #f0f9ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #0ea5e9;
+}
+
+.bookingInfoTitle {
+  color: #0ea5e9;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.bookingInfoTitle i {
+  margin-right: 8px;
+}
+
+.bookingInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minWidth(150px, 1fr));
+  gap: 10px;
+  font-size: 14px;
+}
+
+/* ✅ HORIZONTAL GRID - Hiển thị 3 cột trên desktop, 2 trên tablet, 1 trên mobile */
+.roomTypesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Tăng minWidth để card to hơn */
+  gap: 24px;
+  margin-bottom: 20px;
+  max-height: 600px; /* Giới hạn chiều cao */
+  overflow-y: auto; /* Cho scroll vertical nếu cần */
+  padding: 8px;
+}
+
+.roomTypeCard {
+  position: relative;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: fit-content; /* Đảm bảo card không bị stretch */
+  display: flex;
+  flex-direction: column;
+}
+
+.roomTypeCard:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+}
+
+.roomTypeCard.selected {
+  border-color: #2563eb;
+  background: #f0f9ff;
+}
+
+.roomTypeCard.unavailable {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.roomTypeHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.roomTypeIcon {
+  font-size: 32px;
+  margin-right: 12px;
+}
+
+.roomTypeTitle {
+  flex: 1;
+}
+
+.roomTypeTitle h4 {
+  margin: 0 0 4px 0;
+  color: #1f2937;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.priceCategoryBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.roomDescription {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  flex-grow: 1; /* Đẩy phần dưới xuống bottom */
+}
+
+.roomMeta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.roomMeta div {
+  display: flex;
+  align-items: center;
+}
+
+.roomMeta i {
+  margin-right: 6px;
+  width: 16px;
+}
+
+.availabilityStatus {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.availabilityStatus i {
+  margin-right: 6px;
+}
+
+.quantitySelector {
+  margin-bottom: 16px;
+}
+
+.quantityLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.quantityBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: #374151;
+}
+
+.quantityBtn:hover:not(:disabled) {
+  border-color: #2563eb;
+  background: #f0f9ff;
+  color: #2563eb;
+}
+
+.quantityBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityInput {
+  width: 70px;
+  height: 36px;
+  text-align: center;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.roomPriceSection {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+  text-align: center;
+  margin-top: auto; /* Đẩy xuống bottom của card */
+}
+
+.roomPrice {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.roomPriceUnit {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.roomTotalPrice {
+  font-size: 16px;
+  color: #059669;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.roomTotalBreakdown {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.selectionIndicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.selectionSummary {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.selectionSummary h4 {
+  color: #1f2937;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.selectionSummary h4 i {
+  margin-right: 8px;
+  color: #059669;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  font-size: 14px;
+}
+
+.summaryItem {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.summaryItem strong {
+  display: block;
+  color: #1f2937;
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.capacityWarning {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid #fecaca;
+}
+
+.capacityWarning i {
+  margin-right: 8px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.btnBack {
+  padding: 12px 24px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btnBack:hover {
+  border-color: #9ca3af;
+  background: #f9fafb;
+}
+
+.btnBack i {
+  margin-right: 8px;
+}
+
+.btnNext {
+  padding: 12px 24px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btnNext:hover {
+  background: #1d4ed8;
+}
+
+.btnNext:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.btnNext i {
+  margin-left: 8px;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .roomTypesGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 cột trên tablet */
+    gap: 20px;
+  }
+  
+  .roomTypeSection {
+    max-width: 1200px;
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .roomTypesGrid {
+    grid-template-columns: 1fr; /* 1 cột trên mobile */
+    gap: 16px;
+    max-height: 500px;
+  }
+  
+  .roomTypeSection {
+    max-width: 100%;
+    padding: 20px 16px;
+    margin: 20px auto;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .summaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .roomMeta {
+    grid-template-columns: 1fr;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bookingInfoGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quantityControls {
+    justify-content: center;
+  }
+}

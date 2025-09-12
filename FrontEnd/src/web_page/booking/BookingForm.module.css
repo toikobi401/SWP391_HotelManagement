@@ -1,512 +1,2264 @@
-/* Container chính - Cập nhật để hiển thị 5 cột ngang */
-.bookingFormContainer {
-    max-width: 1600px; /* Tăng từ 1200px lên 1600px */
-    width: 100%; /* Đảm bảo sử dụng full width */
-    margin: 2rem auto;
-    padding: 3rem 2rem; /* Giảm padding ngang */
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 20px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.08),
-        0 4px 20px rgba(0, 0, 0, 0.04);
-    position: relative;
-    overflow: hidden;
+/* ✅ THÊM: Wrapper tổng thể */
+.bookingFormWrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
 }
 
-.bookingFormContainer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px 20px 0 0;
+/* ✅ THÊM: Header Section */
+.bookingHeader {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Title */
+.bookingHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="60" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+  opacity: 0.3;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
 .formTitle {
-    text-align: center;
-    color: #2d3748;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.formTitle::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    border-radius: 2px;
+.formSubtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* Form */
-.bookingForm {
-    margin-top: 3rem;
+/* ✅ THÊM: Progress Steps */
+.progressSteps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-/* Grid layout - Tối ưu cho 5 cột ngang */
-.formGrid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(280px, 1fr)); /* Tăng min-width từ 250px lên 280px */
-    gap: 1.25rem; /* Giảm gap để tiết kiệm không gian */
-    margin-bottom: 3rem;
-    overflow-x: auto; /* Cho phép scroll ngang nếu cần */
-    padding: 0.25rem; /* Padding nhỏ để tránh cut shadow */
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  opacity: 0.5;
+  transition: all 0.3s ease;
 }
 
-/* Form sections - Tối ưu kích thước */
+.step.active {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.step.completed {
+  opacity: 0.8;
+}
+
+.step.completed .stepNumber {
+  background: #38a169;
+  color: white;
+}
+
+.step.active .stepNumber {
+  background: white;
+  color: #667eea;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.stepNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.stepLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ✅ CẢI THIỆN: Container chính */
+.bookingFormContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+  position: relative;
+}
+
+/* ✅ THÊM: Layout 2 cột */
+.formLayout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* ✅ THÊM: Left Column - Main Form */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ✅ THÊM: Right Column - Sticky Summary */
+.rightColumn {
+  position: relative;
+}
+
+.stickySummary {
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ✅ THÊM: Form Steps */
+.formStep {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.formStep::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.formStep:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.formStep:hover::before {
+  opacity: 1;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f7fafc;
+}
+
+.stepBadge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.stepHeader h2 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* ✅ THÊM: Quick Info Card */
+.quickInfoCard {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.quickInfoCard h4 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quickInfoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f7fafc;
+}
+
+.quickInfoItem:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-weight: 500;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.infoValue {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+  text-align: right;
+  max-width: 60%;
+}
+
+/* ✅ THÊM: Sticky Submit Section */
+.stickySubmit {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+/* ✅ CẢI THIỆN: Submit Button */
+.submitButton {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.submitButton:hover::before {
+  left: 100%;
+}
+
+.submitPrice {
+  font-size: 0.9rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* ✅ THÊM: Trust Badges */
+.trustBadges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f7fafc;
+}
+
+.trustBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #4a5568;
+}
+
+.trustBadge i {
+  color: #38a169;
+  width: 14px;
+}
+
+/* ✅ CẢI THIỆN: Form Sections */
 .formSection {
-    background: #ffffff;
-    padding: 1.75rem 1.5rem; /* Giảm padding */
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.05),
-        0 1px 4px rgba(0, 0, 0, 0.02);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    min-width: 280px; /* Tăng min-width */
-    max-width: 320px; /* Thêm max-width để kiểm soát kích thước */
-    height: fit-content; /* Đảm bảo height tự động */
-}
-
-.formSection::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-}
-
-.formSection:hover {
-    transform: translateY(-5px);
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.1),
-        0 4px 20px rgba(0, 0, 0, 0.05);
-    border-color: #cbd5e0;
-}
-
-.formSection:hover::before {
-    transform: scaleX(1);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  margin-bottom: 0;
 }
 
 .formSection h3 {
-    color: #2d3748;
-    margin-bottom: 1.25rem; /* Giảm margin */
-    font-size: 1.1rem; /* Giảm font size */
-    font-weight: 600;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #f7fafc;
-    position: relative;
-    text-align: center;
+  display: none; /* Ẩn vì đã có stepHeader */
 }
 
-.formSection h3::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    border-radius: 1px;
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .formLayout {
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+  }
+  
+  .stickySummary {
+    top: 1rem;
+  }
 }
 
-/* Fields - Tối ưu cho layout ngang */
+@media (max-width: 1024px) {
+  .formLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .rightColumn {
+    order: -1;
+  }
+  
+  .stickySummary {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bookingHeader {
+    padding: 2rem 0;
+  }
+  
+  .formTitle {
+    font-size: 2rem;
+  }
+  
+  .progressSteps {
+    gap: 1rem;
+  }
+  
+  .stepNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .stepLabel {
+    font-size: 0.8rem;
+  }
+  
+  .bookingFormContainer {
+    padding: 0 1rem 3rem;
+  }
+  
+  .formStep {
+    padding: 1.5rem;
+  }
+  
+  .stepHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .stepBadge {
+    min-width: auto;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .stickySummary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .progressSteps {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .step {
+    min-width: calc(50% - 0.25rem);
+  }
+  
+  .formTitle {
+    font-size: 1.75rem;
+  }
+  
+  .formSubtitle {
+    font-size: 1rem;
+  }
+}
+
+/* ✅ THÊM: Animation cho form steps */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formStep {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.formStep:nth-child(1) { animation-delay: 0.1s; }
+.formStep:nth-child(2) { animation-delay: 0.2s; }
+.formStep:nth-child(3) { animation-delay: 0.3s; }
+.formStep:nth-child(4) { animation-delay: 0.4s; }
+.formStep:nth-child(5) { animation-delay: 0.5s; }
+
+/* ✅ THÊM: Loading overlay cho form */
+.formLoading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 20px;
+}
+
+/* ✅ Maintain existing styles for components */
 .field {
-    margin-bottom: 1.25rem; /* Giảm margin */
-    position: relative;
+  margin-bottom: 1.25rem;
+  position: relative;
 }
 
 .field label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #4a5568;
-    font-weight: 600;
-    font-size: 0.85rem; /* Giảm font size */
-    letter-spacing: 0.025em;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.025em;
 }
 
 .field input,
 .field select,
 .field textarea {
-    width: 100%;
-    padding: 0.75rem 1rem; /* Giảm padding */
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 0.9rem; /* Giảm font size */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #f8fafc;
-    color: #2d3748;
-    position: relative;
-    z-index: 1;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #f8fafc;
+  color: #2d3748;
+  position: relative;
+  z-index: 1;
 }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    outline: none;
-    border-color: #667eea;
-    background: #ffffff;
-    box-shadow: 
-        0 0 0 3px rgba(102, 126, 234, 0.1),
-        0 4px 20px rgba(102, 126, 234, 0.15);
-    transform: translateY(-2px);
+  outline: none;
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
 }
 
 .field textarea {
-    resize: vertical;
-    min-height: 80px; /* Giảm min-height */
-    line-height: 1.6;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
 }
 
-/* Services section - Tối ưu cho layout ngang */
-.servicesContainer {
-    max-height: 350px; /* Giảm max-height */
-    overflow-y: auto;
-    border: 2px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 0.75rem; /* Giảm padding */
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+.fieldError {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(229, 62, 62, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border-left: 3px solid #e53e3e;
 }
 
-.serviceItem {
-    margin-bottom: 0.75rem; /* Giảm margin */
-    padding: 0.75rem; /* Giảm padding */
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #ffffff;
-    position: relative;
-    overflow: hidden;
+.fieldWarning {
+  color: #f59e0b;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border-left: 3px solid #f59e0b;
 }
 
-.serviceItem::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+.fieldHint {
+  color: #718096;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ✅ THÊM LẠI: Modal Components CSS */
+
+/* Service Modal Styles */
+.serviceModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Tăng z-index */
+  overflow-y: auto;
+}
+
+.serviceModalContent {
+  background: white;
+  border-radius: 12px;
+  max-width: 95vw;
+  max-height: 95vh;
+  width: 1200px;
+  position: relative;
+  z-index: 10000; /* Đảm bảo content ở trên */
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes modalSlideIn {
+  from {
     opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-}
-
-.serviceItem:hover {
-    border-color: #cbd5e0;
-    box-shadow: 
-        0 8px 30px rgba(0, 0, 0, 0.08),
-        0 2px 10px rgba(0, 0, 0, 0.04);
-    transform: translateY(-3px);
-}
-
-.serviceItem:hover::before {
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
     opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.serviceItem:last-child {
-    margin-bottom: 0;
+.serviceModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #f7fafc;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
-.serviceLabel {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 0;
-    font-weight: normal;
-    position: relative;
-    z-index: 1;
+.serviceModalHeader h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-.serviceCheckbox {
-    margin-right: 0.75rem;
-    margin-top: 0.25rem;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    flex-shrink: 0;
-    accent-color: #667eea;
-    border-radius: 4px;
+.serviceModalClose {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
 }
 
-.serviceDetails {
-    flex: 1;
+.serviceModalClose:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
-.serviceName {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.4rem; /* Giảm margin */
-    gap: 0.2rem; /* Giảm gap */
+.serviceModalBody {
+  flex: 1; /* ✅ THÊM: Cho phép expand */
+  overflow: hidden; /* ✅ THÊM: Ẩn overflow để child element control scroll */
+  display: flex;
+  flex-direction: column;
+}
+.serviceModalFooter {
+  padding: 1.5rem 2rem;
+  border-top: 2px solid #f7fafc;
+  background: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.serviceName strong {
-    color: #2d3748;
-    font-size: 0.85rem; /* Giảm font size */
-    font-weight: 600;
+/* Modal Controls */
+.serviceModalControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
 }
 
-.servicePrice {
-    color: #38a169;
-    font-weight: 700;
-    font-size: 0.8rem; /* Giảm font size */
-    background: linear-gradient(135deg, #68d391 0%, #38a169 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.serviceSearch {
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchInputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchInputGroup i {
+  position: absolute;
+  left: 1rem;
+  color: #718096;
+  z-index: 1;
+}
+
+.searchInputGroup input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.searchInputGroup input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.viewToggle {
+  display: flex;
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.viewButton {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #4a5568;
+}
+
+.viewButton.active {
+  background: white;
+  color: #667eea;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Category Tabs */
+.categoryTabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.categoryTab {
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.categoryTab:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.categoryTab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.categoryCount {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.15rem 0.4rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+}
+
+/* Services Grid */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1.5rem;
+    overflow-y: auto;
+}
+.categoryDropdownWrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  min-width: 180px;
+  z-index: 2;
+}
+
+.categoryDropdownWrapper select {
+  width: 100%;
+  padding: 0.6rem 1.5rem 0.6rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  background: #f7fafc;
+  color: #2d3748;
+  font-size: 0.95rem;
+  font-weight: 500;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.categoryDropdownWrapper select:focus {
+  outline: none;
+  border-color: #667eea;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
+}
+
+.categoryDropdownWrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 1.2rem;
+  width: 0.6em;
+  height: 0.35em;
+  pointer-events: none;
+  background: none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #667eea;
+  transform: translateY(-50%);
+}
+.servicesGrid.listView {
+  grid-template-columns: 1fr;
+}
+.servicesGrid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.servicesGrid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.servicesGrid::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.servicesGrid::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+.servicesGrid.listView .serviceCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Service Card */
+.serviceCard {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.serviceCard:hover {
+  border-color: #667eea;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
+}
+
+.serviceCard.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.serviceCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.serviceCardTitle {
+  flex: 1;
+}
+
+.serviceCardTitle h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  line-height: 1.3;
+}
+
+.serviceCardBadge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.serviceCardCheckbox {
+  margin-left: 1rem;
+}
+
+.serviceCardCheckbox input[type="checkbox"],
+.serviceCardCheckbox input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #667eea;
+  cursor: pointer;
+}
+
+.serviceCardBody {
+  margin-bottom: 1rem;
 }
 
 .serviceDescription {
-    color: #718096;
-    font-size: 0.75rem; /* Giảm font size */
-    line-height: 1.4;
+  color: #4a5568;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
-/* Checked state styling */
-.serviceItem:has(.serviceCheckbox:checked) {
-    border-color: #667eea;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    box-shadow: 
-        0 8px 30px rgba(102, 126, 234, 0.2),
-        0 2px 10px rgba(102, 126, 234, 0.1);
+.serviceCardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.serviceItem:has(.serviceCheckbox:checked) .serviceName strong {
-    color: #667eea;
+.serviceMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #718096;
 }
 
-.serviceItem:has(.serviceCheckbox:checked) .servicePrice {
-    color: #2d3748;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.serviceMeta i {
+  color: #667eea;
+  width: 14px;
 }
 
-/* Service total - Tối ưu cho layout ngang */
-.serviceTotal {
-    margin-top: 0.75rem; /* Giảm margin */
-    padding: 1.25rem; /* Giảm padding */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 
-        0 8px 30px rgba(102, 126, 234, 0.3),
-        0 2px 10px rgba(102, 126, 234, 0.2);
-    position: relative;
-    overflow: hidden;
+.serviceCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.serviceTotal::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: shimmer 3s infinite;
-    transform: rotate(45deg);
+.servicePrice {
+  color: #38a169;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-@keyframes shimmer {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+/* Modal Footer */
+.modalFooterInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.serviceTotal strong {
-    color: #ffffff;
-    font-size: 1rem; /* Giảm font size */
-    font-weight: 700;
-    position: relative;
-    z-index: 1;
+.confirmSelectionButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
 }
 
-.serviceCount {
-    display: block;
-    font-size: 0.75rem; /* Giảm font size */
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
-    margin-top: 0.25rem;
+.confirmSelectionButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-/* Submit section */
-.submitSection {
-    text-align: center;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 2px solid #f7fafc;
+.confirmSelectionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.submitButton {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 1.25rem 3rem;
-    font-size: 1.15rem;
-    font-weight: 600;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 
-        0 8px 30px rgba(102, 126, 234, 0.3),
-        0 2px 10px rgba(102, 126, 234, 0.2);
-    position: relative;
-    overflow: hidden;
-    letter-spacing: 0.025em;
-    min-width: 200px;
+/* Loading and Error States */
+.servicesLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
 }
 
-.submitButton::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+.servicesLoading .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
 }
 
-.submitButton:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 
-        0 12px 40px rgba(102, 126, 234, 0.4),
-        0 4px 20px rgba(102, 126, 234, 0.3);
+.servicesError {
+  text-align: center;
+  padding: 2rem;
+  color: #e53e3e;
 }
 
-.submitButton:hover::before {
-    left: 100%;
+.noServicesFound {
+  text-align: center;
+  padding: 3rem;
+  color: #718096;
 }
 
-.submitButton:active {
-    transform: translateY(-1px) scale(1.01);
+.noServicesFound i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
 }
 
-/* Responsive design tối ưu */
-@media (max-width: 1700px) {
-    .bookingFormContainer {
-        max-width: 1500px;
-        padding: 2.5rem 1.5rem;
-    }
-    
-    .formGrid {
-        grid-template-columns: repeat(5, minmax(260px, 1fr));
-        gap: 1rem;
-    }
-    
-    .formSection {
-        min-width: 260px;
-        max-width: 300px;
-        padding: 1.5rem 1.25rem;
-    }
+/* ✅ THÊM: Room Type Modal Specific Styles */
+
+/* Room Type trong Modal */
+.roomTypeGrid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 24px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  align-content: start;
+}
+.roomTypeGrid::-webkit-scrollbar {
+  width: 6px;
 }
 
-@media (max-width: 1500px) {
-    .bookingFormContainer {
-        max-width: 1400px;
-        padding: 2rem 1rem;
-    }
-    
-    .formGrid {
-        grid-template-columns: repeat(5, minmax(240px, 1fr));
-        gap: 0.75rem;
-    }
-    
-    .formSection {
-        min-width: 240px;
-        max-width: 280px;
-        padding: 1.25rem 1rem;
-    }
+.roomTypeGrid::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
-@media (max-width: 1300px) {
-    .formGrid {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(2, auto);
-    }
-    
-    .formSection:nth-child(4) {
-        grid-column: 1 / span 2;
-    }
-    
-    .formSection:nth-child(5) {
-        grid-column: 3;
-    }
-    
-    .formSection {
-        max-width: none;
-    }
+.roomTypeGrid::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
 }
 
+.roomTypeGrid::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+.roomTypeHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.roomTypeIcon {
+  font-size: 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+  font-size: 1rem;
+}
+
+.roomTypeBadges {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.availabilityStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+}
+
+.roomTypeAvailability {
+  margin-top: 0.5rem;
+}
+
+/* Quantity Selector cho Room Type */
+.quantitySelector {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f7fafc;
+}
+
+.quantitySelector label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantityButton {
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #4a5568;
+}
+
+.quantityButton:hover:not(:disabled) {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+  color: #2d3748;
+}
+
+.quantityButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityInput {
+  width: 60px;
+  padding: 0.4rem 0.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.quantityInput:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.totalRoomPrice {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.totalRoomPrice small {
+  color: #38a169;
+  font-weight: 600;
+}
+
+/* Selection và Unavailable Overlays */
+.selectionOverlay {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #38a169;
+  color: white;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(56, 161, 105, 0.3);
+  font-weight: 600;
+}
+
+.unavailableOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(226, 232, 240, 0.9);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-weight: 600;
+  gap: 0.5rem;
+}
+
+.unavailableOverlay i {
+  font-size: 2rem;
+  color: #e53e3e;
+}
+
+/* Room Selection Summary */
+.selectionSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.roomTypesSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.roomTypesSummary small {
+  color: #718096;
+  font-size: 0.8rem;
+}
+
+/* ✅ THÊM: Services Section Styles */
+
+.servicesSection {
+  background: white;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.servicesSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.servicesSectionHeader h3 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.servicesControls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.servicesExpandButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.servicesExpandButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.selectedBadge {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 0.25rem;
+}
+
+/* Selected Services Summary */
+.selectedServicesSummary {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.selectedServicesSummary h6 {
+  margin: 0 0 0.75rem 0;
+  color: #2d3748;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summaryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.clearAllButton {
+  background: #fed7d7;
+  color: #e53e3e;
+  border: none;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.clearAllButton:hover {
+  background: #feb2b2;
+}
+
+/* Selected Services List */
+.selectedServicesList,
+.selectedRoomsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.selectedServiceItem,
+.selectedRoomItem {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.selectedServiceItem:hover,
+.selectedRoomItem:hover {
+  border-color: #cbd5e0;
+}
+
+.selectedServiceInfo,
+.selectedRoomHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selectedServiceName,
+.selectedRoomName {
+  font-weight: 600;
+  color: #2d3748;
+  flex: 1;
+}
+
+.selectedServicePrice,
+.selectedRoomPrice {
+  color: #38a169;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.removeServiceButton,
+.removeRoomButton {
+  background: #fed7d7;
+  color: #e53e3e;
+  border: none;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.removeServiceButton:hover,
+.removeRoomButton:hover {
+  background: #feb2b2;
+  transform: scale(1.1);
+}
+
+/* Room-specific styles */
+.selectedRoomInfo {
+  flex: 1;
+}
+
+.selectedRoomName {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.selectedRoomPrice {
+  color: #38a169;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantityDisplay {
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.selectedRoomDetails {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f7fafc;
+}
+
+.roomTypeDescription {
+  color: #718096;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.roomTypeMetaInfo {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.roomTypeMetaInfo span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: #4a5568;
+}
+
+.roomTypeMetaInfo i {
+  color: #667eea;
+}
+
+/* Room Selection Summary */
+.roomSelectionSummary {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.summaryRow:last-child {
+  margin-bottom: 0;
+  font-size: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f7fafc;
+}
+
+.totalPrice {
+  color: #38a169;
+  font-size: 1.1rem;
+}
+
+/* No Services Selected */
+.noServicesSelected {
+  background: #f7fafc;
+  border: 2px dashed #cbd5e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* ✅ THÊM: Enhanced Pricing Summary Styles */
+
+/* Booking Summary Section */
+.bookingSummary {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #667eea;
+}
+
+.summaryTitle {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summaryItem {
+  margin-bottom: 0.75rem;
+}
+
+.summaryItem:last-child {
+  margin-bottom: 0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.summaryLabel {
+  font-weight: 500;
+  color: #4a5568;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 30%;
+}
+
+.summaryValue {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+  text-align: right;
+  max-width: 65%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.summaryValue small {
+  color: #718096;
+  font-weight: normal;
+  font-size: 0.8rem;
+}
+
+/* Room Types List */
+.roomTypesList {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+}
+
+.roomTypeItem {
+  margin-bottom: 0.25rem;
+}
+
+.roomTypeDetail {
+  color: #718096;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.roomTypeDetail small {
+  color: #a0aec0;
+  margin-left: 0.25rem;
+}
+
+/* Capacity Warning */
+.capacityWarning {
+  color: #f59e0b !important;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Pricing Details Section */
+.pricingDetails {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+}
+
+.breakdownTitle {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f7fafc;
+}
+
+/* Room Breakdown Items */
+.roomsBreakdown {
+  margin-bottom: 1rem;
+}
+
+.roomBreakdownItem {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-left: 3px solid #667eea;
+}
+
+.roomBreakdownItem:last-child {
+  margin-bottom: 0;
+}
+
+.roomBreakdownHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.roomTypeName {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.roomTotalPrice {
+  font-weight: 700;
+  color: #38a169;
+  font-size: 0.9rem;
+}
+
+.roomBreakdownDetails {
+  color: #718096;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+/* Pricing Items */
+.pricingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f7fafc;
+  font-size: 0.9rem;
+}
+
+.pricingItem:last-of-type {
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 0.5rem;
+}
+
+.feeLabel {
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.feeAmount {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* Pricing Total */
+.pricingTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.pricingTotal span:last-child {
+  color: #38a169;
+  font-size: 1.2rem;
+}
+
+/* Empty State */
+.emptyBooking {
+  text-align: center;
+  padding: 2rem;
+  color: #718096;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e0;
+}
+
+.emptyBooking i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+.emptyBooking p {
+  margin: 0.5rem 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.emptyBooking small {
+  color: #a0aec0;
+}
+
+/* ✅ THÊM: Promotion Section Styles */
+.promotionSection {
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  border: 2px solid #f56565;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.promotionSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f56565, #ed8936, #f6ad55);
+}
+
+.promotionHeader h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.promotionHeader h4 i {
+  color: #f56565;
+}
+
+.appliedBadge {
+  background: #48bb78;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.promotionSubtext {
+  margin: 0;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+/* Applied Promotion Display */
+.appliedPromotion {
+  background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+  border: 2px solid #48bb78;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.appliedPromotionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.appliedPromotionInfo h5 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appliedPromotionInfo h5 i {
+  color: #48bb78;
+}
+
+.appliedPromotionInfo p {
+  margin: 0;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.promotionDescription {
+  color: #718096;
+  font-style: italic;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.appliedPromotionDiscount {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.discountAmount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #38a169;
+}
+
+.removePromotionBtn {
+  background: #fed7d7;
+  border: 1px solid #fc8181;
+  color: #e53e3e;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.removePromotionBtn:hover {
+  background: #feb2b2;
+  border-color: #f56565;
+}
+
+/* Promotion Input */
+.promotionInput {
+  margin-top: 1rem;
+}
+
+.codeInputGroup {
+  margin-bottom: 1rem;
+}
+
+.codeInputField {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.promotionCodeInput {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.promotionCodeInput:focus {
+  outline: none;
+  border-color: #f56565;
+  box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.1);
+}
+
+.promotionCodeInput.error {
+  border-color: #e53e3e;
+  background-color: #fed7d7;
+}
+
+.applyCodeBtn {
+  padding: 0.75rem 1.5rem;
+  background: #f56565;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 80px;
+}
+
+.applyCodeBtn:hover:not(:disabled) {
+  background: #e53e3e;
+}
+
+.applyCodeBtn:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.validationMessage {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Promotion List Toggle */
+.promotionListToggle {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.togglePromotionListBtn {
+  background: none;
+  border: 2px solid #f56565;
+  color: #f56565;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+
+.togglePromotionListBtn:hover {
+  background: #f56565;
+  color: white;
+}
+
+.togglePromotionListBtn i {
+  transition: transform 0.3s;
+}
+
+/* Promotion List */
+.promotionList {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.promotionListLoading {
+  text-align: center;
+  padding: 2rem;
+  color: #718096;
+}
+
+.promotionGrid {
+  display: grid;
+  gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.promotionCard {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.promotionCard:hover {
+  border-color: #f56565;
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.15);
+  transform: translateY(-2px);
+}
+
+.promotionCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.promotionCardHeader h6 {
+  margin: 0;
+  color: #2d3748;
+  font-weight: 600;
+  flex: 1;
+}
+
+.discountBadge {
+  background: #f56565;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.promotionCardDescription {
+  color: #718096;
+  font-size: 0.85rem;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+}
+
+.promotionCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.promotionDates {
+  color: #a0aec0;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.selectPromotionBtn {
+  background: #f56565;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.selectPromotionBtn:hover {
+  background: #e53e3e;
+}
+
+.noPromotions {
+  text-align: center;
+  padding: 2rem;
+  color: #a0aec0;
+}
+
+.noPromotions i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Promotion Summary */
+.promotionSummary {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.promotionSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f7fafc;
+}
+
+.promotionSummaryRow:last-child {
+  border-bottom: none;
+}
+
+.promotionSummaryRow.finalAmount {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2d3748;
+  border-top: 2px solid #e2e8f0;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+}
+
+.discountText {
+  color: #38a169;
+  font-weight: 600;
+}
+
+/* Submit Button Enhancement */
+.submitPrice .originalPrice {
+  text-decoration: line-through;
+  color: #a0aec0;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.submitPrice .discountedPrice {
+  color: #38a169;
+  font-weight: 700;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .bookingFormContainer {
-        margin: 1rem;
-        padding: 1.5rem;
-        max-width: none;
-    }
-    
-    .formGrid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        gap: 1.5rem;
-    }
-    
-    .formSection {
-        min-width: auto;
-        max-width: none;
-        padding: 1.5rem;
-    }
-    
-    .formSection:nth-child(4),
-    .formSection:nth-child(5) {
-        grid-column: auto;
-    }
-    
-    .formTitle {
-        font-size: 2rem;
-    }
-    
-    .servicesContainer {
-        max-height: 300px;
-    }
-    
-    .serviceItem {
-        padding: 1rem;
-    }
-    
-    .serviceName {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-    }
-    
-    .submitButton {
-        padding: 1rem 2.5rem;
-        font-size: 1rem;
-        min-width: 180px;
-    }
+  .promotionSection {
+    padding: 1rem;
+  }
+  
+  .appliedPromotionContent {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .appliedPromotionDiscount {
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .codeInputField {
+    flex-direction: column;
+  }
+  
+  .applyCodeBtn {
+    align-self: stretch;
+  }
+  
+  .promotionCardHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .discountBadge {
+    align-self: flex-start;
+  }
 }
 
-/* ...existing styles... */
+/* Đảm bảo z-index cao nhất cho modal */
+.serviceModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+  padding: 20px;
+}
+
+.serviceModalContent {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh; /* ✅ THAY ĐỔI: từ height: 80vh thành max-height: 90vh */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Đảm bảo không có modal nào khác xuất hiện cùng lúc */
+.bookingFormWrapper.modalOpen {
+  overflow: hidden;
+}
+
+.bookingFormWrapper.modalOpen .formLayout {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/* Thêm vào BookingForm.module.css */
+.modalOpen {
+  overflow: hidden;
+}
+
+/* Global CSS để ngăn body scroll */
+body.modal-open {
+  overflow: hidden;
+  padding-right: 15px; /* Compensate for scrollbar */
+}
+
+/* ✅ THÊM: Existing Guest Info Styles */
+.existingGuestInfo {
+  border-left: 4px solid #38a169 !important;
+  background: linear-gradient(135deg, rgba(56, 161, 105, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%) !important;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.guestInfoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.guestInfoHeader h6 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.guestInfoHeader h6 i {
+  color: #38a169;
+  margin-right: 0.5rem;
+}
+
+/* New Guest Info */
+.newGuestInfo {
+  border-left: 4px solid #3182ce !important;
+  background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(49, 130, 206, 0.05) 100%) !important;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.newGuestInfo h6 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.newGuestInfo h6 i {
+  color: #3182ce;
+  margin-right: 0.5rem;
+}
+
+/* Field Enhancement for Auto-fill */
+.field label .badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.field input:disabled {
+  background-color: #f7fafc;
+  opacity: 0.8;
+}
+
+/* Loading States */
+.field label .fa-spinner {
+  color: #3182ce;
+}
+
+/* Submit Button Enhancement */
+.submitButton small {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Trust Badges Update */
+.trustBadge:nth-child(2) {
+  color: #38a169;
+}
+
+/* ✅ THÊM: Styles cho fee breakdown */
+.feeBreakdown {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff3cd;
+  border-radius: 0.25rem;
+  border-left: 3px solid #ffc107;
+}
+
+.feeExplanation {
+  color: #856404;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.feeExplanation i {
+  color: #ffc107;
+}

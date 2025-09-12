@@ -7,7 +7,7 @@ class Room {
         this.Description = '';
         this.Capacity = 0;
         this.CreateAt = new Date();
-        this.UpadateAt = new Date();
+        this.UpdateAt = new Date(); 
         this.Status = '';
         this.TypeID = 0;
         this.amenities = []; // Array để lưu trữ các amenity của room
@@ -22,8 +22,8 @@ class Room {
             CurrentPrice: data.CurrentPrice,
             Description: data.Description,
             Capacity: data.Capacity,
-            CreateAt: new Date(data.CreateAt),
-            UpadateAt: new Date(data.UpadateAt),
+            CreateAt: data.CreateAt ? new Date(data.CreateAt) : new Date(),
+            UpdateAt: data.UpdateAt ? new Date(data.UpdateAt) : new Date(),     
             Status: data.Status,
             TypeID: data.TypeID,
             amenities: [] // Khởi tạo amenities array rỗng
@@ -40,10 +40,10 @@ class Room {
             Description: this.Description,
             Capacity: this.Capacity,
             CreateAt: this.CreateAt,
-            UpadateAt: this.UpadateAt,
+            UpdateAt: this.UpdateAt, // ✅ SỬA TÊN CỘT ĐÚNG
             Status: this.Status,
             TypeID: this.TypeID,
-            amenities: this.amenities // Include amenities in JSON
+            amenities: this.amenities
         };
     }
 
@@ -77,6 +77,16 @@ class Room {
     // Tính tổng giá phụ thu amenities
     calculateAmenityPrice(pricePerAmenity = 50000) {
         return this.amenities.length * pricePerAmenity;
+    }
+
+    // Method để set thời gian cập nhật
+    setUpdateTime(time = new Date()) {
+        this.UpdateAt = time;
+    }
+
+    // Method để lấy thời gian cập nhật cuối
+    getLastUpdateTime() {
+        return this.UpdateAt || this.CreateAt;
     }
 
     // Validate room data

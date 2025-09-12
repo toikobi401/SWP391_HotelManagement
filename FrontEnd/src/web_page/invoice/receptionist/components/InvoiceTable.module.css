@@ -1,0 +1,1253 @@
+/* ✅ CSS VARIABLES với màu sắc sáng và high contrast */
+:root {
+  --text-primary: #1a202c;
+  --text-secondary: #2d3748;
+  --text-muted: #4a5568;
+  --text-white: #ffffff;
+  
+  /* Light theme colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #edf2f7;
+  --bg-hover: #e2e8f0;
+  
+  /* Table specific colors */
+  --table-header-bg: #f1f5f9;
+  --table-row-even: #ffffff;
+  --table-row-odd: #f8fafc;
+  --table-row-hover: #e2e8f0;
+  --table-border: #cbd5e0;
+  
+  /* Status colors with high contrast */
+  --status-paid-bg: #dcfce7;
+  --status-paid-text: #166534;
+  --status-pending-bg: #fef3c7;
+  --status-pending-text: #92400e;
+  --status-partial-bg: #dbeafe;
+  --status-partial-text: #1e40af;
+  
+  /* Primary colors */
+  --primary-color: #667eea;
+  --primary-hover: #5a67d8;
+  --success-color: #48bb78;
+  --warning-color: #ed8936;
+  --danger-color: #f56565;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  
+  /* Border radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+/* ✅ MAIN TABLE CONTAINER */
+.invoiceTableContainer {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: visible; /* ✅ QUAN TRỌNG: Đổi từ hidden sang visible */
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ TABLE HEADER */
+.invoiceTableHeader {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, var(--table-header-bg) 0%, #e2e8f0 100%);
+  border-bottom: 2px solid var(--table-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tableTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tableTitle i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.tableActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tableBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-height: 44px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tableBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.tableBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.tableBtn.primary {
+  background: #28a745;
+  color: #ffffff;
+  border-color: #1e7e34;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.tableBtn.primary:hover:not(:disabled) {
+  background: #218838;
+  border-color: #1c7430;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.tableBtn.primary:disabled {
+  background: #6c757d;
+  border-color: #5a6268;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tableBtn i {
+  font-size: 1rem;
+  margin-right: 0.25rem;
+}
+
+.tableBtn .fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ✅ TABLE WRAPPER */
+.tableWrapper {
+  overflow-x: auto;
+  background: #ffffff;
+  flex: 1;
+}
+
+/* ✅ MAIN TABLE */
+.invoiceTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-primary);
+  font-size: 0.875rem;
+}
+
+/* ✅ TABLE HEADER */
+.invoiceTable thead {
+  background: linear-gradient(135deg, var(--table-header-bg) 0%, #e2e8f0 100%);
+  border-bottom: 2px solid var(--table-border);
+}
+
+.invoiceTable th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-bottom: 2px solid var(--table-border);
+  position: sticky;
+  top: 0;
+  background: var(--table-header-bg);
+  z-index: 10;
+}
+
+.invoiceTable th:first-child {
+  border-radius: var(--radius-md) 0 0 0;
+}
+
+.invoiceTable th:last-child {
+  border-radius: 0 var(--radius-md) 0 0;
+}
+
+/* ✅ TABLE ROWS với alternating colors */
+.invoiceTable tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--table-border);
+}
+
+.invoiceTable tbody tr:nth-child(even) {
+  background: var(--table-row-even);
+}
+
+.invoiceTable tbody tr:nth-child(odd) {
+  background: var(--table-row-odd);
+}
+
+.invoiceTable tbody tr:hover {
+  background: var(--table-row-hover);
+  transform: scale(1.01);
+  box-shadow: var(--shadow-md);
+  z-index: 5;
+  position: relative;
+}
+
+.invoiceTable tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 var(--radius-md);
+}
+
+.invoiceTable tbody tr:last-child td:last-child {
+  border-radius: 0 0 var(--radius-md) 0;
+}
+
+/* ✅ TABLE CELLS */
+.invoiceTable td {
+  padding: 1rem 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--table-border);
+}
+
+/* ✅ ENHANCED BADGES trong table */
+.invoiceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  border: 2px solid;
+}
+
+.badgePaid {
+  background: var(--status-paid-bg);
+  color: var(--status-paid-text);
+  border-color: var(--status-paid-text);
+}
+
+.badgePending {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+  border-color: var(--status-pending-text);
+}
+
+.badgePartial {
+  background: var(--status-partial-bg);
+  color: var(--status-partial-text);
+  border-color: var(--status-partial-text);
+}
+
+/* ✅ ACTION BUTTONS trong table */
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 2px solid var(--table-border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.actionBtn:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  background: var(--bg-secondary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.actionBtnView {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.actionBtnView:hover {
+  background: var(--primary-color);
+  color: var(--text-white);
+}
+
+.actionBtnPrint {
+  color: var(--text-muted);
+  border-color: var(--table-border);
+}
+
+.actionBtnPrint:hover {
+  background: var(--text-muted);
+  color: var(--text-white);
+}
+
+/* ✅ MONEY VALUES với high contrast */
+.moneyValue {
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.moneyValueLarge {
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  color: var(--primary-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ ID BADGES */
+.idBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  background: var(--primary-color);
+  color: var(--text-white);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bookingIdBadge {
+  background: var(--warning-color);
+  color: var(--text-white);
+}
+
+/* ✅ PAGINATION */
+.invoiceTablePagination {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-top: 2px solid #e2e8f0;
+  display: flex !important; /* ✅ Force display */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  min-height: 80px; /* ✅ Đảm bảo chiều cao tối thiểu */
+  position: relative;
+  z-index: 10; /* ✅ Đảm bảo hiển thị trên các elements khác */
+}
+
+.paginationInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.paginationInfo i {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.pageSizeInfo {
+  padding: 0.5rem 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #dc3545;
+  border-radius: var(--radius-md);
+  color: #dc3545;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* ✅ PAGE SIZE SELECTOR */
+.pageSizeSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.pageSizeSelector label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.pageSizeSelect {
+  padding: 0.375rem 0.5rem;
+  border: 2px solid var(--table-border);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pageSizeSelect:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ✅ ENHANCED PAGINATION BUTTONS */
+.paginationBtn {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-white);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  user-select: none;
+  pointer-events: auto; /* ✅ Đảm bảo có thể click */
+  z-index: 1; /* ✅ Đảm bảo ở trên các element khác */
+}
+
+.paginationBtn:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--text-white);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.paginationBtn:disabled,
+.paginationBtn.disabled {
+  background: var(--bg-gray);
+  color: var(--text-muted);
+  border-color: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none; /* ✅ Disable click cho disabled buttons */
+}
+
+.paginationBtn.active {
+  background: var(--primary-color);
+  color: var(--text-white);
+  border-color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* ✅ Đảm bảo pagination container không bị che */
+.invoiceTablePagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-white);
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  position: relative;
+  z-index: 10;
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  position: relative;
+  z-index: 11;
+}
+
+/* ✅ RESPONSIVE PAGINATION */
+@media (max-width: 768px) {
+  .invoiceTablePagination {
+    padding: 1rem !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    min-height: 140px !important;
+    align-items: center;
+  }
+  
+  .paginationInfo {
+    text-align: center;
+    align-items: center;
+  }
+  
+  .paginationControls {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.375rem !important;
+  }
+  
+  .paginationBtn {
+    min-width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .pageSizeSelector {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .paginationBtn {
+    min-width: 1.75rem !important;
+    height: 1.75rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.25rem !important;
+  }
+  
+  .pageSizeInfo {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.25rem;
+  }
+}
+
+/* ✅ FORCE SHOW tất cả pagination elements */
+.invoiceTablePagination * {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+}
+
+.invoiceTablePagination button,
+.invoiceTablePagination a,
+.invoiceTablePagination span {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+/* ✅ LOADING STATES */
+.invoiceTableLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.loadingSpinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid var(--bg-tertiary);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.invoiceTableEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: var(--bg-primary);
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.emptySubtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .invoiceTable th,
+  .invoiceTable td {
+    padding: 0.875rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .tableTitle {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .invoiceTableHeader,
+  .invoiceTablePagination {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .tableActions,
+  .paginationControls {
+    justify-content: center;
+  }
+  
+  .invoiceTable {
+    font-size: 0.75rem;
+  }
+  
+  .invoiceTable th,
+  .invoiceTable td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .actionBtn {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Stack table on mobile */
+  .tableWrapper {
+    overflow-x: scroll;
+  }
+  
+  .invoiceTable {
+    min-width: 800px;
+  }
+  
+  .invoiceTablePagination {
+    padding: 1rem !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    min-height: 120px !important;
+  }
+  
+  .paginationControls {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+  
+  .paginationBtn {
+    min-width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .invoiceTableContainer {
+    margin: 0 -1rem 2rem -1rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .invoiceTableHeader,
+  .invoiceTablePagination {
+    padding: 0.75rem;
+  }
+  
+  .tableTitle {
+    font-size: 1rem;
+  }
+  
+  .paginationBtn {
+    min-width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* ✅ DARK MODE SUPPORT */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #a0aec0;
+    
+    --bg-primary: #1a202c;
+    --bg-secondary: #2d3748;
+    --bg-tertiary: #4a5568;
+    --bg-hover: #2d3748;
+    
+    --table-header-bg: #2d3748;
+    --table-row-even: #1a202c;
+    --table-row-odd: #242e3a;
+    --table-row-hover: #2d3748;
+    --table-border: #4a5568;
+  }
+}
+
+/* ✅ HIGH CONTRAST MODE */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --table-border: #000000;
+  }
+  
+  .invoiceTable th,
+  .invoiceTable td,
+  .tableTitle,
+  .paginationInfo {
+    color: #000000;
+    font-weight: 700;
+  }
+  
+  .invoiceTable,
+  .actionBtn,
+  .paginationBtn,
+  .tableBtn {
+    border-width: 3px;
+    border-color: #000000;
+  }
+  
+  .invoiceTable tbody tr:hover {
+    background: #f0f0f0;
+  }
+}
+
+/* ✅ ANIMATIONS */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.invoiceTable tbody tr {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ✅ PRINT STYLES */
+@media print {
+  .invoiceTableContainer {
+    box-shadow: none;
+    border: 1px solid #000000;
+  }
+  
+  .invoiceTable th,
+  .invoiceTable td {
+    color: #000000;
+    background: #ffffff;
+  }
+  
+  .invoiceTable tbody tr:hover {
+    background: #ffffff;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .actionButtons,
+  .tableActions {
+    display: none;
+  }
+  
+  /* ✅ THÊM: Styles đặc biệt cho RemainingAmount */
+.remainingAmountCell {
+  font-weight: 700;
+  position: relative;
+}
+
+.remainingAmountPositive {
+  color: #dc3545 !important;
+  background: rgba(220, 53, 69, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #dc3545;
+}
+
+.remainingAmountZero {
+  color: #28a745 !important;
+  background: rgba(40, 167, 69, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #28a745;
+}
+
+.remainingAmountZero::before {
+  content: '✓ ';
+  font-weight: 900;
+}
+
+/* ✅ ENHANCED: Money value styles với remaining amount support */
+.moneyValue {
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.moneyValueLarge {
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  color: var(--primary-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ ENHANCED: Pagination info với remaining amount summary */
+.paginationInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.paginationInfo i {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.pageSizeInfo {
+  padding: 0.5rem 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #dc3545;
+  border-radius: var(--radius-md);
+  color: #dc3545;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+}
+
+/* ✅ RESPONSIVE: Table với cột mới */
+@media (max-width: 1200px) {
+  .invoiceTable th,
+  .invoiceTable td {
+    font-size: 0.8rem;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .invoiceTable th:nth-child(7), /* RemainingAmount column */
+  .invoiceTable td:nth-child(7) {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ✅ Stack layout cho mobile */
+  .tableWrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .invoiceTable {
+    min-width: 900px; /* Tăng min-width do thêm cột */
+  }
+  
+  .paginationInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .pageSizeInfo {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+/* ✅ ENHANCED: Table header với sorting */
+.invoiceTable th[style*="cursor: pointer"]:hover {
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* ✅ PRINT: Hide action columns và optimize cho print */
+@media print {
+  .actionButtons,
+  .invoiceTableHeader,
+  .invoiceTablePagination {
+    display: none !important;
+  }
+  
+  .invoiceTable {
+    width: 100% !important;
+    font-size: 0.75rem;
+  }
+  
+  .invoiceTable th,
+  .invoiceTable td {
+    padding: 0.5rem 0.25rem;
+    border: 1px solid #000 !important;
+  }
+  
+  .pageSizeInfo {
+    display: block !important;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff !important;
+    border: 2px solid #000 !important;
+    padding: 1rem !important;
+  }
+}
+
+/* ✅ GIỮ NGUYÊN: Tất cả existing styles khác */
+
+/* ✅ SỬA: BookingType badge styles với classes riêng biệt */
+.bookingTypeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  border: 2px solid;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.bookingTypeBadge i {
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.bookingTypeBadge:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ✅ Walk-in Badge - Màu xanh dương */
+.bookingTypeBadge.walkin {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  border-color: #17a2b8;
+  font-weight: 800;
+}
+
+.bookingTypeBadge.walkin i {
+  color: #17a2b8;
+}
+
+.bookingTypeBadge.walkin:hover {
+  background: #17a2b8;
+  color: #ffffff;
+}
+
+/* ✅ Online Badge - Màu xanh lá */
+.bookingTypeBadge.online {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  border-color: #28a745;
+  font-weight: 800;
+}
+
+.bookingTypeBadge.online i {
+  color: #28a745;
+}
+
+.bookingTypeBadge.online:hover {
+  background: #28a745;
+  color: #ffffff;
+}
+
+/* ✅ Unknown Badge - Màu xám */
+.bookingTypeBadge.unknown {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border-color: #6c757d;
+  font-weight: 600;
+}
+
+.bookingTypeBadge.unknown i {
+  color: #6c757d;
+}
+
+.bookingTypeBadge.unknown:hover {
+  background: #6c757d;
+  color: #ffffff;
+}
+
+/* ✅ THÊM: Animation cho Walk-in badge */
+.bookingTypeBadge.walkin i {
+  animation: walkingMotion 2s ease-in-out infinite;
+}
+
+@keyframes walkingMotion {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(2px); }
+}
+
+/* ✅ THÊM: Animation cho Online badge */
+.bookingTypeBadge.online i {
+  animation: onlineGlow 2s ease-in-out infinite;
+}
+
+@keyframes onlineGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ✅ THÊM: Animation cho Unknown badge */
+.bookingTypeBadge.unknown i {
+  animation: unknownPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes unknownPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* ✅ CẬP NHẬT: BookingType stats trong pagination với màu sắc riêng */
+.bookingTypeStats {
+  padding: 0.5rem 0.75rem;
+  background: rgba(23, 162, 184, 0.1);
+  border: 1px solid #17a2b8;
+  border-radius: var(--radius-md);
+  color: #17a2b8;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bookingTypeStats strong {
+  font-weight: 900;
+}
+
+.bookingTypeStats strong:first-of-type {
+  color: #17a2b8; /* Walk-in color */
+}
+
+.bookingTypeStats strong:last-of-type {
+  color: #28a745; /* Online color */
+}
+
+/* ✅ RESPONSIVE: Badge adjustments */
+@media (max-width: 768px) {
+  .bookingTypeBadge {
+    font-size: 0.65rem;
+    padding: 0.375rem 0.625rem;
+    gap: 0.375rem;
+  }
+  
+  .bookingTypeBadge i {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookingTypeBadge {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.5rem;
+    gap: 0.25rem;
+  }
+  
+  .bookingTypeBadge i {
+    font-size: 0.65rem;
+  }
+}
+
+/* ✅ HIGH CONTRAST MODE */
+@media (prefers-contrast: high) {
+  .bookingTypeBadge {
+    border-width: 3px;
+    font-weight: 900;
+  }
+  
+  .bookingTypeBadge.walkin {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+  }
+  
+  .bookingTypeBadge.online {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+  }
+  
+  .bookingTypeBadge.unknown {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+  }
+}
+
+/* ✅ PRINT STYLES */
+@media print {
+  .bookingTypeBadge {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    font-size: 0.7rem;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  
+  .bookingTypeBadge::before {
+    content: attr(data-booking-type) ': ';
+    font-weight: 900;
+  }
+}
+
+/* ✅ REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .bookingTypeBadge i {
+    animation: none !important;
+  }
+  
+  .bookingTypeBadge:hover {
+    transform: none;
+  }
+}
+
+/* ✅ THÊM: Customer info styles */
+.customerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 150px;
+}
+
+.customerName {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.customerType {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+}
+
+.customerType i {
+  font-size: 0.7rem;
+  width: 12px;
+  text-align: center;
+}
+
+/* ✅ THÊM: Phone info styles */
+.phoneInfo {
+  min-width: 120px;
+}
+
+.phoneLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.phoneLink:hover {
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.phoneLink i {
+  font-size: 0.75rem;
+}
+
+.phoneEmpty {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  background: #f9fafb;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.phoneEmpty i {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}

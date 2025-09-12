@@ -1,0 +1,105 @@
+.promotionForm {
+  max-width: 100%;
+}
+
+.promotionForm h3 {
+  font-weight: 600;
+}
+
+.promotionForm .form-label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.promotionForm .form-control {
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: 1px solid #ced4da;
+}
+
+.promotionForm .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.promotionForm .form-control.border-warning {
+  border-color: #ffc107 !important;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.promotionForm .btn {
+  min-width: 100px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+.promotionForm .btn:hover {
+  transform: translateY(-1px);
+}
+
+.promotionForm .alert {
+  border-radius: 6px;
+  border: none;
+  padding: 0.75rem 1rem;
+}
+
+.promotionForm .spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+.promotionForm textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Modal specific styles */
+.promotionForm .row {
+  margin: 0;
+}
+
+.promotionForm .col-md-6 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.promotionForm .col-md-6:first-child {
+  padding-left: 0;
+}
+
+.promotionForm .col-md-6:last-child {
+  padding-right: 0;
+}
+
+/* Responsive for modal */
+@media (max-width: 768px) {
+  .promotionForm .d-flex.gap-2 {
+    flex-direction: column;
+  }
+  
+  .promotionForm .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .promotionForm .col-md-6 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Change indicators */
+.promotionForm .text-warning {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.promotionForm .form-text {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}

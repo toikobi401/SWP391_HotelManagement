@@ -1,0 +1,75 @@
+/* Tùy chỉnh thêm nếu cần */
+.bookimgformathome{
+    background-color: transparent !important;
+}
+
+.card-bookingform {
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #444;
+}
+
+.form-control {
+  font-size: 14px;
+  padding: 6px 10px;
+  height: auto;
+}
+
+.invalid-feedback {
+  font-size: 12px;
+}
+
+.alert-success {
+  font-size: 14px;
+  padding: 8px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+.card-bookingform {
+  background: rgba(255, 255, 255, 0.1); /* nền mờ */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* viền trắng mờ */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* bóng mờ */
+  backdrop-filter: blur(10px); /* hiệu ứng kính */
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.5s ease;
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+}
+
+/* Animation trượt lên */
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+.form-booking-online {
+  background-color: #FFFFFF33;
+}

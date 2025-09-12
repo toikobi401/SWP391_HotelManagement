@@ -1,0 +1,96 @@
+/* Simple Modal Styles */
+.simple-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75); /* ✅ Tăng opacity để che tốt hơn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10005; /* ✅ Cao hơn InvoiceDetailModal (10001) */
+    padding: 1rem;
+}
+
+.simple-modal-content {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+    z-index: 10006; /* ✅ Content cũng cần z-index cao */
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.simple-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+}
+
+.simple-modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.simple-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.15s ease-in-out;
+}
+
+.simple-modal-close:hover {
+    color: #000;
+}
+
+.simple-modal-body {
+    padding: 1.5rem;
+    max-height: calc(90vh - 80px);
+    overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .simple-modal-overlay {
+        padding: 0.5rem;
+    }
+    
+    .simple-modal-content {
+        max-width: 100%;
+        max-height: 95vh;
+    }
+    
+    .simple-modal-header {
+        padding: 1rem;
+    }
+    
+    .simple-modal-body {
+        padding: 1rem;
+        max-height: calc(95vh - 60px);
+    }
+}

@@ -5,70 +5,65 @@ import axios from 'axios';
 
 class PaymentService {
     constructor() {
-        // VietQR configuration
+        // ✅ SỬA: Sử dụng trực tiếp từ process.env
         this.vietQRConfig = {
-            bankId: process.env.VIETQR_BANK_ID || '970422', // MB Bank
-            accountNo: process.env.VIETQR_ACCOUNT_NO || '0123456789',
-            accountName: process.env.VIETQR_ACCOUNT_NAME || 'HOTEL HUB',
+            bankId: process.env.BANK_ID || '970422', // MB Bank
+            accountNo: process.env.ACCOUNT_NO || '0865124996',
+            accountName: process.env.ACCOUNT_NAME || 'LE TRAN TRONG DAT',
             apiUrl: 'https://img.vietqr.io/image'
         };
 
-        console.log('PaymentService initialized with config:', {
+        console.log('🏦 PaymentService initialized with config:', {
             bankId: this.vietQRConfig.bankId,
             accountNo: this.vietQRConfig.accountNo,
             accountName: this.vietQRConfig.accountName
         });
     }
 
-    // Generate VietQR
-    generateVietQR(paymentData) {
+    // ✅ SỬA: Generate VietQR với priority env variables
+    generateVietQR({ amount, invoiceId, description, template = 'compact', accountNo, accountName, bankId }) {
         try {
-            const { amount, invoiceId, description, template = 'compact' } = paymentData;
-            
-            console.log('Generating VietQR with data:', { amount, invoiceId, description, template });
-            
-            // Tạo nội dung chuyển khoản chuẩn
-            const transferContent = `HOTELHUB INV${invoiceId} ${description || ''}`.substring(0, 25);
-            
-            // Tạo URL QR code với các tham số đầy đủ
-            const qrParams = new URLSearchParams({
+            // ✅ SỬA: Ưu tiên sử dụng process.env trước, sau đó mới đến parameters
+            const finalBankId = process.env.BANK_ID || bankId || '970422';
+            const finalAccountNo = process.env.ACCOUNT_NO || accountNo || '0865124996';
+            const finalAccountName = process.env.ACCOUNT_NAME || accountName || 'LE TRAN TRONG DAT';
+
+            console.log('🔧 Generating VietQR with config:', {
+                bankId: finalBankId,
+                accountNo: finalAccountNo,
+                accountName: finalAccountName,
                 amount: amount,
-                addInfo: transferContent,
-                accountName: this.vietQRConfig.accountName
+                description: description
             });
 
-            const qrUrl = `${this.vietQRConfig.apiUrl}/${this.vietQRConfig.bankId}-${this.vietQRConfig.accountNo}-${template}.jpg?${qrParams.toString()}`;
+            // ✅ SỬA: Đảm bảo URL được tạo với đúng Bank ID
+            const qrUrl = `https://img.vietqr.io/image/${finalBankId}-${finalAccountNo}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(description)}`;
 
-            console.log('Generated QR URL:', qrUrl);
-
-            // Tạo thêm QR data để hiển thị thông tin
-            const qrData = {
-                bankId: this.vietQRConfig.bankId,
-                bankName: this.getBankName(this.vietQRConfig.bankId),
-                accountNo: this.vietQRConfig.accountNo,
-                accountName: this.vietQRConfig.accountName,
-                amount: amount,
-                description: transferContent,
-                template: template,
-                invoiceId: invoiceId,
-                expectedContent: transferContent
-            };
+            console.log('🎯 Generated QR URL:', qrUrl);
 
             return {
                 success: true,
-                qrUrl,
-                qrData,
+                qrUrl: qrUrl,
+                qrData: {
+                    bankId: finalBankId,
+                    bankName: this.getBankName(finalBankId),
+                    accountNo: finalAccountNo,
+                    accountName: finalAccountName,
+                    amount: amount,
+                    description: description
+                },
                 transferInfo: {
-                    bankName: qrData.bankName,
-                    accountNo: this.vietQRConfig.accountNo,
-                    accountName: this.vietQRConfig.accountName,
-                    amount: amount.toLocaleString('vi-VN') + ' VND',
-                    content: transferContent,
-                    note: 'Vui lòng chuyển khoản đúng nội dung để được xử lý tự động'
+                    bankName: this.getBankName(finalBankId),
+                    accountNo: finalAccountNo,
+                    accountName: finalAccountName,
+                    amount: amount.toLocaleString('vi-VN') + 'đ',
+                    content: description,
+                    note: 'Vui lòng chuyển đúng số tiền và nội dung cho MB Bank'
                 }
             };
+
         } catch (error) {
-            console.error('VietQR generation error:', error);
+            console.error('❌ VietQR generation error:', error);
             return {
                 success: false,
                 error: error.message
@@ -76,10 +71,11 @@ class PaymentService {
         }
     }
 
-    // Get bank name from bank ID
+    // ✅ SỬA: Get bank name với Bank ID chính xác
     getBankName(bankId) {
         const bankNames = {
-            '970422': 'MB Bank (Ngân hàng Quân đội)',
+            '970422': 'MB Bank (Ngân hàng Quân đội)', // ✅ MB Bank chính xác
+            '970416': 'ACB Bank (Asia Commercial Bank)', // ✅ ACB Bank
             '970415': 'VietinBank',
             '970436': 'Vietcombank', 
             '970418': 'BIDV',
@@ -90,7 +86,10 @@ class PaymentService {
             '970403': 'Sacombank',
             '970437': 'HDBank'
         };
-        return bankNames[bankId] || 'Ngân hàng';
+        
+        const bankName = bankNames[bankId] || 'Ngân hàng không xác định';
+        console.log(`🏛️ Bank ID ${bankId} mapped to: ${bankName}`);
+        return bankName;
     }
 
     // Verify bank transfer
@@ -186,14 +185,10 @@ class PaymentService {
     // Check transaction with MB Bank
     async checkMBBankTransaction(accountNo, fromDate, toDate, amount, content) {
         try {
-            // Simulate checking with MB Bank API
-            // In thực tế, bạn sẽ call API của MB Bank hoặc dùng webhook
             console.log('🏦 Checking with MB Bank API:', { accountNo, fromDate, toDate, amount, content });
             
-            // Simulate delay
             await new Promise(resolve => setTimeout(resolve, 2000));
             
-            // Simulate 70% chance of finding transaction
             const found = Math.random() > 0.3;
             
             if (found) {

@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // ✅ SAVE SESSION VỚI FULL USER DATA
+        // ✅ SAVE SESSION VỚI ENHANCED DATA
         req.session.user = {
             UserID: userWithRoles.UserID,
             Username: userWithRoles.Username,
@@ -52,20 +52,38 @@ router.post('/login', async (req, res) => {
             Fullname: userWithRoles.Fullname,
             PhoneNumber: userWithRoles.PhoneNumber,
             Status: userWithRoles.Status,
-            roles: userWithRoles.roles // ✅ QUAN TRỌNG: Lưu roles vào session
+            roles: userWithRoles.roles,
+            loginTime: new Date(),
+            lastActivity: new Date()
         };
 
-        console.log('✅ Login successful with roles:', {
-            UserID: userWithRoles.UserID,
-            Username: userWithRoles.Username,
-            rolesCount: userWithRoles.roles?.length || 0,
-            roles: userWithRoles.roles
-        });
+        // ✅ THÊM: Save session explicitly để đảm bảo persistence
+        req.session.save((err) => {
+            if (err) {
+                console.error('❌ Error saving session after login:', err);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Đăng nhập thành công nhưng lỗi lưu session'
+                });
+            }
 
-        res.json({
-            success: true,
-            message: 'Đăng nhập thành công',
-            user: userWithRoles.toJSON() // ✅ TRẢ VỀ FULL USER DATA VỚI ROLES
+            console.log('✅ Login successful with session saved:', {
+                UserID: userWithRoles.UserID,
+                Username: userWithRoles.Username,
+                rolesCount: userWithRoles.roles?.length || 0,
+                sessionID: req.sessionID
+            });
+
+            res.json({
+                success: true,
+                message: 'Đăng nhập thành công',
+                user: userWithRoles.toJSON(),
+                sessionInfo: {
+                    loginTime: req.session.user.loginTime,
+                    lastActivity: req.session.user.lastActivity,
+                    sessionID: req.sessionID
+                }
+            });
         });
 
     } catch (error) {

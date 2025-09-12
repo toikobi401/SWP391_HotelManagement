@@ -1,0 +1,118 @@
+/* EditPromotion.module.css */
+.promotionForm {
+  max-width: 800px;
+  margin: auto;
+}
+
+.promotionForm h3 {
+  font-weight: 600;
+}
+
+.promotionForm .form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.promotionForm .form-control {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.promotionForm .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.promotionForm .form-control.border-warning {
+  border-color: #ffc107 !important;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.promotionForm .btn {
+  min-width: 120px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.promotionForm .btn:hover {
+  transform: translateY(-1px);
+}
+
+.promotionForm .card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+}
+
+.promotionForm .card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 1rem 1rem 0 0 !important;
+  border-bottom: none;
+}
+
+.promotionForm .breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.promotionForm .breadcrumb-item a,
+.promotionForm .breadcrumb-item button {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.promotionForm .breadcrumb-item a:hover,
+.promotionForm .breadcrumb-item button:hover {
+  color: white;
+}
+
+.promotionForm .breadcrumb-item.active {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.promotionForm .breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.promotionForm .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .promotionForm {
+    margin: 0 1rem;
+  }
+  
+  .promotionForm .d-flex.gap-2 {
+    flex-direction: column;
+  }
+  
+  .promotionForm .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.promotionForm .card {
+  animation: fadeIn 0.3s ease-in-out;
+}

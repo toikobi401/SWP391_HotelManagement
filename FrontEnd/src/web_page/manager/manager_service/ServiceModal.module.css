@@ -1,0 +1,366 @@
+/* ✅ CSS VARIABLES với Black-White Theme */
+:root {
+  --text-primary: #000000;
+  --text-secondary: #1a1a1a;
+  --text-muted: #333333;
+  --text-white: #ffffff;
+  
+  --bg-white: #ffffff;
+  --bg-light: #f8fafc;
+  --bg-gray: #f0f0f0;
+  
+  --primary-color: #0066cc;
+  --primary-hover: #0052a3;
+  --success-color: #006600;
+  --danger-color: #cc0000;
+  --warning-color: #cc6600;
+  
+  --border-color: #e0e0e0;
+  --border-dark: #333333;
+  --border-black: #000000;
+  
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ MODAL CONTAINER */
+.serviceModal {
+  max-width: 100%;
+  background: var(--bg-white);
+  padding: 1rem;
+}
+
+/* ✅ MODAL TITLE */
+.modalTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 900;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.modalTitle i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+/* ✅ FORM ELEMENTS với High Contrast */
+.formLabel {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.formLabel i {
+  color: var(--primary-color);
+  font-weight: 900;
+}
+
+.formControl {
+  border: 3px solid var(--border-black);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-white);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.formControl:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.2);
+  background: var(--bg-white);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.formControl:disabled {
+  background: var(--bg-gray);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.formControl::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+/* ✅ FORM CHECK với Enhanced Styling */
+.formCheck {
+  padding: 1rem;
+  background: var(--bg-light);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.formCheck:hover {
+  background: var(--bg-white);
+  border-color: var(--primary-color);
+}
+
+.checkboxLabel {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.checkboxLabel i {
+  font-weight: 900;
+}
+
+/* ✅ PREVIEW CARD */
+.previewCard {
+  background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+  border: 3px solid var(--border-black);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.previewTitle {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.previewTitle i {
+  color: var(--primary-color);
+  font-weight: 900;
+}
+
+.previewContent p {
+  margin: 0.5rem 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.previewContent strong {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+/* ✅ MODAL ACTIONS */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 3px solid var(--border-color);
+}
+
+.saveBtn {
+  background: var(--primary-color);
+  border: 3px solid var(--primary-color);
+  color: var(--text-white);
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.saveBtn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cancelBtn {
+  background: var(--bg-white);
+  border: 3px solid var(--border-black);
+  color: var(--text-primary);
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: var(--text-primary);
+  color: var(--text-white);
+  border-color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ✅ VALIDATION FEEDBACK */
+.is-invalid {
+  border-color: var(--danger-color) !important;
+  box-shadow: 0 0 0 4px rgba(204, 0, 0, 0.2) !important;
+}
+
+.invalid-feedback {
+  color: var(--danger-color);
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.invalid-feedback::before {
+  content: '⚠️';
+  font-size: 0.9rem;
+}
+
+/* ✅ RESPONSIVE */
+@media (max-width: 768px) {
+  .serviceModal {
+    padding: 0.5rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.125rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .modalActions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .previewCard {
+    margin-top: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .formControl {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalTitle {
+    font-size: 1rem;
+  }
+  
+  .formLabel {
+    font-size: 0.8rem;
+  }
+  
+  .previewContent p {
+    font-size: 0.75rem;
+  }
+  
+  .saveBtn,
+  .cancelBtn {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ✅ HIGH CONTRAST MODE */
+@media (prefers-contrast: high) {
+  .formLabel,
+  .checkboxLabel,
+  .previewTitle,
+  .previewContent strong {
+    color: #000000 !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+  }
+  
+  .formControl {
+    border-width: 4px !important;
+    border-color: #000000 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  .previewCard {
+    border-width: 4px !important;
+    border-color: #000000 !important;
+  }
+}
+
+/* ✅ LOADING SPINNER */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 2px;
+}
+
+/* ✅ ALERT ENHANCEMENTS */
+.serviceModal .alert {
+  border: 3px solid;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.serviceModal .alert-danger {
+  background: rgba(204, 0, 0, 0.1);
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.serviceModal .alert-success {
+  background: rgba(0, 102, 0, 0.1);
+  color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+/* ✅ FORM TEXT ENHANCEMENTS */
+.serviceModal .form-text {
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+}

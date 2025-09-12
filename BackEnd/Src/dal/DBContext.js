@@ -44,6 +44,27 @@ class DBContext {
         this.pool = pool;
     }
 
+    // ✅ THÊM: Query method để execute SQL queries
+    async query(sql, parameters = []) {
+        try {
+            const poolConnection = await this.pool;
+            const request = poolConnection.request();
+            
+            // Add parameters to request
+            if (parameters && parameters.length > 0) {
+                parameters.forEach(param => {
+                    request.input(param.name, param.type, param.value);
+                });
+            }
+            
+            const result = await request.query(sql);
+            return result;
+        } catch (error) {
+            console.error('❌ Database query error:', error);
+            throw error;
+        }
+    }
+
     async list() {
         throw new Error('Method "list()" must be implemented');
     }

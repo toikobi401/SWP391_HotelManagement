@@ -1,0 +1,462 @@
+/* Modern, clean, responsive Manage Feedback CSS */
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --danger: #ef4444;
+  --danger-dark: #b91c1c;
+  --background: #f6f8fa;
+  --card-bg: #fff;
+  --border: #e5e7eb;
+  --text: #222;
+  --text-light: #666;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+/* Main background */
+.feedback-manage__hero-overlay {
+  min-height: 100vh;
+  background: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0;
+  border-radius: 1px;
+}
+
+/* Card Container */
+.feedback-manage-container {
+  background: var(--card-bg);
+  border: 1px solid black;
+  border-radius: 5px; 
+  box-shadow: var(--shadow);
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 28px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 18px;
+}
+
+.feedback-header h2 {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  font-weight: 700;
+  margin: 0;
+}
+
+.feedback-stats {
+  color: var(--text-light);
+  font-size: 1rem;
+  display: flex;
+  gap: 18px;
+}
+
+/* Filters */
+.feedback-filters {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;           /* Cho phép xuống dòng nếu thiếu chỗ */
+  gap: 18px 24px;
+  align-items: flex-end;
+  background: #f1f5f9;
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  margin-bottom: 12px;
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+.feedback-filters::-webkit-scrollbar {
+  height: 8px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 120px;          /* Có thể giảm xuống để các filter nhỏ lại */
+  width: auto;
+  margin-right: 0;
+}
+
+.filter-group label {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.filter-select,
+.filter-input {
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: border 0.2s;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  border: 1.5px solid var(--primary);
+}
+
+.clear-filters-btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  background: var(--danger);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background 0.2s;
+}
+.clear-filters-btn:hover {
+  background: var(--danger-dark);
+}
+
+.apply-filters-btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background 0.2s;
+}
+.apply-filters-btn:hover {
+  background: var(--primary-dark);
+}
+
+.error-message {
+  color: var(--danger);
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* Table */
+.feedback-table-wrapper {
+  overflow-x: unset;    /* Bỏ scroll ngang */
+  background: transparent;
+
+}
+
+.feedback-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  background: transparent;
+  table-layout: auto; /* Cho phép cột tự động điều chỉnh */
+}
+
+.feedback-table th,
+.feedback-table td {
+  font-size: 0.97rem;
+  padding: 12px 8px;
+  text-align: center;
+  background: #f9fafb;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+/* Customer name column styling */
+.feedback-table td:first-child,
+.feedback-table th:first-child {
+  white-space: normal;
+  min-width: 140px;
+  text-align: left;
+  padding: 12px 10px;
+}
+
+.feedback-table td:nth-child(2),
+.feedback-table th:nth-child(2) {
+  white-space: nowrap;
+}
+
+.feedback-table tr {
+  background: #fff;
+  border-radius: 8px;
+}
+
+.feedback-table tbody tr:hover {
+  background-color: #e0e7ef;
+  transition: background 0.2s;
+}
+
+.no-data {
+  color: #888;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* Rating style */
+.rating {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* Customer name styling */
+.customer-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  text-align: left;
+  line-height: 1.3;
+}
+
+.customer-name strong {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: block;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.customer-name .text-muted {
+  color: var(--text-light);
+  font-size: 0.75rem;
+  font-style: italic;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Comment cell */
+.comment-cell {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Delete button */
+.delete-btn {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  outline: none;
+  display: inline-block;
+  min-width: 48px;
+  min-height: 32px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.delete-btn:hover {
+  background-color: var(--danger-dark);
+}
+.delete-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Đặt min-width cho cột Delete */
+.feedback-table th:last-child,
+.feedback-table td:last-child {
+  min-width: 70px;
+  width: 70px;
+  text-align: center;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-left: 16px;
+}
+
+/* Comment Modal */
+.comment-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.comment-modal-content {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 10px;
+  max-width: 400px;
+  max-height: 60vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+.close-btn {
+  position: absolute;
+  top: 8px; right: 16px;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+}
+
+/* ✅ THÊM: Highlight button styling */
+.highlight-btn {
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+  display: inline-block;
+  min-width: 48px;
+  min-height: 32px;
+  line-height: 1.2;
+}
+
+.highlight-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #ffc107;
+  transform: scale(1.1);
+}
+
+.highlight-btn.highlighted {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.highlight-btn.highlighted:hover {
+  background-color: #ffc107;
+  color: white;
+}
+
+.highlight-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ✅ THÊM: Highlighted row styling */
+.highlighted-row {
+  background-color: #fff9e6 !important;
+  border-left: 4px solid #ffc107;
+}
+
+.highlighted-row:hover {
+  background-color: #fff3cd !important;
+}
+
+/* ✅ SỬA: Cập nhật delete-btn styles để tương thích */
+.delete-btn {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  outline: none;
+  display: inline-block;
+  min-width: 48px;
+  min-height: 32px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.delete-btn:hover {
+  background-color: var(--danger-dark);
+}
+
+.delete-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ✅ THÊM: Statistics card for highlighted feedbacks */
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.text-dark {
+  color: #212529 !important;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .feedback-manage-container {
+    padding: 20px 16px;
+    max-width: 100%;
+  }
+  .feedback-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .feedback-header h2 {
+    font-size: 1.5rem;
+  }
+  .feedback-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .feedback-table th,
+  .feedback-table td {
+    padding: 8px 4px;
+    font-size: 0.85rem;
+  }
+  .customer-name strong {
+    font-size: 0.8rem;
+  }
+  .customer-name .text-muted {
+    font-size: 0.7rem;
+  }
+  .comment-cell {
+    max-width: 100px;
+  }
+  .delete-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-width: 40px;
+  }
+}
+
+/* Responsive: Khi màn hình nhỏ, cho phép bảng co lại và filter xuống dòng */
+@media (max-width: 1000px) {
+  .feedback-filters {
+    flex-wrap: wrap;
+    gap: 12px 10px;
+    justify-content: flex-start;
+  }
+  .feedback-table {
+    min-width: 700px;
+  }
+}
+
+.feedback-table th,
+.feedback-table tr,
+.feedback-table,
+.feedback-table-wrapper {
+  border-radius: 0 !important;
+}

@@ -1,0 +1,447 @@
+.pricingSummary {
+  background: 
+    linear-gradient(120deg, #f0f7fa99 60%, #e0e7ffcc 100%),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(60, 72, 100, 0.18);
+  max-width: 1000px;
+  width: 100%;
+  margin: 56px auto 32px auto;
+  padding: 38px 32px 28px 32px;
+  animation: fadeIn 0.7s;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(1px);
+}
+
+.title {
+  color: #2563eb;
+  font-weight: 800;
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-size: 2rem;
+  text-shadow: 0 2px 8px #0001;
+}
+
+/* ✅ CUSTOMER SECTION */
+.customerSection,
+.bookingSection,
+.servicesSection,
+.promotionSection {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.customerSection h3,
+.bookingSection h3,
+.servicesSection h3,
+.promotionSection h3 {
+  color: #374151;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.customerSection h3 i,
+.bookingSection h3 i,
+.servicesSection h3 i,
+.promotionSection h3 i {
+  margin-right: 8px;
+  color: #2563eb;
+}
+
+.customerInfo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoRow span:first-child {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.infoRow strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* ✅ ROOMS LIST */
+.roomsList,
+.servicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.roomItem,
+.serviceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.roomItem span:first-child,
+.serviceItem span:first-child {
+  font-weight: 500;
+  color: #374151;
+}
+
+.roomItem span:last-child,
+.serviceItem span:last-child {
+  font-weight: 600;
+  color: #059669;
+}
+
+/* ✅ PROMOTION SECTION */
+.promotionInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #fef3c7;
+  border-radius: 8px;
+  border: 1px solid #f59e0b;
+}
+
+.promotionInfo span:first-child {
+  font-weight: 500;
+  color: #92400e;
+}
+
+.discountAmount {
+  font-weight: 600;
+  color: #dc2626;
+}
+
+/* ✅ TOTAL SECTION */
+.totalSection {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 2px solid #2563eb;
+}
+
+.subtotalRow,
+.discountRow,
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.subtotalRow {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.discountRow {
+  color: #dc2626;
+  font-size: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.totalRow {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  border-top: 2px solid #2563eb;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+/* ✅ FORM ACTIONS */
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.btnBack {
+  padding: 12px 24px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btnBack:hover {
+  border-color: #9ca3af;
+  background: #f9fafb;
+}
+
+.btnBack i {
+  margin-right: 8px;
+}
+
+.btnBooking,
+.btnInvoice {
+  padding: 12px 24px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btnBooking:hover,
+.btnInvoice:hover {
+  background: #1d4ed8;
+}
+
+.btnBooking i,
+.btnInvoice i {
+  margin-right: 8px;
+}
+
+.btnInvoice {
+  background: #059669;
+}
+
+.btnInvoice:hover {
+  background: #047857;
+}
+
+/* ✅ SUCCESS MESSAGE */
+.successMessage {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border: 1px solid #10b981;
+}
+
+.successMessage i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* ✅ THÊM: Late checkout section */
+.lateCheckoutSection {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #f59e0b;
+}
+
+.lateCheckoutSection h3 {
+  color: #f59e0b;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.lateCheckoutSection h3 i {
+  margin-right: 8px;
+  color: #f59e0b;
+}
+
+.lateCheckoutInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #fef3c7;
+  border-radius: 8px;
+  border: 1px solid #f59e0b;
+}
+
+.lateCheckoutFee {
+  font-weight: 600;
+  color: #dc2626;
+}
+
+/* ✅ THÊM: Service info styles */
+.serviceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.serviceName {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.serviceCategory {
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.servicePrice {
+  color: #059669;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ✅ THÊM: Room info styles */
+.roomInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.roomName {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.roomDetails {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.roomTotal {
+  color: #059669;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ✅ THÊM: Breakdown rows */
+.breakdownRows {
+  margin: 8px 0;
+  padding: 8px 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.breakdownRow span:first-child {
+  font-style: italic;
+}
+
+.breakdownRow span:last-child {
+  color: #374151;
+  font-weight: 500;
+}
+
+/* ✅ Cập nhật section total */
+.sectionTotal {
+  text-align: right;
+  padding: 12px 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 12px;
+  color: #059669;
+  font-size: 16px;
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .pricingSummary {
+    max-width: 100%;
+    padding: 20px 16px;
+    margin: 20px auto;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+  
+  .customerInfo {
+    grid-template-columns: 1fr;
+  }
+  
+  .infoRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .roomItem,
+  .serviceItem,
+  .promotionInfo,
+  .lateCheckoutInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .subtotalRow,
+  .discountRow,
+  .totalRow,
+  .breakdownRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .breakdownRows {
+    margin: 12px 0;
+  }
+}

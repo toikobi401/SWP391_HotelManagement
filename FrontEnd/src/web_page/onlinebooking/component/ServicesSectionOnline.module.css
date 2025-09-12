@@ -1,0 +1,692 @@
+.servicesSection {
+  background: 
+    linear-gradient(120deg, #f0f7fa99 60%, #e0e7ffcc 100%),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(60, 72, 100, 0.18);
+  max-width: 1400px;
+  width: 100%;
+  margin: 56px auto 32px auto;
+  padding: 38px 32px 28px 32px;
+  animation: fadeIn 0.7s;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(1px);
+}
+
+.title {
+  color: #2563eb;
+  font-weight: 800;
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-size: 2rem;
+  text-shadow: 0 2px 8px #0001;
+}
+
+/* ✅ SERVICE SECTION HEADER */
+.servicesSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.servicesSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.servicesSummary span:first-child {
+  font-weight: 600;
+  color: #374151;
+}
+
+.totalCost {
+  font-size: 14px;
+  color: #059669;
+  font-weight: 700;
+}
+
+.servicesExpandButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.servicesExpandButton:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.servicesExpandButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.selectedBadge {
+  background: #dc2626;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+/* ✅ SELECTED SERVICES LIST */
+.selectedServicesList {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.selectedServicesList h6 {
+  color: #374151;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.selectedServicesList h6 i {
+  margin-right: 8px;
+  color: #059669;
+}
+
+.selectedItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.selectedServiceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.selectedServiceItem:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.serviceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.serviceName {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.servicePrice {
+  color: #059669;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.serviceDuration {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.removeServiceButton {
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.removeServiceButton:hover {
+  background: #b91c1c;
+  transform: scale(1.1);
+}
+
+/* ✅ NO SERVICES SELECTED */
+.noServicesSelected {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 32px;
+  border-radius: 12px;
+  text-align: center;
+  color: #6b7280;
+  border: 2px dashed #d1d5db;
+  margin-bottom: 24px;
+}
+
+.noServicesSelected i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #9ca3af;
+}
+
+/* ✅ LOADING STATE */
+.loadingState {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.loadingState .spinner-border {
+  margin-bottom: 16px;
+}
+
+/* ✅ SERVICE MODAL */
+.serviceModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.serviceModalContent {
+  background: white;
+  border-radius: 16px;
+  max-width: 1200px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.serviceModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 16px 16px 0 0;
+}
+
+.serviceModalHeader h4 {
+  margin: 0;
+  color: #1f2937;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.serviceModalClose {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.serviceModalClose:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.serviceModalBody {
+  padding: 24px;
+}
+
+/* ✅ SERVICE MODAL CONTROLS */
+.serviceModalControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.serviceSearch {
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchInputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchInputGroup i {
+  position: absolute;
+  left: 12px;
+  color: #6b7280;
+  z-index: 1;
+}
+
+.searchInputGroup input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.searchInputGroup input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.viewToggle {
+  display: flex;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.viewButton {
+  background: white;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6b7280;
+}
+
+.viewButton:hover {
+  background: #f3f4f6;
+}
+
+.viewButton.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* ✅ CATEGORY DROPDOWN */
+.categoryDropdownWrapper {
+  margin-bottom: 20px;
+}
+
+.categoryDropdown {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.categoryDropdown:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ✅ SERVICES GRID */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.servicesGrid.listView {
+  grid-template-columns: 1fr;
+}
+
+.servicesGrid.listView .serviceCard {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.servicesGrid.listView .serviceCardBody {
+  flex: 1;
+  margin: 0 16px;
+}
+
+.servicesGrid.listView .serviceCardHeader,
+.servicesGrid.listView .serviceCardFooter {
+  flex-shrink: 0;
+}
+
+.serviceCard {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.serviceCard:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+}
+
+.serviceCard.selected {
+  border-color: #2563eb;
+  background: #f0f9ff;
+}
+
+.serviceCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.serviceCardTitle h5 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.serviceCardBadge {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.serviceCardCheckbox input {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.serviceCardBody {
+  margin-bottom: 16px;
+}
+
+.serviceDescription {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.serviceCardMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.serviceMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.serviceMeta i {
+  color: #9ca3af;
+}
+
+.serviceCardFooter {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.servicePrice {
+  color: #2563eb;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ✅ MODAL STATES */
+.servicesLoading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.servicesLoading .spinner-border {
+  margin-bottom: 16px;
+}
+
+.servicesError {
+  text-align: center;
+  padding: 40px;
+  color: #dc2626;
+}
+
+.servicesError i {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.noServicesFound {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.noServicesFound i {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* ✅ MODAL FOOTER */
+.serviceModalFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 0 0 16px 16px;
+}
+
+.modalFooterInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modalFooterInfo span {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.modalFooterInfo strong {
+  color: #059669;
+  font-size: 16px;
+}
+
+.confirmSelectionButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.confirmSelectionButton:hover {
+  background: #1d4ed8;
+}
+
+/* ✅ NAVIGATION ACTIONS */
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.btnBack {
+  padding: 12px 24px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btnBack:hover {
+  border-color: #9ca3af;
+  background: #f9fafb;
+  transform: translateX(-2px);
+}
+
+.btnNext {
+  padding: 12px 24px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btnNext:hover {
+  background: #1d4ed8;
+  transform: translateX(2px);
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .servicesSection {
+    max-width: 1200px;
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .servicesSectionHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .serviceModalControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .selectedItems {
+    grid-template-columns: 1fr;
+  }
+  
+  .servicesSection {
+    padding: 20px 16px;
+    margin: 20px auto;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+  
+  .serviceModalFooter {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .serviceCard {
+    padding: 12px;
+  }
+  
+  .serviceModalContent {
+    margin: 10px;
+    max-height: 95vh;
+  }
+  
+  .serviceModalBody {
+    padding: 16px;
+  }
+  
+  .serviceModalHeader,
+  .serviceModalFooter {
+    padding: 16px;
+  }
+}

@@ -82,21 +82,25 @@ router.get('/test', async (req, res) => {
 
 // GET /api/room-types - Get all room types
 router.get('/', async (req, res) => {
-    try {
-        const roomTypes = await roomTypeDB.getAll();
-        res.json({
-            success: true,
-            data: roomTypes,
-            count: roomTypes.length
-        });
-    } catch (error) {
-        console.error('Error fetching room types:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching room types',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
+  try {
+    console.log('🔍 Fetching all room types...');
+    const roomTypes = await roomTypeDB.getAll();
+    
+    console.log(`✅ Found ${roomTypes.length} room types`);
+    
+    res.json({
+      success: true,
+      data: roomTypes,
+      count: roomTypes.length
+    });
+  } catch (error) {
+    console.error('Error fetching room types:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching room types',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
 });
 
 // GET /api/room-types/statistics - Get room type statistics

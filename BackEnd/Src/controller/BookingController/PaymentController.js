@@ -1,13 +1,16 @@
 import express from 'express';
 import PaymentService from '../../services/PaymentService.js';
 import PaymentDBContext from '../../dal/PaymentDBContext.js';
+import PaymentRefundDBContext from '../../dal/PaymentRefundDBContext.js'; // ✅ THÊM
 import Payment from '../../model/Payment.js';
 import PaymentLog from '../../model/PaymentLog.js';
+import PaymentRefund from '../../model/PaymentRefund.js'; // ✅ THÊM
 import moment from 'moment';
 
 const router = express.Router();
 const paymentService = new PaymentService();
 const paymentDB = new PaymentDBContext();
+const refundDB = new PaymentRefundDBContext(); // ✅ THÊM
 
 // Helper function to log payment action
 async function logPaymentAction(paymentId, action, status, message, req) {
@@ -51,7 +54,7 @@ router.post('/vietqr/generate', async (req, res) => {
             });
         }
 
-        // Check if invoice exists using actual Invoice table structure
+        // Check if invoice exists
         const invoice = await paymentDB.checkInvoiceExists(invoiceId);
         if (!invoice) {
             return res.status(400).json({
@@ -62,7 +65,7 @@ router.post('/vietqr/generate', async (req, res) => {
         }
 
         // Check if invoice already paid
-        if (invoice.PaymentStatus === true || invoice.PaymentStatus === 1) {
+        if (invoice.PaymentStatus === 'Paid') {
             return res.status(400).json({
                 success: false,
                 error: `Invoice ID ${invoiceId} is already marked as paid.`,
@@ -76,19 +79,6 @@ router.post('/vietqr/generate', async (req, res) => {
             });
         }
 
-        // Validate amount against invoice total
-        if (amount > invoice.TotalAmount) {
-            return res.status(400).json({
-                success: false,
-                error: `Payment amount (${amount}) cannot exceed invoice total (${invoice.TotalAmount}).`,
-                invoiceDetails: {
-                    invoiceId: invoice.InvoiceID,
-                    totalAmount: invoice.TotalAmount,
-                    requestedAmount: amount
-                }
-            });
-        }
-
         // Create payment record
         const payment = new Payment(
             null,
@@ -97,36 +87,33 @@ router.post('/vietqr/generate', async (req, res) => {
             'pending',
             amount,
             null,
-            process.env.VIETQR_BANK_ID,
+            process.env.BANK_ID, // ✅ SỬA: Sử dụng trực tiếp từ env
             null,
             null,
             null,
-            moment().add(15, 'minutes').toDate(), // QR expires in 15 minutes
+            moment().add(15, 'minutes').toDate(),
             0,
             description || `VietQR Payment for Invoice ${invoiceId} (Booking ${invoice.BookingID})`
         );
 
-        // Insert payment to database
         const paymentId = await paymentDB.insert(payment);
         console.log('✅ Payment created with ID:', paymentId);
 
-        // Generate VietQR
+        // ✅ SỬA: Generate VietQR KHÔNG truyền account info để force sử dụng env
         const qrResult = paymentService.generateVietQR({
             amount,
             invoiceId,
             description: `HOTELHUB INV${invoiceId}`,
             template
+            // ✅ SỬA: KHÔNG truyền accountNo, accountName, bankId để force sử dụng từ env
         });
 
         if (qrResult.success) {
+            console.log('✅ QR Generated successfully:', qrResult.qrUrl);
+            console.log('🏦 Bank info:', qrResult.qrData);
+
             // Update payment with QR URL
             await paymentDB.updatePaymentQRUrl(paymentId, qrResult.qrUrl);
-
-            // Log the action
-            await logPaymentAction(paymentId, 'qr_generated', 'pending', 
-                `QR code generated for Invoice ${invoiceId}, Amount: ${amount}`, req);
-
-            console.log('✅ QR generated successfully:', qrResult.qrUrl);
 
             res.json({
                 success: true,
@@ -152,29 +139,15 @@ router.post('/vietqr/generate', async (req, res) => {
         } else {
             // Update payment as failed
             await paymentDB.updatePaymentStatus(paymentId, 'failed');
-            await logPaymentAction(paymentId, 'qr_generation_failed', 'failed', qrResult.error, req);
             
-            console.error('❌ QR generation failed:', qrResult.error);
-            res.status(400).json({
-                success: false,
-                error: qrResult.error
-            });
+            throw new Error(qrResult.error || 'Failed to generate QR code');
         }
     } catch (error) {
         console.error('❌ VietQR generation error:', error);
-        
-        if (error.message.includes('FOREIGN KEY constraint')) {
-            res.status(400).json({
-                success: false,
-                error: 'Invoice ID does not exist in the system.',
-                solution: 'Please create an invoice first or use an existing Invoice ID.'
-            });
-        } else {
-            res.status(500).json({
-                success: false,
-                error: error.message
-            });
-        }
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
     }
 });
 
@@ -226,11 +199,11 @@ router.post('/vietqr/verify', async (req, res) => {
         });
 
         if (verificationResult.success && verificationResult.verified) {
-            // Update payment status in database
+            // Update payment as completed
             await paymentDB.updatePaymentStatus(paymentId, 'completed', transactionId);
             
-            // Update Invoice PaymentStatus to true (paid)
-            await paymentDB.updateInvoicePaymentStatus(payment.getInvoiceId(), true);
+            // ✅ SỬA: Update invoice payment status to string
+            await paymentDB.updateInvoicePaymentStatus(payment.getInvoiceId(), 'Paid');
             
             // Log successful verification
             await logPaymentAction(paymentId, 'payment_verified', 'completed', 
@@ -528,53 +501,605 @@ async function simulateWebhookVerification(payment) {
     }
 }
 
-// Thêm endpoint để force verify payment (for testing)
+// ✅ SỬA: Force verify endpoint với validation và error handling tốt hơn
 router.post('/force-verify/:paymentId', async (req, res) => {
     try {
         const paymentId = parseInt(req.params.paymentId);
         
-        const payment = await paymentDB.get(paymentId);
-        if (!payment) {
-            return res.status(404).json({
-                success: false,
-                error: 'Payment not found'
-            });
-        }
-
-        if (payment.isCompleted()) {
+        console.log('💪 Force verify request for payment:', paymentId);
+        
+        // ✅ SỬA: Validate paymentId
+        if (isNaN(paymentId) || paymentId <= 0) {
+            console.log('❌ Invalid payment ID:', req.params.paymentId);
             return res.status(400).json({
                 success: false,
-                error: 'Payment already completed'
+                message: 'Payment ID không hợp lệ',
+                receivedPaymentId: req.params.paymentId,
+                parsedPaymentId: paymentId
+            });
+        }
+        
+        // ✅ SỬA: Get payment with better error handling
+        const payment = await paymentDB.get(paymentId);
+        if (!payment) {
+            console.log('❌ Payment not found:', paymentId);
+            return res.status(404).json({
+                success: false,
+                message: `Không tìm thấy payment với ID: ${paymentId}`
             });
         }
 
-        // Force verify with simulated transaction
+        console.log('📋 Payment found:', {
+            id: payment.getPaymentId(),
+            status: payment.getPaymentStatus(),
+            amount: payment.getAmount(),
+            invoiceId: payment.getInvoiceId()
+        });
+
+        // ✅ SỬA: Check if already completed
+        if (payment.isCompleted()) {
+            console.log('✅ Payment already completed');
+            return res.json({
+                success: true,
+                message: 'Payment đã được xác thực trước đó',
+                payment: payment.toJSON(),
+                alreadyCompleted: true
+            });
+        }
+
+        // ✅ SỬA: Force verify with proper transaction ID
         const forceTransactionId = `FORCE_${Date.now()}_${paymentId}`;
         
-        await paymentDB.updatePaymentStatus(paymentId, 'completed', forceTransactionId);
-        await paymentDB.updateInvoicePaymentStatus(payment.getInvoiceId(), true);
+        console.log('💪 Force verifying payment with transaction ID:', forceTransactionId);
         
-        await logPaymentAction(paymentId, 'force_verified', 'completed', 
-            `Payment force verified for testing. Transaction ID: ${forceTransactionId}`, req);
+        // ✅ SỬA: Update payment status với error handling
+        const updateResult = await paymentDB.updatePaymentStatus(paymentId, 'completed', forceTransactionId);
+        
+        if (!updateResult) {
+            console.log('❌ Failed to update payment status');
+            return res.status(500).json({
+                success: false,
+                message: 'Lỗi khi cập nhật trạng thái payment'
+            });
+        }
+        
+        // ✅ SỬA: Update invoice payment status với error handling  
+        try {
+            const invoiceUpdateResult = await paymentDB.updateInvoicePaymentStatus(payment.getInvoiceId(), 'Paid');
+            console.log('💰 Invoice payment status updated:', invoiceUpdateResult);
+        } catch (invoiceError) {
+            console.error('⚠️ Warning: Failed to update invoice status:', invoiceError);
+            // Don't fail the entire request if invoice update fails
+        }
+        
+        // ✅ SỬA: Log payment action với error handling
+        try {
+            await logPaymentAction(paymentId, 'force_verified', 'completed', 
+                `Payment force verified for testing. Transaction ID: ${forceTransactionId}`, req);
+        } catch (logError) {
+            console.error('⚠️ Warning: Failed to log payment action:', logError);
+            // Don't fail the entire request if logging fails
+        }
 
-        console.log('✅ Payment force verified!');
+        console.log('✅ Payment force verified successfully!');
 
+        // ✅ SỬA: Get updated payment
         const updatedPayment = await paymentDB.get(paymentId);
         
         res.json({
             success: true,
             message: 'Payment force verified successfully!',
-            payment: updatedPayment.toJSON(),
-            transactionId: forceTransactionId
+            payment: updatedPayment ? updatedPayment.toJSON() : payment.toJSON(),
+            transactionId: forceTransactionId,
+            forceVerified: true
         });
         
     } catch (error) {
         console.error('❌ Force verify error:', error);
+        
+        // ✅ SỬA: Better error response
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server khi force verify payment',
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+    }
+});
+
+// ✅ THÊM: Request refund for a payment
+router.post('/:paymentId/refund', async (req, res) => {
+    try {
+        const paymentId = parseInt(req.params.paymentId);
+        const { refundAmount, refundReason, processedBy } = req.body;
+
+        if (isNaN(paymentId) || paymentId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Payment ID không hợp lệ'
+            });
+        }
+
+        console.log('💰 Refund request for payment:', paymentId);
+
+        // Get payment details
+        const payment = await paymentDB.get(paymentId);
+        if (!payment) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy payment'
+            });
+        }
+
+        if (!payment.isCompleted()) {
+            return res.status(400).json({
+                success: false,
+                message: 'Chỉ có thể hoàn tiền cho payment đã hoàn thành'
+            });
+        }
+
+        // Check refund eligibility
+        const eligibilityResult = await refundDB.checkRefundEligibility(paymentId);
+        if (!eligibilityResult.success || !eligibilityResult.data.canRefund) {
+            return res.status(400).json({
+                success: false,
+                message: eligibilityResult.data?.eligibilityReason || 'Không đủ điều kiện hoàn tiền',
+                eligibility: eligibilityResult.data
+            });
+        }
+
+        // Validate refund amount
+        const maxRefundAmount = eligibilityResult.data.availableRefundAmount;
+        const requestedAmount = refundAmount || payment.getAmount();
+
+        if (requestedAmount > maxRefundAmount) {
+            return res.status(400).json({
+                success: false,
+                message: `Số tiền hoàn lại vượt quá số tiền có thể hoàn (${maxRefundAmount.toLocaleString('vi-VN')}đ)`,
+                maxRefundAmount: maxRefundAmount
+            });
+        }
+
+        // Create refund request
+        const refundData = {
+            paymentId: paymentId,
+            refundAmount: requestedAmount,
+            refundReason: refundReason || 'Customer request',
+            processedBy: processedBy || 1 // Default admin user
+        };
+
+        const refundResult = await refundDB.createRefund(refundData);
+
+        if (!refundResult.success) {
+            return res.status(500).json({
+                success: false,
+                message: refundResult.message,
+                error: refundResult.error
+            });
+        }
+
+        await logPaymentAction(paymentId, 'refund_requested', 'pending', 
+            `Refund requested: ${requestedAmount}đ - ${refundReason}`, req);
+
+        res.json({
+            success: true,
+            message: 'Yêu cầu hoàn tiền được tạo thành công',
+            refund: {
+                refundId: refundResult.refundId,
+                paymentId: paymentId,
+                refundAmount: requestedAmount,
+                status: 'pending'
+            },
+            payment: payment.toJSON()
+        });
+
+    } catch (error) {
+        console.error('❌ Refund request error:', error);
         res.status(500).json({
             success: false,
             error: error.message
         });
     }
 });
+
+// ✅ THÊM: Get refunds for a payment
+router.get('/:paymentId/refunds', async (req, res) => {
+    try {
+        const paymentId = parseInt(req.params.paymentId);
+
+        if (isNaN(paymentId) || paymentId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Payment ID không hợp lệ'
+            });
+        }
+
+        console.log('🔍 Getting refunds for payment:', paymentId);
+
+        const result = await refundDB.getRefundsByPaymentId(paymentId);
+
+        if (!result.success) {
+            return res.status(500).json({
+                success: false,
+                message: result.message,
+                error: result.error
+            });
+        }
+
+        res.json({
+            success: true,
+            data: result.data,
+            message: `Lấy ${result.data.length} yêu cầu hoàn tiền thành công`
+        });
+
+    } catch (error) {
+        console.error('❌ Get refunds error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Check refund eligibility for a payment
+router.get('/:paymentId/refund-eligibility', async (req, res) => {
+    try {
+        const paymentId = parseInt(req.params.paymentId);
+
+        if (isNaN(paymentId) || paymentId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Payment ID không hợp lệ'
+            });
+        }
+
+        console.log('🔍 Checking refund eligibility for payment:', paymentId);
+
+        const result = await refundDB.checkRefundEligibility(paymentId);
+
+        if (!result.success) {
+            return res.status(500).json({
+                success: false,
+                message: result.message,
+                error: result.error
+            });
+        }
+
+        res.json({
+            success: true,
+            data: result.data,
+            message: 'Kiểm tra điều kiện hoàn tiền thành công'
+        });
+
+    } catch (error) {
+        console.error('❌ Check refund eligibility error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Webhook endpoint để nhận notification từ ngân hàng
+router.post('/webhook/bank-notification', async (req, res) => {
+    try {
+        const { 
+            transactionId, 
+            amount, 
+            content, 
+            accountNo, 
+            timestamp,
+            bankCode = process.env.BANK_ID 
+        } = req.body;
+
+        console.log('🏦 Bank webhook notification received:', {
+            transactionId,
+            amount,
+            content,
+            accountNo,
+            timestamp
+        });
+
+        // Validate required fields
+        if (!transactionId || !amount || !content) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields: transactionId, amount, content'
+            });
+        }
+
+        // Process webhook using DBContext
+        const result = await paymentDB.processWebhookNotification({
+            transactionId,
+            amount,
+            content,
+            accountNo,
+            timestamp,
+            bankCode
+        });
+
+        if (result.success) {
+            console.log('✅ Webhook processed successfully:', result);
+            res.json(result);
+        } else {
+            console.warn('⚠️ Webhook processing failed:', result.message);
+            res.status(400).json(result);
+        }
+
+    } catch (error) {
+        console.error('❌ Webhook processing error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error during webhook processing',
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Enhanced status check với notification
+router.get('/:paymentId/status-with-notification', async (req, res) => {
+    try {
+        const paymentId = parseInt(req.params.paymentId);
+        
+        if (!paymentId || paymentId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid payment ID'
+            });
+        }
+
+        console.log('🔍 Checking payment status with notification for:', paymentId);
+
+        // Get payment status with notification info from DBContext
+        const result = await paymentDB.getPaymentStatusWithNotification(paymentId);
+
+        if (result.success) {
+            console.log('✅ Payment status with notification retrieved:', {
+                status: result.data.payment.paymentStatus,
+                hasNotification: result.data.notification.hasNewUpdate
+            });
+            res.json(result);
+        } else {
+            console.warn('⚠️ Failed to get payment status:', result.message);
+            res.status(404).json(result);
+        }
+
+    } catch (error) {
+        console.error('❌ Get payment status error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Simulate bank notification cho testing
+router.post('/test/simulate-bank-notification', async (req, res) => {
+    try {
+        const { paymentId, success = true } = req.body;
+
+        if (!paymentId) {
+            return res.status(400).json({
+                success: false,
+                message: 'Payment ID is required'
+            });
+        }
+
+        console.log('🧪 Simulating bank notification for payment:', paymentId);
+
+        // Use DBContext to simulate notification
+        const result = await paymentDB.simulateBankNotification(paymentId);
+
+        if (result.success) {
+            console.log('✅ Bank notification simulated successfully:', result);
+            res.json(result);
+        } else {
+            console.warn('⚠️ Simulation failed:', result.message);
+            res.status(400).json(result);
+        }
+
+    } catch (error) {
+        console.error('❌ Simulate notification error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error during simulation',
+            error: error.message
+        });
+    }
+});
+
+// ✅ SỬA: Enhanced existing status endpoint để sử dụng notification features
+router.get('/:paymentId/status', async (req, res) => {
+    try {
+        const paymentId = parseInt(req.params.paymentId);
+        
+        console.log('🔍 Checking payment status for:', paymentId);
+
+        // ✅ THÊM: Sử dụng enhanced method từ DBContext
+        const result = await paymentDB.getPaymentStatusWithNotification(paymentId);
+
+        if (result.success) {
+            console.log('✅ Payment status retrieved:', {
+                status: result.data.payment.paymentStatus,
+                hasRecentChange: result.data.notification.hasNewUpdate
+            });
+            res.json(result);
+        } else {
+            res.status(404).json(result);
+        }
+
+    } catch (error) {
+        console.error('❌ Get payment status error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Batch notification check (multiple payments)
+router.post('/batch/check-notifications', async (req, res) => {
+    try {
+        const { paymentIds } = req.body;
+
+        if (!Array.isArray(paymentIds) || paymentIds.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'paymentIds array is required'
+            });
+        }
+
+        console.log('🔍 Batch checking notifications for payments:', paymentIds);
+
+        const results = await Promise.allSettled(
+            paymentIds.map(async (paymentId) => {
+                const result = await paymentDB.getPaymentStatusWithNotification(paymentId);
+                return {
+                    paymentId,
+                    ...result
+                };
+            })
+        );
+
+        const successResults = results
+            .filter(result => result.status === 'fulfilled')
+            .map(result => result.value);
+
+        const failedResults = results
+            .filter(result => result.status === 'rejected')
+            .map((result, index) => ({
+                paymentId: paymentIds[index],
+                error: result.reason.message
+            }));
+
+        res.json({
+            success: true,
+            data: {
+                successful: successResults,
+                failed: failedResults,
+                totalChecked: paymentIds.length,
+                successCount: successResults.length,
+                failedCount: failedResults.length
+            }
+        });
+
+    } catch (error) {
+        console.error('❌ Batch notification check error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Get recent notifications endpoint
+router.get('/notifications/recent', async (req, res) => {
+    try {
+        const { 
+            minutes = 5, 
+            limit = 50,
+            invoiceId 
+        } = req.query;
+
+        console.log('🔔 Getting recent notifications:', { minutes, limit, invoiceId });
+
+        const pool = await paymentDB.pool;
+        const request = pool.request()
+            .input('minutes', mssql.Int, parseInt(minutes))
+            .input('limit', mssql.Int, parseInt(limit));
+
+        let query = `
+            SELECT TOP (@limit)
+                pl.LogID, pl.PaymentID, pl.Action, pl.Status, 
+                pl.Message, pl.CreatedAt,
+                p.Amount, p.TransactionID, p.InvoiceID,
+                i.BookingID
+            FROM PaymentLog pl
+            INNER JOIN Payment p ON pl.PaymentID = p.PaymentID
+            LEFT JOIN Invoice i ON p.InvoiceID = i.InvoiceID
+            WHERE pl.Action IN ('completed', 'webhook_received')
+            AND pl.CreatedAt > DATEADD(minute, -@minutes, GETDATE())
+        `;
+
+        if (invoiceId) {
+            query += ' AND p.InvoiceID = @invoiceId';
+            request.input('invoiceId', mssql.Int, parseInt(invoiceId));
+        }
+
+        query += ' ORDER BY pl.CreatedAt DESC';
+
+        const result = await request.query(query);
+
+        res.json({
+            success: true,
+            data: {
+                notifications: result.recordset,
+                count: result.recordset.length,
+                timeWindow: `${minutes} minutes`,
+                timestamp: new Date()
+            }
+        });
+
+    } catch (error) {
+        console.error('❌ Get recent notifications error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ✅ THÊM: Health check với webhook status
+router.get('/webhook/health', async (req, res) => {
+    try {
+        const pool = await paymentDB.pool;
+        
+        // Check recent webhook activity
+        const recentWebhooksResult = await pool.request()
+            .query(`
+                SELECT COUNT(*) as WebhookCount
+                FROM PaymentLog 
+                WHERE Action = 'webhook_received'
+                AND CreatedAt > DATEADD(hour, -24, GETDATE())
+            `);
+
+        // Check pending payments
+        const pendingPaymentsResult = await pool.request()
+            .query(`
+                SELECT COUNT(*) as PendingCount
+                FROM Payment 
+                WHERE PaymentStatus = 'pending'
+                AND CreatedAt > DATEADD(hour, -24, GETDATE())
+            `);
+
+        res.json({
+            status: 'OK',
+            timestamp: new Date(),
+            webhook: {
+                status: 'Ready',
+                recentActivity: recentWebhooksResult.recordset[0].WebhookCount,
+                endpoint: '/api/payment/webhook/bank-notification'
+            },
+            payments: {
+                pendingLast24h: pendingPaymentsResult.recordset[0].PendingCount
+            },
+            database: {
+                connected: true,
+                provider: 'SQL Server'
+            }
+        });
+
+    } catch (error) {
+        console.error('❌ Webhook health check error:', error);
+        res.status(500).json({
+            status: 'ERROR',
+            timestamp: new Date(),
+            error: error.message
+        });
+    }
+});
+
+// ✅ GIỮ NGUYÊN: Tất cả existing endpoints và code khác...
 
 export default router;

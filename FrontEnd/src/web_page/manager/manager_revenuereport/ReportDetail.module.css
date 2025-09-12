@@ -1,0 +1,316 @@
+.reportContainer {
+    padding: 2rem;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* ✅ THÊM: Loading và Error states */
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    padding: 2rem;
+}
+
+.loadingSpinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #8B1538;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    padding: 2rem;
+    text-align: center;
+}
+
+.errorContainer h2 {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+}
+
+.errorContainer p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.errorContainer button {
+    background-color: #8B1538;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.errorContainer button:hover {
+    background-color: #721126;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* Profit Summary */
+.profitSummary {
+    margin-bottom: 2rem;
+}
+
+.profitCard {
+    background: linear-gradient(135deg, #8B1538 0%, #A0522D 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(139, 21, 56, 0.3);
+    text-align: center;
+}
+
+.profitCard h2 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.profitAmount {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.profitGrowth {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Charts Section */
+.chartsSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chartCard {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.chartCard:first-child {
+    grid-row: 1 / 3;
+}
+
+.chartCard h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.pieChartContainer {
+    height: 400px;
+    position: relative;
+}
+
+.barChartContainer,
+.lineChartContainer {
+    height: 300px;
+    position: relative;
+}
+
+/* Usage Statistics */
+.usageSection {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.usageSection h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.tableContainer {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.usageTable {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.usageTable th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.usageTable td {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+.usageTable tr:hover {
+    background: #f8f9fa;
+}
+
+.usageBar {
+    position: relative;
+    background: #e9ecef;
+    height: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-width: 120px;
+}
+
+.usageProgress {
+    background: linear-gradient(90deg, #8B1538, #A0522D);
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.3s ease;
+}
+
+.usageBar span {
+    position: absolute;
+    right: 8px;
+    color: #333;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.trend {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.trend.up {
+    color: #28a745;
+}
+
+.trend.down {
+    color: #dc3545;
+}
+
+.tableNote {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #8B1538;
+}
+
+.tableNote p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .chartsSection {
+        grid-template-columns: 1fr;
+    }
+    
+    .chartCard:first-child {
+        grid-row: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .reportContainer {
+        padding: 1rem;
+    }
+    
+    .profitAmount {
+        font-size: 2rem;
+    }
+    
+    .chartCard {
+        padding: 1rem;
+    }
+    
+    .pieChartContainer {
+        height: 300px;
+    }
+    
+    .barChartContainer,
+    .lineChartContainer {
+        height: 250px;
+    }
+    
+    .usageTable {
+        font-size: 0.9rem;
+    }
+    
+    .usageTable th,
+    .usageTable td {
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .profitAmount {
+        font-size: 1.8rem;
+    }
+    
+    .usageTable {
+        font-size: 0.8rem;
+    }
+    
+    .usageBar {
+        min-width: 80px;
+    }
+}

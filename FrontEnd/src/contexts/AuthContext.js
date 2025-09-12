@@ -16,41 +16,82 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // ✅ Helper function để tối ưu user data trước khi lưu vào localStorage
+    const optimizeUserDataForStorage = (userData) => {
+        if (!userData) return null;
+        
+        // Tạo bản copy và loại bỏ image để tiết kiệm dung lượng
+        const optimizedUser = {
+            ...userData,
+            // Chỉ lưu thông tin cần thiết
+            UserID: userData.UserID,
+            Username: userData.Username,
+            Email: userData.Email,
+            Fullname: userData.Fullname,
+            PhoneNumber: userData.PhoneNumber,
+            Status: userData.Status,
+            roles: userData.roles || [],
+            // ✅ KHÔNG lưu Image vào localStorage
+            Image: null
+        };
+        
+        return optimizedUser;
+    };
+
+    // ✅ Helper function để lấy full user data (bao gồm image) từ API
+    const getFullUserData = async (userId) => {
+        try {
+            const response = await api.get(`/api/profile/${userId}`);
+            if (response.data.success) {
+                return response.data.data;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error fetching full user data:', error);
+            return null;
+        }
+    };
+
     // Initialize auth state
     useEffect(() => {
         const initializeAuth = async () => {
             try {
-                const userData = localStorage.getItem('user');
-                const loginStatus = localStorage.getItem('isLoggedIn');
+                const token = localStorage.getItem('token');
+                const savedUser = localStorage.getItem('user');
                 
-                if (userData && loginStatus === 'true') {
-                    const parsedUser = JSON.parse(userData);
-                    
-                    // Verify user session with backend
-                    const response = await fetch('http://localhost:3000/api/verify-session', {
-                        method: 'GET',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
+                console.log('🔍 Initializing auth...', { 
+                    hasToken: !!token, 
+                    hasSavedUser: !!savedUser 
+                });
 
-                    if (response.ok) {
-                        const { user: serverUser } = await response.json();
-                        // Update user data from server
-                        setUser(serverUser || parsedUser);
-                        setIsLoggedIn(true);
-                        console.log('✅ Session verified, user restored');
-                    } else {
-                        // Session invalid, clear local storage
-                        console.log('❌ Invalid session, clearing local storage');
+                if (token && savedUser) {
+                    try {
+                        const userData = JSON.parse(savedUser);
+                        console.log('✅ Found saved user data');
+                        
+                        // ✅ Lấy full user data từ API (bao gồm image)
+                        const fullUserData = await getFullUserData(userData.UserID);
+                        
+                        if (fullUserData) {
+                            setUser(fullUserData);
+                            setIsLoggedIn(true);
+                            console.log('✅ Auth initialized with full user data');
+                        } else {
+                            // Fallback to saved user data nếu API call thất bại
+                            setUser(userData);
+                            setIsLoggedIn(true);
+                            console.log('✅ Auth initialized with saved user data');
+                        }
+                    } catch (error) {
+                        console.error('❌ Error parsing saved user data:', error);
                         clearAuthData();
                     }
                 } else {
-                    console.log('📝 No existing session found');
+                    console.log('❌ No token or saved user found');
+                    clearAuthData();
                 }
             } catch (error) {
-                console.error('Auth initialization error:', error);
+                console.error('❌ Auth initialization error:', error);
                 clearAuthData();
             } finally {
                 setLoading(false);
@@ -61,79 +102,115 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const clearAuthData = () => {
+        localStorage.removeItem('token');
         localStorage.removeItem('user');
-        localStorage.removeItem('isLoggedIn');
         setUser(null);
         setIsLoggedIn(false);
     };
 
-    const login = (userData) => {
+    const login = async (userData) => {
         try {
-            console.log('🔐 Login attempt with user data:', userData);
+            console.log('🔑 Login called with user data:', {
+                userId: userData?.UserID,
+                username: userData?.Username,
+                hasImage: !!userData?.Image,
+                imageSize: userData?.Image ? userData.Image.length : 0
+            });
+
+            // ✅ Tối ưu user data trước khi lưu
+            const optimizedUserData = optimizeUserDataForStorage(userData);
             
-            if (!userData) {
-                throw new Error('Invalid user data');
+            // ✅ Kiểm tra kích thước trước khi lưu
+            const userDataString = JSON.stringify(optimizedUserData);
+            const sizeInBytes = new Blob([userDataString]).size;
+            const sizeInMB = sizeInBytes / (1024 * 1024);
+            
+            console.log('📊 Optimized user data size:', {
+                bytes: sizeInBytes,
+                mb: sizeInMB.toFixed(2),
+                hasImage: !!optimizedUserData?.Image
+            });
+
+            // ✅ Lưu optimized user data vào localStorage
+            try {
+                localStorage.setItem('user', userDataString);
+                console.log('✅ User data saved to localStorage successfully');
+            } catch (storageError) {
+                console.error('❌ LocalStorage error:', storageError);
+                
+                // ✅ Fallback: Thử lưu user data tối thiểu nhất
+                const minimalUserData = {
+                    UserID: userData.UserID,
+                    Username: userData.Username,
+                    Email: userData.Email,
+                    roles: userData.roles || []
+                };
+                
+                try {
+                    localStorage.setItem('user', JSON.stringify(minimalUserData));
+                    console.log('✅ Minimal user data saved as fallback');
+                } catch (minimalError) {
+                    console.error('❌ Even minimal user data failed to save:', minimalError);
+                    // Vẫn có thể đăng nhập mà không lưu vào localStorage
+                }
             }
 
-            // Store user data
-            localStorage.setItem('user', JSON.stringify(userData));
-            localStorage.setItem('isLoggedIn', 'true');
-            
+            // ✅ Set full user data vào state (bao gồm image)
             setUser(userData);
             setIsLoggedIn(true);
             
-            console.log('✅ Login successful:', {
-                UserID: userData.UserID,
-                Username: userData.Username,
-                roles: userData.roles?.length || 0
-            });
-            
-            return true;
+            console.log('✅ Login successful');
         } catch (error) {
-            console.error('Login error:', error);
-            toast.error('Lỗi đăng nhập: ' + error.message);
-            return false;
+            console.error('❌ Login error:', error);
+            throw error;
         }
     };
 
     const logout = async () => {
         try {
-            setLoading(true);
+            console.log('🚪 Logging out...');
             
-            // Call backend logout
-            await fetch('http://localhost:3000/api/logout', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
+            // Call logout API
+            await api.post('/api/logout');
+            
             clearAuthData();
             console.log('✅ Logout successful');
-            return true;
         } catch (error) {
-            console.error('Logout error:', error);
-            // Clear local data even if backend call fails
+            console.error('❌ Logout error:', error);
+            // Even if API call fails, still clear local data
             clearAuthData();
-            return true; // Still return true to allow logout
-        } finally {
-            setLoading(false);
         }
     };
 
-    const hasRole = (roleId) => {
-        if (!user?.roles) {
-            console.log('🚫 No roles found for user');
-            return false;
+    const updateUser = (userData) => {
+        try {
+            console.log('🔄 Updating user data...');
+            
+            // ✅ Update state với full user data
+            setUser(userData);
+            
+            // ✅ Update localStorage với optimized data
+            const optimizedUserData = optimizeUserDataForStorage(userData);
+            try {
+                localStorage.setItem('user', JSON.stringify(optimizedUserData));
+                console.log('✅ User data updated in localStorage');
+            } catch (storageError) {
+                console.warn('⚠️ Could not update localStorage:', storageError);
+                // Không throw error, chỉ log warning
+            }
+        } catch (error) {
+            console.error('❌ Error updating user:', error);
         }
+    };
 
-        const userHasRole = user.roles.some(role => role.RoleID === roleId);
-        console.log(`🔍 Checking role ${roleId}:`, userHasRole);
-        return userHasRole;
+    // ✅ Các helper functions khác giữ nguyên
+    const hasRole = (roleId) => {
+        if (!user || !user.roles) return false;
+        return user.roles.some(role => role.RoleID === roleId);
     };
 
     const hasAnyRole = (roleIds) => {
+        if (!user || !user.roles || !Array.isArray(roleIds)) return false;
         return roleIds.some(roleId => hasRole(roleId));
     };
 
@@ -142,28 +219,27 @@ export const AuthProvider = ({ children }) => {
     };
 
     const getPrimaryRole = () => {
-        if (!user?.roles?.length) return null;
+        const roles = getUserRoles();
+        if (roles.length === 0) return null;
         
         // Priority: Manager > Receptionist > Customer
-        if (hasRole(1)) return { id: 1, name: 'Quản lý' };
-        if (hasRole(2)) return { id: 2, name: 'Lễ tân' };
-        if (hasRole(3)) return { id: 3, name: 'Khách hàng' };
-        
-        return user.roles[0]; // Fallback to first role
+        const priority = { 1: 3, 2: 2, 3: 1 };
+        return roles.sort((a, b) => 
+            (priority[b.RoleID] || 0) - (priority[a.RoleID] || 0)
+        )[0];
     };
 
-    const updateUser = (userData) => {
-        try {
-            const updatedUser = { ...user, ...userData };
-            localStorage.setItem('user', JSON.stringify(updatedUser));
-            setUser(updatedUser);
-            console.log('✅ User data updated');
-            return true;
-        } catch (error) {
-            console.error('Update user error:', error);
-            return false;
-        }
+    const hasPermission = (permission) => {
+        const userRoles = getUserRoles();
+        return userRoles.some(role => 
+            role.permissions && role.permissions.includes(permission)
+        );
     };
+
+    const isStaff = () => hasAnyRole([1, 2]);
+    const isManager = () => hasRole(1);
+    const isReceptionist = () => hasRole(2);
+    const isCustomer = () => hasRole(3);
 
     const value = {
         user,
@@ -171,11 +247,16 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         logout,
+        updateUser,
         hasRole,
         hasAnyRole,
         getUserRoles,
         getPrimaryRole,
-        updateUser
+        hasPermission,
+        isStaff,
+        isManager,
+        isReceptionist,
+        isCustomer
     };
 
     return (

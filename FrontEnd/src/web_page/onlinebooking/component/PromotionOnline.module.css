@@ -1,0 +1,588 @@
+.promotionSection {
+  background: 
+    linear-gradient(120deg, #f0f7fa99 60%, #e0e7ffcc 100%),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(60, 72, 100, 0.18);
+  max-width: 1000px;
+  width: 100%;
+  margin: 56px auto 32px auto;
+  padding: 38px 32px 28px 32px;
+  animation: fadeIn 0.7s;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(1px);
+}
+
+.title {
+  color: #2563eb;
+  font-weight: 800;
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-size: 2rem;
+  text-shadow: 0 2px 8px #0001;
+}
+
+.promotionHeader {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.promotionHeader h4 {
+  color: #374151;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.promotionHeader h4 i {
+  margin-right: 12px;
+  color: #f59e0b;
+  font-size: 24px;
+}
+
+.appliedBadge {
+  background: #10b981;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.appliedBadge i {
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.promotionSubtext {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ✅ APPLIED PROMOTION */
+.appliedPromotion {
+  background: #ecfdf5;
+  border: 2px solid #10b981;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.appliedPromotionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.appliedPromotionInfo {
+  flex: 1;
+}
+
+.appliedPromotionInfo h5 {
+  color: #065f46;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.appliedPromotionInfo h5 i {
+  margin-right: 8px;
+  color: #10b981;
+}
+
+.appliedPromotionInfo p {
+  color: #047857;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.promotionDescription {
+  color: #6b7280;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.appliedPromotionDiscount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.discountAmount {
+  font-size: 20px;
+  font-weight: 700;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.removePromotionBtn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.removePromotionBtn:hover {
+  background: #b91c1c;
+  transform: scale(1.1);
+}
+
+/* ✅ PROMOTION INPUT */
+.promotionInput {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.codeInputGroup {
+  margin-bottom: 20px;
+}
+
+.codeInputField {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.promotionCodeInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.promotionCodeInput:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.promotionCodeInput.error {
+  border-color: #dc2626;
+}
+
+.applyCodeBtn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+
+.applyCodeBtn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.applyCodeBtn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.validationMessage {
+  color: #dc2626;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  background: #fef2f2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+}
+
+.validationMessage i {
+  margin-right: 8px;
+}
+
+.promotionListToggle {
+  text-align: center;
+}
+
+.togglePromotionListBtn {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.togglePromotionListBtn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.togglePromotionListBtn i {
+  margin-right: 8px;
+  transition: transform 0.2s ease;
+}
+
+/* ✅ PROMOTION LIST */
+.promotionList {
+  margin-top: 20px;
+}
+
+.promotionListLoading {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.promotionListLoading i {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.promotionsError {
+  text-align: center;
+  padding: 20px;
+  color: #dc2626;
+  background: #fef2f2;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+.promotionsError i {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.promotionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.promotionCard {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.promotionCard:hover {
+  border-color: #f59e0b;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+  transform: translateY(-2px);
+}
+
+.promotionCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.promotionCardHeader h6 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.discountBadge {
+  background: #f59e0b;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+.promotionCardDescription {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.promotionCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+}
+
+.promotionDates {
+  color: #6b7280;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.promotionDates i {
+  margin-right: 4px;
+}
+
+.selectPromotionBtn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.selectPromotionBtn:hover {
+  background: #059669;
+}
+
+.selectPromotionBtn i {
+  margin-right: 4px;
+}
+
+.noPromotions {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.noPromotions i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #9ca3af;
+}
+
+/* ✅ PROMOTION SUMMARY */
+.promotionSummary {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 2px solid #10b981;
+}
+
+.promotionSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 16px;
+}
+
+.promotionSummaryRow:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.discountText {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.finalAmount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #065f46;
+  background: #ecfdf5;
+  margin: 12px -20px -20px -20px;
+  padding: 16px 20px;
+  border-radius: 0 0 12px 12px;
+}
+
+/* ✅ NO PROMOTION OPTION */
+.noPromotionOption {
+  margin-bottom: 24px;
+}
+
+.noPromotionCard {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.noPromotionCard i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #9ca3af;
+}
+
+.noPromotionCard h6 {
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.noPromotionCard p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ✅ NAVIGATION ACTIONS */
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.btnBack {
+  padding: 12px 24px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btnBack:hover {
+  border-color: #9ca3af;
+  background: #f9fafb;
+}
+
+.btnBack i {
+  margin-right: 8px;
+}
+
+.btnNext {
+  padding: 12px 24px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btnNext:hover {
+  background: #1d4ed8;
+}
+
+.btnNext i {
+  margin-left: 8px;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .promotionSection {
+    max-width: 100%;
+    padding: 20px 16px;
+    margin: 20px auto;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .promotionGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .appliedPromotionContent {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .appliedPromotionDiscount {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+  
+  .codeInputField {
+    flex-direction: column;
+  }
+  
+  .promotionCardFooter {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .promotionHeader h4 {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .appliedBadge {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+  
+  .promotionSummaryRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

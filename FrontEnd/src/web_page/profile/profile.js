@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext'; // Updated import path
+import { useAuth } from '../../contexts/AuthContext'; // ✅ Thêm dòng này
 import axios from 'axios';
 import styles from './profile.module.css';
 import defaultAvatar from '../../images/default-avatar.png';
@@ -9,7 +9,7 @@ import { FaCoins, FaHistory } from 'react-icons/fa';
 
 function Profile() {
     const navigate = useNavigate();
-    const { isLoggedIn, user } = useAuth();
+    const { user, isLoggedIn } = useAuth(); // ✅ Thêm dòng này để kích hoạt AuthContext
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
@@ -57,15 +57,15 @@ function Profile() {
     useEffect(() => {
         const fetchUserData = async () => {
             console.log('Starting fetchUserData, full user object:', user);
-            // Use id instead of UserID since that's what we get from login
-            if (!user?.id) {
-                console.log('No user ID available in user object:', user);
+            // ✅ SỬA: Sử dụng UserID thay vì id
+            if (!user?.UserID) {
+                console.log('No user UserID available in user object:', user);
                 return;
             }
 
             try {
-                console.log('Attempting to fetch user data for ID:', user.id);
-                const response = await axios.get(`http://localhost:3000/api/profile/${user.id}`, {
+                console.log('Attempting to fetch user data for UserID:', user.UserID);
+                const response = await axios.get(`http://localhost:3000/api/profile/${user.UserID}`, {
                     withCredentials: true,
                     headers: {
                         'Content-Type': 'application/json'
@@ -93,10 +93,7 @@ function Profile() {
                     setAvatar(defaultAvatar);
                 }
             } catch (error) {
-                console.error('Detailed fetch error:', error);
-                showAlert(`Error fetching user data: ${error.response?.data?.message || error.message}`, 'danger');
-                // Set default avatar on error
-                setAvatar(defaultAvatar);
+                console.error('Error fetching user data:', error);
             }
         };
 
@@ -173,47 +170,54 @@ function Profile() {
         const file = e.target.files[0];
         if (!file) return;
 
+        // ✅ THÊM: Kiểm tra user.UserID trước khi upload
+        if (!user?.UserID) {
+            console.error('User UserID not available for avatar upload:', user);
+            showAlert('Không tìm thấy thông tin người dùng', 'error');
+            return;
+        }
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            showAlert('Vui lòng chọn file ảnh', 'error');
+            return;
+        }
+
+        // Validate file size (5MB max)
+        if (file.size > 5 * 1024 * 1024) {
+            showAlert('File ảnh quá lớn (tối đa 5MB)', 'error');
+            return;
+        }
+
         try {
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                showAlert('Vui lòng chọn file ảnh hợp lệ', 'danger');
-                return;
-            }
-
-            // Validate file size (max 5MB)
-            const maxSize = 50 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-                showAlert('Kích thước ảnh không được vượt quá 50MB', 'danger');
-                return;
-            }
-
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await axios.put(
-                `http://localhost:3000/api/profile/${user.id}/image`,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    withCredentials: true
-                }
-            );
+            console.log('Uploading avatar for UserID:', user.UserID);
+
+            // ✅ SỬA: Sử dụng user.UserID thay vì user.id
+            const response = await axios.put(`http://localhost:3000/api/profile/${user.UserID}/image`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true
+            });
 
             if (response.data.success) {
-                // Show preview immediately
+                // Update avatar preview
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     setAvatar(e.target.result);
                 };
                 reader.readAsDataURL(file);
                 
-                showAlert('Cập nhật ảnh đại diện thành công!', 'success');
+                showAlert('Cập nhật ảnh đại diện thành công', 'success');
+            } else {
+                showAlert(response.data.message || 'Lỗi cập nhật ảnh đại diện', 'error');
             }
         } catch (error) {
-            console.error('Lỗi cập nhật ảnh:', error);
-            showAlert('Lỗi cập nhật ảnh: ' + (error.response?.data?.message || error.message), 'danger');
+            console.error('❌ Lỗi cập nhật ảnh:', error);
+            showAlert(`Lỗi cập nhật ảnh: ${error.response?.data?.message || error.message}`, 'error');
         }
     };
 
@@ -381,7 +385,10 @@ function Profile() {
 
     // Navigate to member points page
     const handleViewPoints = () => {
-        navigate('/member-points');
+        navigate('/loyaltypoint');
+    };
+    const handleViewDetails = () => {
+        navigate('/loyaltypoint'); // Chuyển hướng đến trang /loyaltypoint
     };
 
     // Navigate to transaction history page
@@ -503,7 +510,7 @@ function Profile() {
 
                             {/* Sidebar */}
                             <div className="col-lg-4">
-                                {/* Member Points Card */}
+                                {/* Member Points Card
                                 <div className={styles.sidebar_card}>
                                     <div className={styles.card_header}>
                                         <FaCoins className={styles.card_icon} />
@@ -521,17 +528,17 @@ function Profile() {
                                             Xem chi tiết
                                         </button>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 {/* Transaction History Card */}
                                 <div className={styles.sidebar_card}>
                                     <div className={styles.card_header}>
                                         <FaHistory className={styles.card_icon} />
-                                        <h4>Lịch sử giao dịch</h4>
+                                        <h4>Lịch sử Đặt phòng</h4>
                                     </div>
                                     <div className={styles.card_content}>
                                         <div className={styles.transaction_summary}>
-                                            <span className={styles.transaction_count}>5 giao dịch gần nhất</span>
+                                            <span className={styles.transaction_count}></span>
                                         </div>
                                         <button 
                                             className={`${styles.btn} ${styles.btn_secondary}`}

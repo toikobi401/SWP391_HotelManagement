@@ -15,7 +15,6 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { isLoggedIn, user, logout, hasRole } = useAuth();
     const { navigateToSpecificRole, getAvailableRoutes } = useRoleNavigation();
-
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
@@ -23,59 +22,55 @@ const Navbar = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    // Add fetchUserData function
-    const fetchUserData = async (userId) => {
+    // ✅ Function để lấy avatar từ API hoặc user data
+    const loadUserAvatar = async (userId) => {
         try {
+            setIsAvatarLoading(true);
+            
+            // ✅ Nếu user trong state đã có image, sử dụng luôn
+            if (user?.Image) {
+                const imageUrl = `data:image/jpeg;base64,${user.Image}`;
+                setAvatarUrl(imageUrl);
+                return;
+            }
+            
+            // ✅ Nếu không có image trong state, fetch từ API
             const response = await axios.get(`http://localhost:3000/api/profile/${userId}`, {
                 withCredentials: true
             });
-            return response.data;
+            if (response.data.success && response.data.data.Image) {
+                const imageUrl = `data:image/jpeg;base64,${response.data.data.Image}`;
+                setAvatarUrl(imageUrl);
+            } else {
+                setAvatarUrl(defaultAvatar);
+            }
         } catch (error) {
-            console.error('Error fetching user data:', error);
-            return null;
+            console.error('Error loading user avatar:', error);
+            setAvatarUrl(defaultAvatar);
+        } finally {
+            setIsAvatarLoading(false);
         }
     };
 
-    // Update useEffect for avatar
+    // ✅ Load avatar khi user thay đổi
     useEffect(() => {
-        const loadUserAvatar = async () => {
-            if (user?.id) {
-                try {
-                    const userData = await fetchUserData(user.id);
-                    if (userData?.Image) {
-                        setAvatarUrl(`data:image/jpeg;base64,${userData.Image}`);
-                        console.log('Avatar loaded from user data');
-                    } else {
-                        console.log('No image in user data, using default avatar');
-                        setAvatarUrl(defaultAvatar);
-                    }
-                } catch (error) {
-                    console.error('Error loading avatar:', error);
-                    setAvatarUrl(defaultAvatar);
-                }
-            } else {
-                console.log('No user ID available');
-                setAvatarUrl(defaultAvatar);
-            }
-        };
-
-        loadUserAvatar();
-    }, [user?.id]);
+        if (user?.UserID) {
+            loadUserAvatar(user.UserID);
+        } else {
+            setAvatarUrl(defaultAvatar);
+            setIsAvatarLoading(false);
+        }
+    }, [user?.UserID]);
 
     const handleLogout = async () => {
         try {
             setIsLoading(true);
-            const success = await logout();
-            if (success) {
-                toast.success('Đăng xuất thành công!');
-                navigate('/', { replace: true });
-            } else {
-                toast.error('Đăng xuất thất bại');
-            }
+            await logout();
+            toast.success('Đăng xuất thành công!');
+            navigate('/');
         } catch (error) {
             console.error('Logout error:', error);
-            toast.error('Lỗi khi đăng xuất');
+            toast.error('Có lỗi khi đăng xuất');
         } finally {
             setIsLoading(false);
         }

@@ -87,12 +87,30 @@ router.get('/:id', async (req, res) => {
 router.put('/:id/image', upload.single('image'), async (req, res) => {
     try {
         const userId = req.params.id;
-        console.log('Updating profile image for user:', userId);
+        
+        // ✅ THÊM: Validate userId trước khi xử lý
+        if (!userId || userId === 'undefined' || userId === 'null') {
+            return res.status(400).json({
+                success: false,
+                message: 'User ID không hợp lệ'
+            });
+        }
+
+        // ✅ THÊM: Validate userId là số
+        const numericUserId = parseInt(userId);
+        if (isNaN(numericUserId) || numericUserId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'User ID phải là số nguyên dương'
+            });
+        }
+
+        console.log('Updating profile image for user:', numericUserId);
 
         if (!req.file) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 success: false,
-                message: 'Không tìm thấy file ảnh' 
+                message: 'Không có file ảnh được upload'
             });
         }
 
@@ -100,24 +118,23 @@ router.put('/:id/image', upload.single('image'), async (req, res) => {
         if (req.file.size > 5 * 1024 * 1024) {
             return res.status(400).json({
                 success: false,
-                message: 'Kích thước ảnh không được vượt quá 5MB'
+                message: 'File ảnh quá lớn (tối đa 5MB)'
             });
         }
 
-        // Update user's image in database
-        const result = await userDB.updateProfileImage(userId, req.file.buffer);
+        // ✅ SỬA: Sử dụng numericUserId thay vì userId
+        const result = await userDB.updateProfileImage(numericUserId, req.file.buffer);
 
         if (result) {
             res.json({
                 success: true,
-                message: 'Cập nhật ảnh đại diện thành công',
-                user: {
-                    ...result,
-                    Image: result.Image ? result.Image.toString('base64') : null
-                }
+                message: 'Cập nhật ảnh đại diện thành công'
             });
         } else {
-            throw new Error('Không thể cập nhật ảnh đại diện');
+            res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy người dùng'
+            });
         }
     } catch (error) {
         console.error('Profile image update error:', error);

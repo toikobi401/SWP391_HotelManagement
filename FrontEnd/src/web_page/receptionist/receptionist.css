@@ -1,7 +1,29 @@
-/* Container chính của receptionist page */
+/* ✅ RECEPTIONIST PAGE LAYOUT */
 .receptionist-page {
+    display: flex;
     min-height: 100vh;
-    position: relative;
+    background: #f8f9fa;
+}
+
+/* ✅ SIDEBAR STYLES */
+.receptionist-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.receptionist-sidebar.collapsed {
+    width: 70px;
 }
 
 /* Header của page */
@@ -17,26 +39,6 @@
 .receptionist-layout {
     position: relative;
     min-height: calc(100vh - 120px);
-}
-
-/* Sidebar - Fixed position */
-.receptionist-sidebar {
-    position: fixed;
-    top: 0; /* Bắt đầu từ đầu trang, sẽ đi cùng navbar */
-    left: 0;
-    width: 280px;
-    height: 100vh; /* Chiếm toàn bộ chiều cao viewport */
-    background: #2c3e50;
-    color: white;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000; /* Đảm bảo sidebar ở trên các element khác */
-    overflow: hidden;
-}
-
-.receptionist-sidebar.collapsed {
-    width: 70px;
 }
 
 /* Header của sidebar */
@@ -160,19 +162,40 @@
 
 /* Main content area - Điều chỉnh để không bị che bởi sidebar */
 .receptionist-main-content {
-    margin-left: 280px; /* Bằng với width của sidebar */
+    margin-left: 280px;
+    margin-top: 80px; /* ✅ THÊM margin-top cho header */
     transition: margin-left 0.3s ease;
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     background: #f8f9fa;
 }
 
 .receptionist-main-content.sidebar-collapsed {
-    margin-left: 70px; /* Bằng với width của sidebar khi collapsed */
+    margin-left: 70px;
 }
 
 .content-wrapper {
     padding: 2rem;
     min-height: calc(100vh - 4rem);
+}
+
+/* ✅ THÊM: Content area styles */
+.content-area {
+    flex: 1;
+    margin-left: 280px;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+    background: #f8f9fa;
+    position: relative;
+    z-index: 1;
+}
+
+.content-area.sidebar-collapsed {
+    margin-left: 70px;
+}
+
+.tab-content {
+    width: 100%;
+    height: 100%;
 }
 
 /* Custom scrollbar cho sidebar */
@@ -193,6 +216,18 @@
     background: rgba(255, 255, 255, 0.5);
 }
 
+/* Animation cho khi thay đổi trang */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .receptionist-sidebar {
@@ -211,18 +246,17 @@
 @media (max-width: 768px) {
     .receptionist-sidebar {
         transform: translateX(-100%);
-        width: 280px;
     }
     
     .receptionist-sidebar.mobile-open {
         transform: translateX(0);
     }
     
-    .receptionist-main-content {
+    .content-area {
         margin-left: 0;
     }
     
-    .receptionist-main-content.sidebar-collapsed {
+    .content-area.sidebar-collapsed {
         margin-left: 0;
     }
     
@@ -235,11 +269,14 @@
         height: 100%;
         background: rgba(0, 0, 0, 0.5);
         z-index: 999;
-        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
     }
     
     .sidebar-overlay.active {
-        display: block;
+        opacity: 1;
+        visibility: visible;
     }
     
     .sidebar-nav {
@@ -262,6 +299,15 @@
     .sidebar-divider {
         display: none; /* Ẩn divider trên mobile */
     }
+    
+    .content-area {
+        margin-left: 0;
+        padding: 10px;
+    }
+    
+    .content-area.sidebar-collapsed {
+        margin-left: 0;
+    }
 }
 
 /* Animation cho smooth transitions */
@@ -279,4 +325,56 @@
 .sidebar-toggle:focus {
     outline: 2px solid #3498db;
     outline-offset: 2px;
+}
+
+/* ✅ THÊM: Invoice management specific styles */
+.invoice-management-page {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: calc(100vh - 40px);
+}
+
+/* ✅ Page transition */
+.content-area > * {
+    animation: fadeIn 0.3s ease;
+}
+
+/* ✅ SỬA: Đảm bảo content-area hoạt động đúng */
+.content-area {
+    margin-left: 280px;
+    margin-top: 80px; /* ✅ THÊM margin-top cho header */
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+    background: #f8f9fa;
+    position: relative;
+    z-index: 1;
+}
+
+.content-area.sidebar-collapsed {
+    margin-left: 70px;
+}
+
+/* ✅ SỬA: Đảm bảo sidebar có z-index cao */
+.receptionist-sidebar {
+    position: fixed;
+    top: 80px; /* ✅ Thay đổi từ top: 0 thành top: 80px để không che header */
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 80px); /* ✅ Điều chỉnh height để phù hợp */
+    background: #2c3e50;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 999; /* ✅ Giảm z-index để không che header */
+    overflow: hidden;
+}
+
+/* ✅ THÊM: Override cho invoice page specific */
+.content-area .receptionistInvoicePage {
+    margin-left: 0 !important; /* Reset margin vì content-area đã có margin */
+    width: 100% !important;
+    padding: 0; /* Reset padding vì content-area đã có */
 }

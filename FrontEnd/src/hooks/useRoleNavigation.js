@@ -59,12 +59,26 @@ export const useRoleNavigation = () => {
         const routes = [];
         
         if (hasRole(1)) {
-            routes.push({
-                path: '/manager',
-                name: 'Quản lý',
-                icon: 'fas fa-shield-alt',
-                color: '#ff6b6b'
-            });
+            routes.push(
+                {
+                    path: '/manager',
+                    name: 'Dashboard Quản lý',
+                    icon: 'fas fa-shield-alt',
+                    color: '#dc3545'
+                },
+                {
+                    path: '/manager/rooms',
+                    name: 'Quản lý phòng',
+                    icon: 'fas fa-bed',
+                    color: '#e83e8c'
+                },
+                {
+                    path: '/manager/reports',
+                    name: 'Báo cáo thống kê',
+                    icon: 'fas fa-chart-bar',
+                    color: '#fd7e14'
+                }
+            );
         }
         
         if (hasRole(2)) {
@@ -91,27 +105,71 @@ export const useRoleNavigation = () => {
     const canAccessRoute = (path) => {
         if (!isLoggedIn || !user) return false;
 
+        // ✅ CẬP NHẬT: Role requirements cho tất cả routes
         const roleRequirements = {
-            '/manager': [1],
-            '/receptionist': [2],
-            '/customer': [3],
+            // Public routes
+            '/': [],
+            '/about': [],
+            '/contact': [],
             '/profile': [], // Any logged in user
+            
+            // ✅ MANAGER ROUTES - Role ID: 1
+            '/manager': [1],
+            '/manager/rooms': [1],
+            '/manager/booking': [1],
+            '/manager/addroom': [1], 
+            '/manager/feedback': [1],
+            '/manager/toggleRole': [1],
+            '/manager/reports': [1],
+            '/manager/staff': [1],
+            '/manager/settings': [1],
+            
+            // ✅ RECEPTIONIST ROUTES - Role ID: 2
+            '/receptionist': [2],
+            
+            // ✅ CUSTOMER ROUTES - Role ID: 3
+            '/customer': [3],
+            
+            // ✅ MULTI-ROLE ROUTES
             '/booking': [2, 3], // Receptionist or Customer
             '/rooms': [1, 2], // Manager or Receptionist
+            '/payment-test': [1, 2, 3], // All roles
         };
 
         const requiredRoles = roleRequirements[path];
         if (!requiredRoles) return true; // Public route
-
         if (requiredRoles.length === 0) return true; // Any logged user
 
         return requiredRoles.some(roleId => hasRole(roleId));
+    };
+
+    // ✅ THÊM CHỨC NĂNG NAVIGATION CHO CHATBOT
+    const executeNavigation = (route) => {
+        console.log('🚀 Executing navigation to:', route);
+        
+        if (canAccessRoute(route)) {
+            navigate(route);
+            toast.success(`Đang chuyển đến ${route}`);
+            return true;
+        } else {
+            toast.error(`Bạn không có quyền truy cập ${route}`);
+            return false;
+        }
+    };
+
+    // ✅ THÊM GET USER ROLES CHO CHATBOT
+    const getUserRoles = () => {
+        if (!user || !user.roles) return [];
+        return user.roles.map(role => role.RoleID || role.roleId || role.id).filter(Boolean);
     };
 
     return {
         navigateToRolePage,
         navigateToSpecificRole,
         getAvailableRoutes,
-        canAccessRoute
+        canAccessRoute,
+        // ✅ THÊM CÁC FUNCTION MỚI CHO CHATBOT
+        executeNavigation,
+        getUserRoles
     };
 };

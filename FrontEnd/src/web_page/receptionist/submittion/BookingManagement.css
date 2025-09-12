@@ -1,0 +1,275 @@
+/* Additional CSS for booking management table */
+
+.room-types-display {
+  max-width: 200px;
+  word-wrap: break-word;
+  font-size: 0.9em;
+}
+
+.room-types-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.room-types-list .badge {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+/* ✅ THÊM: Styling cho cột chi tiết Check-in/out */
+.room-type-details {
+  max-width: 250px;
+  word-wrap: break-word;
+  font-size: 0.9em;
+}
+
+.room-detail-item {
+  padding: 3px 6px;
+  margin-bottom: 5px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border-left: 3px solid #007bff;
+}
+
+.room-detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.room-detail-item strong {
+  color: #495057;
+  font-size: 0.9em;
+}
+
+.room-detail-item small {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75em;
+}
+
+.room-detail-item i {
+  margin-right: 3px;
+  width: 12px;
+}
+
+.special-request {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.special-request:hover {
+  white-space: normal;
+  overflow: visible;
+}
+
+/* Status badge colors */
+.badge.bg-warning.text-dark {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+.badge.bg-success {
+  background-color: #198754 !important;
+}
+
+.badge.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+.badge.bg-info {
+  background-color: #0dcaf0 !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+/* Modal improvements */
+.modal-lg {
+  max-width: 900px;
+}
+
+/* ✅ THÊM: Modal XL cho booking details */
+.modal-xl {
+  max-width: 1200px;
+}
+
+/* ✅ THÊM: Modal XXL cho booking details mở rộng thêm 30% về mỗi phía */
+.modal-xxl {
+  max-width: 95vw; /* Sử dụng 95% viewport width để responsive */
+  width: 95vw;
+}
+
+/* ✅ THÊM: Z-index cao để modal hiển thị trên navbar */
+.modal {
+  z-index: 9999 !important;
+}
+
+.modal-backdrop {
+  z-index: 9998 !important;
+}
+
+/* ✅ THÊM: Đảm bảo modal dialog có z-index cao */
+.modal-dialog {
+  z-index: 10000 !important;
+}
+
+/* ✅ THÊM: Cải thiện hiển thị modal content */
+.modal-content {
+  z-index: 10001 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+  border-radius: 12px !important;
+}
+
+/* ✅ THÊM: Cải thiện backdrop */
+.modal.show {
+  display: block !important;
+  z-index: 9999 !important;
+}
+
+/* ✅ THÊM: Đảm bảo modal không bị quá rộng trên màn hình lớn */
+@media (min-width: 1400px) {
+  .modal-xxl {
+    max-width: 1920px; /* 1200px * 1.6 = 30% mỗi phía */
+    width: 1920px;
+  }
+}
+
+/* ✅ THÊM: Điều chỉnh cho màn hình trung bình */
+@media (max-width: 1399px) and (min-width: 992px) {
+  .modal-xxl {
+    max-width: 90vw;
+    width: 90vw;
+  }
+}
+
+/* ✅ THÊM: Điều chỉnh cho tablet */
+@media (max-width: 991px) {
+  .modal-xxl {
+    max-width: 95vw;
+    width: 95vw;
+  }
+}
+
+.modal-body .row {
+  margin-bottom: 1rem;
+}
+
+.modal-body p {
+  margin-bottom: 0.5rem;
+}
+
+.modal-body p strong {
+  display: inline-block;
+  min-width: 120px;
+}
+
+/* ✅ THÊM: Card styling cho booking details modal */
+.modal-body .card {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.modal-body .card-header {
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+}
+
+.modal-body .card-body {
+  padding: 1rem;
+}
+
+.modal-body .alert {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+/* ✅ THÊM: Badge styling */
+.badge {
+  font-size: 0.8em;
+  padding: 0.25rem 0.5rem;
+}
+
+/* ✅ THÊM: Room, service, promotion card styling */
+.modal-body .alert-success {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+}
+
+.modal-body .alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffecb5;
+  color: #664d03;
+  border-left: 4px solid #ffc107;
+}
+
+.modal-body .alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #055160;
+}
+
+.modal-body .alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.modal-body .alert-secondary {
+  background-color: #e2e3e5;
+  border-color: #d3d6d8;
+  color: #383d41;
+  text-align: center;
+}
+
+/* ✅ THÊM: Icon styling */
+.fas, .fab {
+  margin-right: 0.5rem;
+}
+
+/* ✅ THÊM: Responsive improvements */
+@media (max-width: 768px) {
+  .modal-xl,
+  .modal-xxl {
+    max-width: 95%;
+    margin: 1rem auto;
+  }
+  
+  .modal-body .col-md-4,
+  .modal-body .col-md-6 {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Alert styling */
+.alert-warning {
+  border-left: 4px solid #ffc107;
+}
+
+/* Form improvements */
+.form-select:focus,
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}

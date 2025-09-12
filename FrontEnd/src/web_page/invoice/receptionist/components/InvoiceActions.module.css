@@ -1,0 +1,786 @@
+/* filepath: c:\Users\PC\OneDrive\Desktop\LEARNING\SWP391\Assignment\SWP391_HotelManagement\FrontEnd\src\web_page\invoice\receptionist\components\InvoiceActions.module.css */
+
+/* ✅ CSS VARIABLES */
+:root {
+    --primary-color: #667eea;
+    --primary-hover: #5a67d8;
+    --secondary-color: #764ba2;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --bg-white: #ffffff;
+    --bg-gray-50: #f9fafb;
+    --bg-gray-100: #f3f4f6;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* ✅ MODERN INVOICE ACTIONS CONTAINER */
+.invoiceActions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+}
+
+.invoiceActions.vertical {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    border-radius: var(--radius-lg);
+}
+
+.invoiceActions.horizontal {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0.375rem;
+}
+
+/* ✅ MODERN BUTTON BASE STYLES */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 2.5rem;
+    box-shadow: var(--shadow-sm);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ✅ BUTTON HOVER EFFECT */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* ✅ BUTTON FOCUS & DISABLED STATES */
+.btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    pointer-events: none;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+/* ✅ BUTTON SIZES */
+.btnSm {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+    min-width: 2.25rem;
+    gap: 0.375rem;
+}
+
+.btnMd {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    min-width: 2.5rem;
+    gap: 0.5rem;
+}
+
+.btnLg {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9rem;
+    min-width: 3rem;
+    gap: 0.625rem;
+}
+
+/* ✅ PRIMARY BUTTON - View Action */
+.btnPrimary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.btnPrimary:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary-hover) 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-hover);
+}
+
+.btnPrimary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md);
+}
+
+/* ✅ SECONDARY OUTLINE - Print Action */
+.btnOutlineSecondary {
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    border-color: var(--text-secondary);
+    position: relative;
+}
+
+.btnOutlineSecondary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--text-secondary);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.btnOutlineSecondary:hover:not(:disabled) {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--text-secondary);
+}
+
+.btnOutlineSecondary:hover:not(:disabled)::after {
+    opacity: 1;
+}
+
+/* ✅ INFO OUTLINE - Download Action */
+.btnOutlineInfo {
+    background: var(--bg-white);
+    color: var(--info-color);
+    border-color: var(--info-color);
+    position: relative;
+}
+
+.btnOutlineInfo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--info-color);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.btnOutlineInfo:hover:not(:disabled) {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--info-color);
+}
+
+.btnOutlineInfo:hover:not(:disabled)::after {
+    opacity: 1;
+}
+
+/* ✅ SUCCESS BUTTON - Payment Complete */
+.btnSuccess {
+    background: linear-gradient(135deg, var(--success-color) 0%, #22c55e 100%);
+    color: white;
+    border-color: var(--success-color);
+    box-shadow: var(--shadow-md);
+}
+
+.btnSuccess:hover:not(:disabled) {
+    background: linear-gradient(135deg, #059669 0%, var(--success-color) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: #059669;
+}
+
+/* ✅ WARNING BUTTON - Status Change */
+.btnWarning {
+    background: linear-gradient(135deg, var(--warning-color) 0%, #fbbf24 100%);
+    color: white;
+    border-color: var(--warning-color);
+    box-shadow: var(--shadow-md);
+}
+
+.btnWarning:hover:not(:disabled) {
+    background: linear-gradient(135deg, #d97706 0%, var(--warning-color) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: #d97706;
+}
+
+/* ✅ DANGER BUTTON - Cancel/Refund */
+.btnDanger {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #f87171 100%);
+    color: white;
+    border-color: var(--danger-color);
+    box-shadow: var(--shadow-md);
+}
+
+.btnDanger:hover:not(:disabled) {
+    background: linear-gradient(135deg, #dc2626 0%, var(--danger-color) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: #dc2626;
+}
+
+/* ✅ OUTLINE PRIMARY - Default Outline */
+.btnOutlinePrimary {
+    background: var(--bg-white);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    position: relative;
+}
+
+.btnOutlinePrimary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.btnOutlinePrimary:hover:not(:disabled) {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.btnOutlinePrimary:hover:not(:disabled)::after {
+    opacity: 1;
+}
+
+/* ✅ ACTION BUTTON GROUPS */
+.actionButtons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.actionButtons .btn {
+    flex: 1;
+    min-width: auto;
+}
+
+/* ✅ QUICK ACTIONS */
+.quickActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.quickAction {
+    padding: 0.5rem;
+    min-width: 2.25rem;
+    background: var(--bg-white);
+    border: 2px solid currentColor;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.quickAction::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 1;
+}
+
+.quickAction > * {
+    position: relative;
+    z-index: 2;
+}
+
+.quickAction:hover:not(:disabled) {
+    color: white;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.quickAction:hover:not(:disabled)::before {
+    opacity: 1;
+}
+
+/* ✅ STATUS DROPDOWN */
+.statusDropdown {
+    position: relative;
+    margin-top: 0.75rem;
+}
+
+.dropdownToggle {
+    width: 100%;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border-color: rgba(102, 126, 234, 0.2);
+    color: var(--primary-color);
+}
+
+.dropdownToggle::after {
+    content: '▼';
+    font-size: 0.7rem;
+    margin-left: 0.5rem;
+    transition: transform 0.2s ease;
+    color: currentColor;
+}
+
+.dropdownToggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+.dropdownToggle:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    border: 2px solid rgba(102, 126, 234, 0.1);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.dropdownMenu.show {
+    max-height: 300px;
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+.dropdownItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.05);
+    position: relative;
+}
+
+.dropdownItem:last-child {
+    border-bottom: none;
+}
+
+.dropdownItem::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    transition: width 0.3s ease;
+}
+
+.dropdownItem:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    color: var(--primary-color);
+    padding-left: 1.5rem;
+}
+
+.dropdownItem:hover:not(:disabled)::before {
+    width: 4px;
+}
+
+.dropdownItem i {
+    font-size: 1rem;
+    width: 1.25rem;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.dropdownItem:hover:not(:disabled) i {
+    transform: scale(1.1);
+}
+
+/* ✅ LOADING STATE */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading .btn {
+    cursor: wait;
+}
+
+.loadingSpinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ✅ TOOLTIP */
+.btn[title] {
+    position: relative;
+}
+
+.btn[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 0.75rem;
+    background: var(--text-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    z-index: 1001;
+    opacity: 0;
+    animation: fadeInTooltip 0.2s ease forwards;
+}
+
+.btn[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 0.25rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--text-primary);
+    z-index: 1001;
+    opacity: 0;
+    animation: fadeInTooltip 0.2s ease forwards;
+}
+
+/* ✅ ANIMATIONS */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInTooltip {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(4px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.btn:active {
+    animation: buttonPress 0.1s ease;
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .invoiceActions.horizontal {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .actionButtons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .actionButtons .btn {
+        width: 100%;
+    }
+    
+    .quickActions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .btnSm {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .invoiceActions {
+        gap: 0.375rem;
+    }
+    
+    .btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+        min-width: 2rem;
+    }
+    
+    .btnSm {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.5rem;
+        min-width: 1.75rem;
+    }
+    
+    .dropdownItem {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ✅ HIGH CONTRAST MODE */
+@media (prefers-contrast: high) {
+    .btn {
+        border-width: 3px;
+    }
+    
+    .dropdownMenu {
+        border-width: 3px;
+    }
+    
+    .dropdownItem {
+        border-bottom-width: 2px;
+    }
+}
+
+/* ✅ REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .quickAction,
+    .dropdownMenu,
+    .dropdownItem {
+        transition: none;
+    }
+    
+    .btn::before,
+    .quickAction::before,
+    .dropdownItem::before {
+        transition: none;
+    }
+    
+    .loadingSpinner {
+        animation: none;
+    }
+    
+    .btn:hover::before {
+        left: 0;
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* ✅ PRINT STYLES */
+@media print {
+    .invoiceActions {
+        display: none;
+    }
+}
+
+/* ✅ DARK MODE SUPPORT */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-white: #1f2937;
+        --bg-gray-50: #111827;
+        --bg-gray-100: #374151;
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --border-color: #4b5563;
+    }
+    
+    .btn[title]:hover::after {
+        background: var(--bg-gray-100);
+        color: var(--text-primary);
+    }
+    
+    .btn[title]:hover::before {
+        border-top-color: var(--bg-gray-100);
+    }
+}
+
+/* ✅ PRINT PREVIEW MODAL */
+.printPreviewModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1070;
+  animation: fadeIn 0.3s ease-out;
+  padding: 2rem;
+}
+
+.printPreviewContent {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideInUp 0.3s ease-out;
+  overflow: hidden;
+}
+
+.printPreviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--bg-gray-50) 0%, var(--bg-white) 100%);
+}
+
+.printPreviewHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.printPreviewHeader h3 i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.printPreviewActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.printPreviewBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  background: #f5f5f5;
+}
+
+/* ✅ LOADING SPINNER */
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ✅ RESPONSIVE PRINT PREVIEW */
+@media (max-width: 768px) {
+  .printPreviewModal {
+    padding: 1rem;
+  }
+  
+  .printPreviewContent {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+  
+  .printPreviewHeader {
+    padding: 1rem 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .printPreviewActions {
+    justify-content: center;
+  }
+  
+  .printPreviewBody {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .printPreviewActions {
+    flex-direction: column;
+  }
+  
+  .printPreviewActions .btn {
+    width: 100%;
+  }
+}

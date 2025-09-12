@@ -194,42 +194,67 @@ class UserDBContext extends DBContext {
     }
 
     async update(userId, userData) {
-        try {
-            console.log('Updating user data:', { userId, userData });
-            const pool = await this.pool;
+    try {
+        console.log('Updating user data:', { userId, userData });
+        const pool = await this.pool;
+
+        // QUAN TRỌNG: Trim PhoneNumber để loại bỏ spaces
+        const trimmedPhoneNumber = userData.PhoneNumber ? userData.PhoneNumber.trim() : null;
+
+        // Tạo danh sách các cột cần cập nhật
+        const fieldsToUpdate = {};
+        if (userData.Username) fieldsToUpdate.Username = userData.Username;
+        if (userData.Fullname) fieldsToUpdate.Fullname = userData.Fullname;
+        if (userData.Email) fieldsToUpdate.Email = userData.Email;
+        if (userData.PhoneNumber) fieldsToUpdate.PhoneNumber = trimmedPhoneNumber;
+        if (userData.Status !== undefined) fieldsToUpdate.Status = userData.Status;
+        // Chỉ thêm Password nếu được gửi từ client
+        if (userData.Password) fieldsToUpdate.Password = userData.Password;
+
+        if (Object.keys(fieldsToUpdate).length === 0) {
+            console.log('Không có dữ liệu để cập nhật');
+            throw new Error('Không có dữ liệu để cập nhật');
+        }
+
+        // Tạo truy vấn UPDATE động
+        const updateFields = Object.keys(fieldsToUpdate)
+            .map(key => `${key} = @${key}`)
+            .join(', ');
+
+        const query = `
+            UPDATE [User]
+            SET ${updateFields}
+            WHERE UserID = @UserID;
             
-            // QUAN TRỌNG: Trim PhoneNumber để loại bỏ spaces
-            const trimmedPhoneNumber = userData.PhoneNumber ? userData.PhoneNumber.trim() : null;
-            
-            const result = await pool.request()
-                .input('UserID', sql.Int, userId)
-                .input('Username', sql.NVarChar(150), userData.Username)
-                .input('Fullname', sql.NVarChar(150), userData.Fullname)
-                .input('Email', sql.NVarChar(150), userData.Email)
-                .input('PhoneNumber', sql.NChar(50), trimmedPhoneNumber)
-                .input('Status', sql.Bit, userData.Status)
-                .input('Password', sql.NVarChar(150), userData.Password) // THÊM PARAMETER PASSWORD
-                .query(`
-                    UPDATE [User]
-                    SET Username = @Username,
-                        Fullname = @Fullname,
-                        Email = @Email,
-                        PhoneNumber = @PhoneNumber,
-                        Status = @Status,
-                        Password = @Password
-                    WHERE UserID = @UserID;
-                    
-                    SELECT * FROM [User] WHERE UserID = @UserID;
-                `);
+            SELECT * FROM [User] WHERE UserID = @UserID;
+        `;
+
+        const request = pool.request();
+        request.input('UserID', sql.Int, userId);
+        for (const [key, value] of Object.entries(fieldsToUpdate)) {
+            if (key === 'Status') {
+                request.input(key, sql.Bit, value);
+            } else if (key === 'PhoneNumber') {
+                request.input(key, sql.NChar(50), value);
+            } else {
+                request.input(key, sql.NVarChar(150), value);
+            }
+        }
+
+        console.log('Truy vấn UPDATE:', query);
+        console.log('Tham số:', { UserID: userId, ...fieldsToUpdate });
+
+        const result = await request.query(query);
 
         if (result.recordset.length === 0) {
-            throw new Error('User not found after update');
+            console.error('Không tìm thấy người dùng sau khi cập nhật');
+            throw new Error('Không tìm thấy người dùng sau khi cập nhật');
         }
 
         console.log('✅ User updated successfully:', {
             UserID: result.recordset[0].UserID,
             Username: result.recordset[0].Username,
-            PasswordUpdated: !!result.recordset[0].Password
+            UpdatedFields: Object.keys(fieldsToUpdate)
         });
 
         return User.fromDatabase(result.recordset[0]);
@@ -237,7 +262,7 @@ class UserDBContext extends DBContext {
         console.error('Database update error:', error);
         throw new Error(`Error updating user: ${error.message}`);
     }
-    }
+}
 
     async delete(id) {
         try {
@@ -296,6 +321,57 @@ class UserDBContext extends DBContext {
         } catch (error) {
             console.error(`Error removing role ${roleId} from user ${userId}:`, error);
             throw error;
+        }
+    }
+
+    // ✅ THÊM: Method để kiểm tra user có role cụ thể không
+    async checkUserRole(userId, roleId) {
+        try {
+            const pool = await this.pool;
+            const result = await pool.request()
+                .input('UserID', sql.Int, userId)
+                .input('RoleID', sql.Int, roleId)
+                .query(`
+                    SELECT COUNT(*) as RoleCount
+                    FROM UserRole 
+                    WHERE UserID = @UserID AND RoleID = @RoleID
+                `);
+            return result.recordset[0].RoleCount > 0;
+        } catch (error) {
+            console.error(`Error checking role ${roleId} for user ${userId}:`, error);
+            throw error;
+        }
+    }
+
+    // ✅ THÊM: Method để assign role với response format
+    async assignRoleToUser(userId, roleId) {
+        try {
+            console.log(`🔗 Assigning role ${roleId} to user ${userId}`);
+            
+            // Kiểm tra user có role này chưa
+            const hasRole = await this.checkUserRole(userId, roleId);
+            if (hasRole) {
+                return { 
+                    success: true, 
+                    message: 'User already has this role',
+                    alreadyExists: true 
+                };
+            }
+
+            // Gán role mới
+            await this.addRoleToUser(userId, roleId);
+            
+            return { 
+                success: true, 
+                message: 'Role assigned successfully',
+                alreadyExists: false 
+            };
+        } catch (error) {
+            console.error(`Error assigning role ${roleId} to user ${userId}:`, error);
+            return { 
+                success: false, 
+                message: error.message 
+            };
         }
     }
 

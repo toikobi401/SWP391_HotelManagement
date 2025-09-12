@@ -241,7 +241,7 @@ class ChatBotDBContext extends DBContext {
                 .query(`
                     SELECT 
                         COUNT(*) as TotalRooms,
-                        COUNT(CASE WHEN Status = 'Available' THEN 1 END) as AvailableRooms,
+                         COUNT(CASE WHEN Status = 'Available' THEN 1 END) as AvailableRooms,
                         COUNT(CASE WHEN Status = 'Occupied' THEN 1 END) as OccupiedRooms,
                         COUNT(CASE WHEN Status = 'Reserved' THEN 1 END) as ReservedRooms,
                         COUNT(CASE WHEN Status = 'Maintenance' THEN 1 END) as MaintenanceRooms,
